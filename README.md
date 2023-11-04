@@ -1,2 +1,2 @@
 # programmers-typer
-Tool to practice typing with special 
+Tool to practice typing with special.
