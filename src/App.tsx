@@ -1,12 +1,27 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
-function App() {
+interface typedInterface {
+  placeholder?: string;
+  onChange: (event: InputEvent) => void;
+}
+
+export default function App(props: typedInterface) {
+  const [userTypeValue, setUserTypeValue] = React.useState('');
+
+  function handleTypeChange(value:string) {
+    setUserTypeValue(value);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+        
+        <textarea value={userTypeValue} />
+        <textarea value={userTypeValue} onChange={handleTypeChange(value)} />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -22,5 +37,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
