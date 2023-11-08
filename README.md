@@ -1,3 +1,9 @@
+# Project designed to practice typing that include keys used by programmers
+User is typing and receiving live comparison report of the performance.
+
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
