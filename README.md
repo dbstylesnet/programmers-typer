@@ -2,8 +2,6 @@
 User is typing and receiving live comparison report of the performance.
 
 
-
-
 ## Available Scripts
 
 In the project directory, you can run:
