@@ -10,29 +10,37 @@ interface typedInterface {
 
 export default function App(props: typedInterface) {
   const [userTypeValue, setUserTypeValue] = React.useState('');
+  const [savedTypedValue, setSavedTypedValue] = React.useState('');
+  const [practiceTypeString, setpracticeTypeString] = useState('This is practice text');
+  const practiceText = 'This is practice string';
+  const a = 5;
+  const b = 10;
+  const practiceTypedText = `This is practice string `+ <span style="color: #ccc">a</span> + `${a + b} `;
+  const practiceTypedWord = `This`;
 
-  function handleTypeChange(value:string) {
-    setUserTypeValue(value);
+
+
+  const handleTypeChange = (e)=>{
+    setUserTypeValue(e.target.value);  
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        
-        <textarea value={userTypeValue} />
-        <textarea value={userTypeValue} onChange={handleTypeChange(value)} />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
+        <div className="mainTextAreas">
+            <div>
+              <p className='paragraphs topP'>{practiceTypedWord}</p>
+              <p className='paragraphs bottomP'>{practiceTypedWord}</p>
+            </div>
+            <div>
+              <input className='paragraphs topP' value='tes' />
+              <input className='paragraphs bottomP' value='test' />
+            </div>
+            <textarea onChange={handleTypeChange} value={userTypeValue} />
+            <textarea value={userTypeValue}></textarea>
+            <p className='textParagraph'>{practiceTypedText}</p>
+          </div>  
       </header>
     </div>
   );
