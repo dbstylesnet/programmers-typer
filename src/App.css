@@ -28,6 +28,65 @@
   color: #61dafb;
 }
 
+.mainTextAreas {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  flex-direction: column;
+}
+
+textarea {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  opacity: .5;
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+  font-size: 40px;
+  border-radius: 4px;
+}
+
+.paragraphs {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  opacity: .5;
+  background: transparent;
+}
+
+.inputsArea {
+  position: relative;
+  margin: 5%;
+  width: 90%;
+  min-height: 400px;
+}
+
+.inputs {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  opacity: .5;
+  background: transparent;
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+  font-size: 40px;
+  border-radius: 4px;
+
+}
+
+.topP {
+  color: skyblue;
+  opacity: 1;
+  z-index: 1;
+}
+
+.bottomP {
+  color: darksalmon;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
