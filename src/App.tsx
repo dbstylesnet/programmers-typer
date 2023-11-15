@@ -39,12 +39,12 @@ export default function App(props: typedInterface) {
             <p className='paragraphs bottomP'>{practiceTypedWord}</p>
           </div> */}
           <div className='inputsArea'>
-            <input className='inputs topP' placeholder="Start typing here" onChange={handleChange} value={userTypeValue} />
+            <input className='typeInputs userTextInput' placeholder="Start typing here" onChange={handleChange} value={userTypeValue} />
             {/* <input className='inputs bottomP' value={practiceText}/> */}
           </div>
-          <div className="mainTextAreas">
-            <textarea className='inputs topP'  onChange={handleChange} value={userTypeValue} />
-            <textarea className='inputs bottomP'  value={practiceText}></textarea>
+          <div className="textAreas">
+            <textarea className='textInputs topP'  onChange={handleChange} value={userTypeValue} />
+            <textarea className='textInputs bottomP'  value={practiceText}></textarea>
             {/* <p className='textParagraph'>{practiceTypedText}</p> */}
           </div>
  
