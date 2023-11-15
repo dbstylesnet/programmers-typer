@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Project designed to practice typing that include keys used by programmers
+User is typing and receiving live comparison report of the performance.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
