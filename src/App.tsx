@@ -30,9 +30,9 @@ export default function App(props: typedInterface) {
       <header className="App-header">
         {/* <textarea onChange={handleTypeChange(InputEvent)}/>
         <textarea value={userTypeValue} /> */}
-
-
-
+          <div className='sub-header'>
+            <h2>Programmers typing training</h2>
+          </div>  
         <div className="mainTextAreas">
           {/* <div>
             <p className='paragraphs topP'>{practiceTypedWord}</p>
@@ -40,14 +40,14 @@ export default function App(props: typedInterface) {
           </div> */}
           <div className='inputsArea'>
             <input className='typeInputs userTextInput' placeholder="Start typing here" onChange={handleChange} value={userTypeValue} />
-            {/* <input className='inputs bottomP' value={practiceText}/> */}
+          </div>
+          <div className='sub-header'>
+            <h3>Practice text:</h3>
           </div>
           <div className="textAreas">
             <textarea className='textInputs topP'  onChange={handleChange} value={userTypeValue} />
             <textarea className='textInputs bottomP'  value={practiceText}></textarea>
-            {/* <p className='textParagraph'>{practiceTypedText}</p> */}
           </div>
- 
         </div>  
       </header>
     </div>

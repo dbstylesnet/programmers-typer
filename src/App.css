@@ -37,9 +37,14 @@
 
 .textAreas {
   position: relative;
-  margin: 5%;
+  margin: 0 5% 5%;
   width: 90%;
   height: 200px;
+}
+
+.sub-header {
+  font-weight: bold;
+  font-variant: all-small-caps;
 }
 
 textarea {
@@ -65,7 +70,7 @@ textarea {
 
 .inputsArea {
   position: relative;
-  margin: 5%;
+  margin: 0 5% 5%;
   width: 90%;
   height: 100px;
 }
