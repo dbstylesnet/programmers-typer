@@ -1,6 +1,11 @@
 # Project designed to practice typing that include keys used by programmers
 User is typing and receiving live comparison report of the performance.
 
+<img src="https://github.com/dbstylesnet/programmers-typer/blob/master/project.png" alt="ProjectScreenshot" />
+
+
+
+
 
 ## Available Scripts
 
