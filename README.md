@@ -3,15 +3,12 @@ User is typing and receiving live comparison report of the performance.
 
 <img src="https://github.com/dbstylesnet/programmers-typer/blob/main/project.png" alt="ProjectScreenshot" />
 
-<!--
 
-
-
-## Available Scripts
-
-In the project directory, you can run:
-
+In order to run project, clone the repo and then run commands from parent directory: 
+### `npm install`
 ### `npm start`
+
+<!--
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
