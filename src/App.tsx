@@ -8,7 +8,12 @@ const  App = (): JSX.Element => {
 
   const practiceText = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
 
-  const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const enteredText = event.target.value;
+    setUserTypeValue(enteredText);
+  }
+
+  const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const enteredText = event.target.value;
     setUserTypeValue(enteredText);
   }
@@ -21,13 +26,13 @@ const  App = (): JSX.Element => {
           </div>  
         <div className="mainTextAreas">
           <div className='inputsArea'>
-            <input className='typeInputs userTextInput' placeholder="Start typing here" onChange={handleTypeChange} value={userTypeValue} />
+            <input className='typeInputs userTextInput' placeholder="Start typing here" onChange={handleInputChange} value={userTypeValue} />
           </div>
           <div className='sub-header'>
             <h3>Practice text:</h3>
           </div>
           <div className="textAreas">
-            <textarea className='textInputs topP' value={userTypeValue} />
+            <textarea className='textInputs topP' onChange={handleTextareaChange} value={userTypeValue} />
             <textarea className='textInputs bottomP' value={practiceText}/>
           </div>
         </div>  
