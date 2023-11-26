@@ -19,24 +19,27 @@ const  App = (): JSX.Element => {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-          <div className='sub-header'>
-            <h2>Programmers typing training</h2>
-          </div>  
-        <div className="mainTextAreas">
-          <div className='inputsArea'>
-            <input className='typeInputs userTextInput' placeholder="Start typing here" onChange={handleInputChange} value={userTypeValue} />
-          </div>
-          <div className='sub-header'>
-            <h3>Practice text:</h3>
-          </div>
-          <div className="textAreas">
-            <textarea className='textInputs topP' onChange={handleTextareaChange} value={userTypeValue} />
-            <textarea className='textInputs bottomP' value={practiceText}/>
-          </div>
-        </div>  
-      </header>
+    <div className="main-container">
+
+      <div className='sub-header'>
+        <h2>Programmers typing training</h2>
+      </div>  
+
+      <div className="mainTextAreas">
+        <div className='inputsArea'>
+          <input className='typeInputs userTextInput' placeholder="Start typing here" onChange={handleInputChange} value={userTypeValue} />
+        </div>
+
+        <div className='sub-header'>
+          <h3>Practice text:</h3>
+        </div>
+        <div className="textAreas">
+          <textarea className='textInputs topP' onChange={handleTextareaChange} value={userTypeValue} />
+          <textarea className='textInputs bottomP' value={practiceText}/>
+        </div>
+        
+      </div>  
+
     </div>
   );
 }
