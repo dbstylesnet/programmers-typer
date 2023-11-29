@@ -6,15 +6,24 @@ import { useState } from 'react';
 const  App = (): JSX.Element => {
   const [userTypeValue, setUserTypeValue] = React.useState('');
 
-  const practiceText = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
+  const practiceText = 'clude';
+  // const practiceText = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const enteredText = event.target.value;
+
+    if (enteredText === practiceText) {
+      alert('Congratulations, you have completed typing test!');
+    }
     setUserTypeValue(enteredText);
   }
 
   const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const enteredText = event.target.value;
+
+    if (enteredText === practiceText) {
+      alert('Congratulations, you have completed typing test!');
+    }
     setUserTypeValue(enteredText);
   }
 
