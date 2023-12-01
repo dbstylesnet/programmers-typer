@@ -5,16 +5,21 @@ import { useState } from 'react';
 
 const  App = (): JSX.Element => {
   const [userTypeValue, setUserTypeValue] = React.useState('');
+  const [shadowBoxToggle, setShadowBoxToggle] = React.useState(false);
 
   const practiceText = 'clude';
+  const completedText = 'Congratulations, you have completed typing test!';
   // const practiceText = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const enteredText = event.target.value;
 
     if (enteredText === practiceText) {
-      alert('Congratulations, you have completed typing test!');
+      shadowBoxToggle === true ? setShadowBoxToggle(false) : setShadowBoxToggle(true)
+    } else if (shadowBoxToggle === true) {
+      setShadowBoxToggle(false)
     }
+
     setUserTypeValue(enteredText);
   }
 
@@ -22,8 +27,11 @@ const  App = (): JSX.Element => {
     const enteredText = event.target.value;
 
     if (enteredText === practiceText) {
-      alert('Congratulations, you have completed typing test!');
+      shadowBoxToggle === true ? setShadowBoxToggle(false) : setShadowBoxToggle(true)
+    } else if (shadowBoxToggle === true) {
+      setShadowBoxToggle(false)
     }
+
     setUserTypeValue(enteredText);
   }
 
@@ -47,6 +55,14 @@ const  App = (): JSX.Element => {
           <textarea className='textInputs bottomP' value={practiceText}/>
         </div>
         
+        <div className="textAreas contratz sub-header">
+          <h4>
+          {shadowBoxToggle 
+            ? completedText
+            : ''
+          }</h4>
+        </div>
+
       </div>  
 
     </div>
