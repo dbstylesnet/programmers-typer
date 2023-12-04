@@ -7,14 +7,16 @@ const  App = (): JSX.Element => {
   const [userTypeValue, setUserTypeValue] = React.useState('');
   const [shadowBoxToggle, setShadowBoxToggle] = React.useState(false);
 
-  const practiceText = 'clude';
+  // const practiceText = 'clude';
   const completedText = 'Congratulations, you have completed typing test!';
-  // const practiceText = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
+  const practiceTextC = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
+  const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);\n}';
+  // const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);\n}';
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const enteredText = event.target.value;
 
-    if (enteredText === practiceText) {
+    if (enteredText === practiceTextJS) {
       shadowBoxToggle === true ? setShadowBoxToggle(false) : setShadowBoxToggle(true)
     } else if (shadowBoxToggle === true) {
       setShadowBoxToggle(false)
@@ -26,7 +28,7 @@ const  App = (): JSX.Element => {
   const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const enteredText = event.target.value;
 
-    if (enteredText === practiceText) {
+    if (enteredText === practiceTextJS) {
       shadowBoxToggle === true ? setShadowBoxToggle(false) : setShadowBoxToggle(true)
     } else if (shadowBoxToggle === true) {
       setShadowBoxToggle(false)
@@ -43,16 +45,16 @@ const  App = (): JSX.Element => {
       </div>  
 
       <div className="mainTextAreas">
-        <div className='inputsArea'>
+        {/* <div className='inputsArea'>
           <input className='typeInputs userTextInput' placeholder="Start typing here" onChange={handleInputChange} value={userTypeValue} />
-        </div>
+        </div> */}
 
         <div className='sub-header'>
           <h3>Practice text:</h3>
         </div>
         <div className="textAreas">
           <textarea className='textInputs topP' onChange={handleTextareaChange} value={userTypeValue} />
-          <textarea className='textInputs bottomP' value={practiceText}/>
+          <textarea className='textInputs bottomP' value={practiceTextJS}/>
         </div>
         
         <div className="textAreas contratz sub-header">
