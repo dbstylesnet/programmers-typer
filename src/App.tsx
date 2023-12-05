@@ -10,7 +10,7 @@ const  App = (): JSX.Element => {
   // const practiceText = 'clude';
   const completedText = 'Congratulations, you have completed typing test!';
   const practiceTextC = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
-  const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);\n}';
+  const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial \\n\n of ${number} is ${fact}.`);';
   // const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);\n}';
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +40,7 @@ const  App = (): JSX.Element => {
   return (
     <div className="main-container">
 
-      <div className='sub-header'>
+      <div className='sub-header main-header'>
         <h2>Programmers typing training</h2>
       </div>  
 
@@ -55,18 +55,13 @@ const  App = (): JSX.Element => {
         <div className="textAreas">
           <textarea className='textInputs topP' onChange={handleTextareaChange} value={userTypeValue} />
           <textarea className='textInputs bottomP' value={practiceTextJS}/>
-        </div>
-        
-        <div className="textAreas contratz sub-header">
-          <h4>
-          {shadowBoxToggle 
-            ? completedText
-            : ''
+          <h4 className="congratz sub-header">
+            {shadowBoxToggle
+              ? completedText
+              : ''
           }</h4>
         </div>
-
       </div>  
-
     </div>
   );
 }
