@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 
@@ -11,7 +10,12 @@ const  App = (): JSX.Element => {
   const completedText = 'Congratulations, you have completed typing test!';
   const practiceTextC = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
   const practiceTextJS = 'else {\n;let fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial \\n\n of ${number} is ${fact}.`);';
-  const practiceText = '';
+  const practiceTextJS2 = 'var x = 1;\nlet y = 1;\nif (true) {\nvar x = 2;\nlet y = 2;\n}';
+
+  const jsTexts = [practiceTextJS, practiceTextJS2];
+  const randomText = Math.floor(Math.random() * jsTexts.length); 
+  
+  const practiceText = jsTexts[randomText];
   // const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);\n}';
 
   useEffect(() => {
