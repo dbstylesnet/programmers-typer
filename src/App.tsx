@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+ import React, { useEffect } from 'react';
 import './App.css';
 import { useState } from 'react';
 
 const  App = (): JSX.Element => {
   const [userTypeValue, setUserTypeValue] = React.useState('');
   const [shadowBoxToggle, setShadowBoxToggle] = React.useState(false);
+  const [practiceTextState, setPracticeTextState] = useState('');
 
   // const practiceText = 'clude';
   const completedText = 'Congratulations, you have completed typing test!';
@@ -15,17 +16,17 @@ const  App = (): JSX.Element => {
   const jsTexts = [practiceTextJS, practiceTextJS2];
   const randomText = Math.floor(Math.random() * jsTexts.length); 
   
-  const practiceText = jsTexts[randomText];
+  // const practiceText = jsTexts[randomText];
   // const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);\n}';
 
   useEffect(() => {
-
-  });
+    setPracticeTextState(jsTexts[randomText]);
+  },[randomText]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const enteredText = event.target.value;
 
-    if (enteredText === practiceText) {
+    if (enteredText === practiceTextState) {
       shadowBoxToggle === true ? setShadowBoxToggle(false) : setShadowBoxToggle(true)
     } else if (shadowBoxToggle === true) {
       setShadowBoxToggle(false)
