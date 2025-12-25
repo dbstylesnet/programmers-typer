@@ -8,6 +8,7 @@ const  App = (): JSX.Element => {
   const [practiceTextState, setPracticeTextState] = useState('');
   const [randomTextIndex, setRandomTextIndex] = useState(0);
   const [coverage, setCoverage] = useState('');
+  const [accuracyCount, setAccuracyCount] = useState(1);
 
   // const practiceText = 'clude';
   const completedText = 'Congratulations, you have completed typing test!';
@@ -42,14 +43,15 @@ const  App = (): JSX.Element => {
 
   const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const enteredText = event.target.value;
-
  
     console.log('enteredText:', enteredText);
 
-
     const compareStrings = (typed:any , target: any) => {
       return typed.split("").map((char: any, index: any) => {
+        setAccuracyCount(1); // Reset accuracy count before comparison
         if (char === target[index]) {
+          setAccuracyCount((prevCount) => prevCount + 1);
+          console.log('accuracyCount:', accuracyCount);
           console.log('char match at index', index, ':', char);
           return "correct";
         } else {
