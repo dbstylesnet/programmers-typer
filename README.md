@@ -1,10 +1,15 @@
-# Project designed to practice typing that include keys used by programmers
-User is typing and receiving live comparison report of the performance.
+# Typing Practice for Programmers
+This project is a typing practice application designed specifically for programmers. It focuses on commonly used programming keys and symbols to help improve typing speed and accuracy while coding.
+
+As the user types, the app provides real-time performance feedback, including live comparisons and accuracy tracking.
 
 <img src="https://github.com/dbstylesnet/programmers-typer/blob/main/project.png" alt="ProjectScreenshot" />
 
+Getting Started
 
-In order to run project, clone the repo and then run commands from parent directory: 
+To run the project locally:
+Clone the repository
+From the project’s root directory, run:
 ### `npm install`
 ### `npm start`
 
