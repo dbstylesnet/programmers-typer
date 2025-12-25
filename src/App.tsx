@@ -6,6 +6,7 @@ const  App = (): JSX.Element => {
   const [userTypeValue, setUserTypeValue] = React.useState('');
   const [shadowBoxToggle, setShadowBoxToggle] = React.useState(false);
   const [practiceTextState, setPracticeTextState] = useState('');
+  const [randomTextIndex, setRandomTextIndex] = useState(0);
 
   // const practiceText = 'clude';
   const completedText = 'Congratulations, you have completed typing test!';
@@ -13,15 +14,17 @@ const  App = (): JSX.Element => {
   const practiceTextJS = 'else {\n;let fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial \\n\n of ${number} is ${fact}.`);';
   const practiceTextJS2 = 'var x = 1;\nlet y = 1;\nif (true) {\nvar x = 2;\nlet y = 2;\n}';
 
-  const jsTexts = [practiceTextJS, practiceTextJS2];
-  const randomText = Math.floor(Math.random() * jsTexts.length); 
+
   
   // const practiceText = jsTexts[randomText];
   // const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);\n}';
 
   useEffect(() => {
+    const jsTexts = [practiceTextJS, practiceTextJS2];
+    const randomText = Math.floor(Math.random() * jsTexts.length); 
     setPracticeTextState(jsTexts[randomText]);
-  },[randomText]);
+    setRandomTextIndex(randomText);   
+  },[randomTextIndex, practiceTextState]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const enteredText = event.target.value;
@@ -38,7 +41,7 @@ const  App = (): JSX.Element => {
   const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const enteredText = event.target.value;
 
-    if (enteredText === practiceText) {
+    if (enteredText === practiceTextState) {
       shadowBoxToggle === true ? setShadowBoxToggle(false) : setShadowBoxToggle(true)
     } else if (shadowBoxToggle === true) {
       setShadowBoxToggle(false)
@@ -64,7 +67,7 @@ const  App = (): JSX.Element => {
         </div>
         <div className="textAreas">
           <textarea className='textInputs topP' onChange={handleTextareaChange} value={userTypeValue} />
-          <textarea className='textInputs bottomP' value={practiceText}/>
+          <textarea className='textInputs bottomP' value={practiceTextState}/>
           <h4 className="congratz sub-header">
             {shadowBoxToggle
               ? completedText
