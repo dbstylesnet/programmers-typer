@@ -47,11 +47,11 @@ const  App = (): JSX.Element => {
     console.log('enteredText:', enteredText);
 
     const compareStrings = (typed:any , target: any) => {
-      return typed.split("").map((char: any, index: any) => {
-        setAccuracyCount(1); // Reset accuracy count before comparison
+      let correctCount = 0; // Use a local variable to count correct characters
+      
+      const result = typed.split("").map((char: any, index: any) => {
         if (char === target[index]) {
-          setAccuracyCount((prevCount) => prevCount + 1);
-          console.log('accuracyCount:', accuracyCount);
+          correctCount++; // Increment local counter
           console.log('char match at index', index, ':', char);
           return "correct";
         } else {
@@ -59,6 +59,12 @@ const  App = (): JSX.Element => {
           return "incorrect";
         }
       });
+      
+      // Set the state ONCE after calculating all characters
+      setAccuracyCount(correctCount);
+      console.log('accuracyCount:', correctCount);
+      
+      return result;
     };
 
     compareStrings(enteredText, practiceTextState);
