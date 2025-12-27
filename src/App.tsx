@@ -86,6 +86,10 @@ const  App = (): JSX.Element => {
         <h2>Programmers typing training</h2>
       </div>  
 
+      <div className='sub-header statsHeader'>
+        <h4>Accuracy: {((accuracyCount / (userTypeValue.length || 1)) * 100).toFixed(2)}%</h4>
+      </div>
+
       <div className="mainTextAreas">
         {/* <div className='inputsArea'>
           <input className='typeInputs userTextInput' placeholder="Start typing here" onChange={handleInputChange} value={userTypeValue} />
