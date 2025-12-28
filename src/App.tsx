@@ -21,12 +21,37 @@ const  App = (): JSX.Element => {
   // const practiceText = jsTexts[randomText];
   // const practiceTextJS = 'else {\nlet fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);\n}';
 
+  const jsTexts = [practiceTextJS, practiceTextJS2];
+
   useEffect(() => {
-    const jsTexts = [practiceTextJS, practiceTextJS2];
+    // Initialize with random text on mount
     const randomText = Math.floor(Math.random() * jsTexts.length); 
     setPracticeTextState(jsTexts[randomText]);
     setRandomTextIndex(randomText);   
-  },[randomTextIndex, practiceTextState]);
+  }, []); // Empty dependency array - only run on mount
+
+  const handleTextSelection = (selection: 'first' | 'second' | 'random') => {
+    let selectedText: string;
+    let selectedIndex: number;
+
+    if (selection === 'first') {
+      selectedText = jsTexts[0];
+      selectedIndex = 0;
+    } else if (selection === 'second') {
+      selectedText = jsTexts[1];
+      selectedIndex = 1;
+    } else {
+      // random
+      selectedIndex = Math.floor(Math.random() * jsTexts.length);
+      selectedText = jsTexts[selectedIndex];
+    }
+
+    setPracticeTextState(selectedText);
+    setRandomTextIndex(selectedIndex);
+    setUserTypeValue(''); // Reset user input when changing text
+    setShadowBoxToggle(false); // Reset completion message
+    setAccuracyCount(0); // Reset accuracy count
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const enteredText = event.target.value;
@@ -88,6 +113,12 @@ const  App = (): JSX.Element => {
 
       <div className='sub-header statsHeader'>
         <h4>Accuracy: {((accuracyCount / (userTypeValue.length || 1)) * 100).toFixed(2)}%</h4>
+      </div>
+
+      <div className="text-selection-buttons">
+        <button onClick={() => handleTextSelection('first')}>First Text</button>
+        <button onClick={() => handleTextSelection('second')}>Second Text</button>
+        <button onClick={() => handleTextSelection('random')}>Random Text</button>
       </div>
 
       <div className="mainTextAreas">
