@@ -24,11 +24,10 @@ const  App = (): JSX.Element => {
   const jsTexts = [practiceTextJS, practiceTextJS2];
 
   useEffect(() => {
-    // Initialize with random text on mount
     const randomText = Math.floor(Math.random() * jsTexts.length); 
     setPracticeTextState(jsTexts[randomText]);
     setRandomTextIndex(randomText);   
-  }, []); // Empty dependency array - only run on mount
+  }, []);
 
   const handleTextSelection = (selection: 'first' | 'second' | 'random') => {
     let selectedText: string;
@@ -41,16 +40,16 @@ const  App = (): JSX.Element => {
       selectedText = jsTexts[1];
       selectedIndex = 1;
     } else {
-      // random
+
       selectedIndex = Math.floor(Math.random() * jsTexts.length);
       selectedText = jsTexts[selectedIndex];
     }
 
     setPracticeTextState(selectedText);
     setRandomTextIndex(selectedIndex);
-    setUserTypeValue(''); // Reset user input when changing text
-    setShadowBoxToggle(false); // Reset completion message
-    setAccuracyCount(0); // Reset accuracy count
+    setUserTypeValue('');
+    setShadowBoxToggle(false);
+    setAccuracyCount(0);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,11 +71,11 @@ const  App = (): JSX.Element => {
     console.log('enteredText:', enteredText);
 
     const compareStrings = (typed:any , target: any) => {
-      let correctCount = 0; // Use a local variable to count correct characters
+      let correctCount = 0;
       
       const result = typed.split("").map((char: any, index: any) => {
         if (char === target[index]) {
-          correctCount++; // Increment local counter
+          correctCount++;
           console.log('char match at index', index, ':', char);
           return "correct";
         } else {
@@ -85,7 +84,6 @@ const  App = (): JSX.Element => {
         }
       });
       
-      // Set the state ONCE after calculating all characters
       setAccuracyCount(correctCount);
       console.log('accuracyCount:', correctCount);
       
@@ -112,7 +110,10 @@ const  App = (): JSX.Element => {
       </div>  
 
       <div className='sub-header statsHeader'>
-        <h4>Accuracy: {((accuracyCount / (userTypeValue.length || 1)) * 100).toFixed(2)}%</h4>
+        <h4>
+          Accuracy: {((accuracyCount / (userTypeValue.length || 1)) * 100).toFixed(2)}% | 
+          Progress: {((userTypeValue.length / (practiceTextState.length || 1)) * 100).toFixed(2)}%
+        </h4>
       </div>
 
       <div className="text-selection-buttons">
