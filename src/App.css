@@ -5,13 +5,30 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(8px + 1.2vmin);
   color: white;
   padding: 0px 0 0 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #282c34;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: #282c34;
 }
 
 .sub-header.main-header {
-  margin: 50px 0 0 0;
+  margin: 30px 0 0 0;
+}
+
+.sub-header.main-header h2 {
+  font-size: 24px;
+  margin: 0;
 }
 
 .mainTextAreas {
@@ -19,18 +36,31 @@
   justify-content: space-around;
   width: 100%;
   flex-direction: column;
+  min-height: auto;
 }
 
 .textAreas {
   position: relative;
   margin: 0 5% 5%;
   width: 90%;
-  height: 330px;
+  min-height: 200px;
+  padding-bottom: 80px;
 }
 
 .sub-header {
   font-weight: bold;
   font-variant: all-small-caps;
+  font-size: 14px;
+}
+
+.statsHeader h4 {
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+.sub-header h3 {
+  font-size: 15px;
+  margin: 10px 0;
 }
 
 textarea {
@@ -42,7 +72,7 @@ textarea {
   border: 1px solid #ccc;
   padding: 5px;
   margin: 5px;
-  font-size: 40px;
+  font-size: 18px;
   border-radius: 4px;
 }
 
@@ -95,11 +125,11 @@ textarea {
   border: 1px solid #ccc;
   padding: 5px;
   margin: 5px;
-  font-size: 40px;
+  font-size: 18px;
   border-radius: 4px;
   width: 100%;
-  height: 400px;
-  min-width: 800px;
+  min-height: 200px;
+  min-width: 600px;
 }
 
 .topP {
@@ -113,7 +143,227 @@ textarea {
 }
 
 .congratz {
-  margin: 450px 0 0 0;
+  position: fixed;
+  bottom: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%) !important;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideInUp 0.5s ease-out, pulse 2s ease-in-out infinite;
+  display: block;
+  min-width: 300px;
+  max-width: 90%;
+  color: white !important;
+  border: none !important;
+  z-index: 10;
+  font-size: 14px;
+  text-align: center;
+  visibility: visible;
+}
+
+.congratz.sub-header {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%) !important;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.02);
+    box-shadow: 0 15px 40px rgba(74, 85, 104, 0.5);
+  }
+}
+
+.text-selection-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.text-selection-buttons button {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.text-selection-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+}
+
+.text-selection-buttons button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.player-section button {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.player-section button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+}
+
+.player-section button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.player-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+  gap: 8px;
+}
+
+.player-section label {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.player-section input {
+  padding: 6px 10px;
+  border: 2px solid rgba(102, 126, 234, 0.3);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.player-section input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+}
+
+.player-section input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.results-section {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: slideInDown 0.5s ease-out;
+  margin: 15px auto;
+  max-width: 90%;
+  border: none;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.results-section h3 {
+  margin-top: 0;
+  text-align: center;
+  font-size: 18px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.results-section p {
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.results-section h4 {
+  margin-top: 15px;
+  font-size: 15px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.results-section > div {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px;
+  backdrop-filter: blur(10px);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.results-section > div::-webkit-scrollbar {
+  width: 8px;
+}
+
+.results-section > div::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.results-section > div::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.results-section > div::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.results-section > div > div {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px 0;
+  border-left: 4px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+  font-size: 12px;
+}
+
+.results-section > div > div:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* @keyframes App-logo-spin {

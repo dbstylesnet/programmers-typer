@@ -16,7 +16,7 @@ const  App = (): JSX.Element => {
   const [playerResults, setPlayerResults] = useState<PlayerResult[]>([]);
   const [playerStats, setPlayerStats] = useState<any>(null);
 
-  const completedText = 'Congratulations, you have completed typing test!';
+  const completedText = 'Congratulations, you have completed typing test! You can check your results in the results section above.';
   const practiceTextC = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
   const practiceTextJS = 'else {\n;let fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial \\n\n of ${number} is ${fact}.`);';
   const practiceTextJS2 = 'var x = 1;\nlet y = 1;\nif (true) {\nvar x = 2;\nlet y = 2;\n}';
@@ -189,18 +189,16 @@ const  App = (): JSX.Element => {
           value={playerName}
           onChange={handlePlayerNameChange}
           placeholder="Enter your name"
-          style={{ marginLeft: '10px', padding: '5px' }}
         />
         <button 
           onClick={() => setShowResults(!showResults)}
-          style={{ marginLeft: '10px', padding: '5px 10px' }}
         >
           {showResults ? 'Hide' : 'Show'} Results
         </button>
       </div>
 
       {showResults && playerName && playerStats && (
-        <div className='results-section' style={{ margin: '20px 0', padding: '15px', border: '1px solid #ccc', borderRadius: '5px' }}>
+        <div className='results-section'>
           <h3>Statistics for {playerName}</h3>
           <p>Total Tests: {playerStats.totalTests}</p>
           <p>Completed Tests: {playerStats.completedTests}</p>
@@ -208,10 +206,10 @@ const  App = (): JSX.Element => {
           <p>Average Progress: {playerStats.averageProgress.toFixed(2)}%</p>
           <p>Best Accuracy: {playerStats.bestAccuracy.toFixed(2)}%</p>
           
-          <h4 style={{ marginTop: '15px' }}>Recent Results:</h4>
-          <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+          <h4>Recent Results:</h4>
+          <div>
             {playerResults.slice(-10).reverse().map((result) => (
-              <div key={result.id} style={{ margin: '10px 0', padding: '10px', background: '#f5f5f5', borderRadius: '3px' }}>
+              <div key={result.id}>
                 <p><strong>Date:</strong> {new Date(result.date).toLocaleString()}</p>
                 <p><strong>Accuracy:</strong> {result.accuracy.toFixed(2)}% | <strong>Progress:</strong> {result.progress.toFixed(2)}%</p>
                 <p><strong>Duration:</strong> {(result.duration / 1000).toFixed(2)}s | <strong>Completed:</strong> {result.completed ? 'Yes' : 'No'}</p>
@@ -241,11 +239,12 @@ const  App = (): JSX.Element => {
         <div className="textAreas">
           <textarea className='textInputs topP' onChange={handleTextareaChange} value={userTypeValue} />
           <textarea className='textInputs bottomP' value={practiceTextState}/>
-          <h4 className="congratz sub-header">
-            {shadowBoxToggle
-              ? completedText
-              : ''
-          }</h4>
+          {shadowBoxToggle && userTypeValue === practiceTextState && practiceTextState.length > 0 && (
+            <h4 className="congratz sub-header">
+              Congratulations, you have completed typing test! <br />
+              You can check your results in the results section below.
+            </h4>
+          )}
         </div>
       </div>  
     </div>
