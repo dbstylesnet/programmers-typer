@@ -43,8 +43,11 @@ html {
   position: relative;
   margin: 0 5% 5%;
   width: 90%;
-  min-height: 200px;
+  max-width: 100%;
+  min-height: 300px;
   padding-bottom: 80px;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .sub-header {
@@ -74,6 +77,9 @@ textarea {
   margin: 5px;
   font-size: 18px;
   border-radius: 4px;
+  resize: none;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .inputsArea {
@@ -127,9 +133,13 @@ textarea {
   margin: 5px;
   font-size: 18px;
   border-radius: 4px;
-  width: 100%;
+  width: calc(100% - 20px);
   min-height: 200px;
-  min-width: 600px;
+  max-width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .topP {
@@ -366,23 +376,69 @@ textarea {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media (max-width: 768px) {
+  .textAreas {
+    width: 95%;
+    margin: 0 2.5% 5%;
   }
-  to {
-    transform: rotate(360deg);
-  }
-} */
 
-/* .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+  .textInputs {
+    font-size: 14px;
+    padding: 4px;
+    margin: 4px;
+    width: calc(100% - 16px);
+  }
+
+  .congratz {
+    min-width: 250px;
+    max-width: 95%;
+    font-size: 12px;
+    padding: 10px 15px;
+  }
+
+  .main-container {
+    font-size: calc(7px + 1vmin);
+  }
+
+  .sub-header.main-header h2 {
+    font-size: 20px;
+  }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media (max-width: 480px) {
+  .textAreas {
+    width: 98%;
+    margin: 0 1% 5%;
   }
-} */
+
+  .textInputs {
+    font-size: 12px;
+    padding: 3px;
+    margin: 3px;
+    width: calc(100% - 12px);
+    min-height: 150px;
+  }
+
+  .congratz {
+    min-width: 200px;
+    max-width: 98%;
+    font-size: 11px;
+    padding: 8px 12px;
+    bottom: 5vh;
+  }
+
+  .sub-header.main-header h2 {
+    font-size: 18px;
+  }
+
+  .text-selection-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .text-selection-buttons button {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
 
