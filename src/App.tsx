@@ -194,6 +194,20 @@ const  App = (): JSX.Element => {
     compareStrings(enteredText, practiceTextState);
 
     const isCompleted = enteredText === practiceTextState;
+    
+    if (!isCompleted && enteredText.length === practiceTextState.length) {
+      console.log('Lengths match but strings differ:');
+      console.log('Entered length:', enteredText.length);
+      console.log('Target length:', practiceTextState.length);
+      console.log('Entered JSON:', JSON.stringify(enteredText));
+      console.log('Target JSON:', JSON.stringify(practiceTextState));
+      for (let i = 0; i < Math.min(enteredText.length, practiceTextState.length); i++) {
+        if (enteredText[i] !== practiceTextState[i]) {
+          console.log(`Mismatch at index ${i}: entered='${JSON.stringify(enteredText[i])}' (char code: ${enteredText.charCodeAt(i)}), target='${JSON.stringify(practiceTextState[i])}' (char code: ${practiceTextState.charCodeAt(i)})`);
+          break;
+        }
+      }
+    }
 
     if (isCompleted) {
       if (!shadowBoxToggle) {
