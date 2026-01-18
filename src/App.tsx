@@ -15,10 +15,12 @@ const  App = (): JSX.Element => {
   const [showResults, setShowResults] = useState(false);
   const [playerResults, setPlayerResults] = useState<PlayerResult[]>([]);
   const [playerStats, setPlayerStats] = useState<any>(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   const completedText = 'Congratulations, you have completed typing test! You can check your results in the results section above.';
   const practiceTextC = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
-  const practiceTextJS = 'else {\n;let fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial \\n\n of ${number} is ${fact}.`);';
+  const practiceTextJS = 'else {\n;let fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);';
   const practiceTextJS2 = 'var x = 1;\nlet y = 1;\nif (true) {\nvar x = 2;\nlet y = 2;\n}';
 
   const jsTexts = [practiceTextJS, practiceTextJS2];
@@ -43,6 +45,35 @@ const  App = (): JSX.Element => {
     }
   }, [playerName]);
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    
+    if (isTimerRunning) {
+      interval = setInterval(() => {
+        if (startTime) {
+          setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
+        }
+      }, 100);
+    } else {
+      setElapsedTime(0);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isTimerRunning, startTime]);
+
+  const handleStartTimer = () => {
+    setIsTimerRunning(true);
+    setStartTime(Date.now());
+    setElapsedTime(0);
+    setUserTypeValue('');
+    setShadowBoxToggle(false);
+    setAccuracyCount(0);
+  };
+
   const handleTextSelection = (selection: 'first' | 'second' | 'random') => {
     let selectedText: string;
     let selectedIndex: number;
@@ -65,6 +96,8 @@ const  App = (): JSX.Element => {
     setShadowBoxToggle(false);
     setAccuracyCount(0);
     setStartTime(null);
+    setIsTimerRunning(false);
+    setElapsedTime(0);
   };
 
   const handlePlayerNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,8 +165,8 @@ const  App = (): JSX.Element => {
   const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const enteredText = event.target.value;
  
-    if (enteredText.length === 1 && startTime === null) {
-      setStartTime(Date.now());
+    if (!isTimerRunning && enteredText.length > 0) {
+      return;
     }
 
     console.log('enteredText:', enteredText);
@@ -165,6 +198,7 @@ const  App = (): JSX.Element => {
     if (isCompleted) {
       if (!shadowBoxToggle) {
         setShadowBoxToggle(true);
+        setIsTimerRunning(false);
         saveTestResult(true);
       }
     } else if (shadowBoxToggle === true) {
@@ -221,15 +255,26 @@ const  App = (): JSX.Element => {
 
       <div className='sub-header statsHeader'>
         <h4>
+          Timer: {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')} | 
           Accuracy: {((accuracyCount / (userTypeValue.length || 1)) * 100).toFixed(2)}% | 
           Progress: {((userTypeValue.length / (practiceTextState.length || 1)) * 100).toFixed(2)}%
         </h4>
       </div>
 
+      <div className="start-button-container">
+        <button 
+          onClick={handleStartTimer} 
+          disabled={isTimerRunning || !practiceTextState}
+          className="start-button"
+        >
+          {isTimerRunning ? 'Timer Running...' : 'Start Typing Test'}
+        </button>
+      </div>
+
       <div className="text-selection-buttons">
-        <button onClick={() => handleTextSelection('first')}>First Text</button>
-        <button onClick={() => handleTextSelection('second')}>Second Text</button>
-        <button onClick={() => handleTextSelection('random')}>Random Text</button>
+        <button onClick={() => handleTextSelection('first')} disabled={isTimerRunning}>First Text</button>
+        <button onClick={() => handleTextSelection('second')} disabled={isTimerRunning}>Second Text</button>
+        <button onClick={() => handleTextSelection('random')} disabled={isTimerRunning}>Random Text</button>
       </div>
 
       <div className="mainTextAreas">
@@ -237,8 +282,13 @@ const  App = (): JSX.Element => {
           <h3>Practice text:</h3>
         </div>
         <div className="textAreas">
-          <textarea className='textInputs topP' onChange={handleTextareaChange} value={userTypeValue} />
-          <textarea className='textInputs bottomP' value={practiceTextState}/>
+          <textarea 
+            className='textInputs topP' 
+            onChange={handleTextareaChange} 
+            value={userTypeValue}
+            disabled={!isTimerRunning}
+          />
+          <textarea className='textInputs bottomP' value={practiceTextState} readOnly/>
           {shadowBoxToggle && userTypeValue === practiceTextState && practiceTextState.length > 0 && (
             <h4 className="congratz sub-header">
               Congratulations, you have completed typing test! <br />
