@@ -19,15 +19,29 @@ const  App = (): JSX.Element => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   const completedText = 'Congratulations, you have completed typing test! You can check your results in the results section above.';
-  const practiceTextC = '#include <iostream> int main() {std::cout << "Hello World!"; return 0;}';
-  const practiceTextJS = 'else {\n;let fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);';
-  const practiceTextJS2 = 'var x = 1;\nlet y = 1;\nif (true) {\nvar x = 2;\nlet y = 2;\n}';
+  
+  const jsText1 = 'else {\n;let fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);';
+  const jsText2 = 'var x = 1;\nlet y = 1;\nif (true) {\nvar x = 2;\nlet y = 2;\n}';
+  const jsText3 = 'function calculateSum(arr) {\nreturn arr.reduce((acc, val) => acc + val, 0);\n}\nconst numbers = [1, 2, 3, 4, 5];\nconsole.log(calculateSum(numbers));';
+  
+  const pythonText1 = 'def calculate_factorial(n):\n    if n == 0:\n        return 1\n    return n * calculate_factorial(n - 1)\n\nresult = calculate_factorial(5)\nprint(f"The factorial is {result}")';
+  const pythonText2 = 'numbers = [1, 2, 3, 4, 5]\nsquared = [x**2 for x in numbers]\nfiltered = [x for x in squared if x > 10]\nprint(filtered)';
+  const pythonText3 = 'class Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n    \n    def greet(self):\n        return f"Hello, I am {self.name}"';
+  
+  const javaText1 = 'public class Calculator {\n    public static int add(int a, int b) {\n        return a + b;\n    }\n    \n    public static void main(String[] args) {\n        System.out.println(add(5, 3));\n    }\n}';
+  const javaText2 = 'List<String> names = new ArrayList<>();\nnames.add("Alice");\nnames.add("Bob");\nfor (String name : names) {\n    System.out.println(name);\n}';
+  const javaText3 = 'public class Factorial {\n    public static int factorial(int n) {\n        if (n <= 1) return 1;\n        return n * factorial(n - 1);\n    }\n}';
 
-  const jsTexts = [practiceTextJS, practiceTextJS2];
+  const practiceTexts = {
+    js: [jsText1, jsText2, jsText3],
+    python: [pythonText1, pythonText2, pythonText3],
+    java: [javaText1, javaText2, javaText3]
+  };
 
   useEffect(() => {
-    const randomText = Math.floor(Math.random() * jsTexts.length); 
-    setPracticeTextState(jsTexts[randomText]);
+    const allTexts = [...practiceTexts.js, ...practiceTexts.python, ...practiceTexts.java];
+    const randomText = Math.floor(Math.random() * allTexts.length); 
+    setPracticeTextState(allTexts[randomText]);
     setRandomTextIndex(randomText);
     
     const savedPlayer = localStorage.getItem('currentPlayer');
@@ -74,21 +88,12 @@ const  App = (): JSX.Element => {
     setAccuracyCount(0);
   };
 
-  const handleTextSelection = (selection: 'first' | 'second' | 'random') => {
-    let selectedText: string;
-    let selectedIndex: number;
-
-    if (selection === 'first') {
-      selectedText = jsTexts[0];
-      selectedIndex = 0;
-    } else if (selection === 'second') {
-      selectedText = jsTexts[1];
-      selectedIndex = 1;
-    } else {
-
-      selectedIndex = Math.floor(Math.random() * jsTexts.length);
-      selectedText = jsTexts[selectedIndex];
-    }
+  const handleTextSelection = (language: 'js' | 'python' | 'java', index: number) => {
+    const selectedText = practiceTexts[language][index];
+    const allTexts = [...practiceTexts.js, ...practiceTexts.python, ...practiceTexts.java];
+    const selectedIndex = language === 'js' ? index : 
+                         language === 'python' ? practiceTexts.js.length + index : 
+                         practiceTexts.js.length + practiceTexts.python.length + index;
 
     setPracticeTextState(selectedText);
     setRandomTextIndex(selectedIndex);
@@ -285,10 +290,31 @@ const  App = (): JSX.Element => {
         </button>
       </div>
 
-      <div className="text-selection-buttons">
-        <button onClick={() => handleTextSelection('first')} disabled={isTimerRunning}>First Text</button>
-        <button onClick={() => handleTextSelection('second')} disabled={isTimerRunning}>Second Text</button>
-        <button onClick={() => handleTextSelection('random')} disabled={isTimerRunning}>Random Text</button>
+      <div className="text-selection-section">
+        <div className="language-group">
+          <h4 className="language-label">JavaScript:</h4>
+          <div className="text-selection-buttons">
+            <button onClick={() => handleTextSelection('js', 0)} disabled={isTimerRunning}>JS Text 1</button>
+            <button onClick={() => handleTextSelection('js', 1)} disabled={isTimerRunning}>JS Text 2</button>
+            <button onClick={() => handleTextSelection('js', 2)} disabled={isTimerRunning}>JS Text 3</button>
+          </div>
+        </div>
+        <div className="language-group">
+          <h4 className="language-label">Python:</h4>
+          <div className="text-selection-buttons">
+            <button onClick={() => handleTextSelection('python', 0)} disabled={isTimerRunning}>Python Text 1</button>
+            <button onClick={() => handleTextSelection('python', 1)} disabled={isTimerRunning}>Python Text 2</button>
+            <button onClick={() => handleTextSelection('python', 2)} disabled={isTimerRunning}>Python Text 3</button>
+          </div>
+        </div>
+        <div className="language-group">
+          <h4 className="language-label">Java:</h4>
+          <div className="text-selection-buttons">
+            <button onClick={() => handleTextSelection('java', 0)} disabled={isTimerRunning}>Java Text 1</button>
+            <button onClick={() => handleTextSelection('java', 1)} disabled={isTimerRunning}>Java Text 2</button>
+            <button onClick={() => handleTextSelection('java', 2)} disabled={isTimerRunning}>Java Text 3</button>
+          </div>
+        </div>
       </div>
 
       <div className="mainTextAreas">
