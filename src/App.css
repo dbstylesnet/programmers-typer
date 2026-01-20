@@ -1,6 +1,13 @@
 .main-container {
   text-align: center;
   background-color: #282c34;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(74, 85, 104, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(45, 55, 72, 0.2) 0%, transparent 50%),
+    linear-gradient(135deg, #1a1d24 0%, #282c34 50%, #1a1d24 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+  background-position: 0 0, 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat, no-repeat;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -10,6 +17,38 @@
   padding: 0px 0 0 0;
   width: 100%;
   overflow-x: hidden;
+  position: relative;
+}
+
+.main-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(74, 85, 104, 0.02) 2px,
+      rgba(74, 85, 104, 0.02) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(74, 85, 104, 0.02) 2px,
+      rgba(74, 85, 104, 0.02) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.main-container > * {
+  position: relative;
+  z-index: 1;
 }
 
 body {

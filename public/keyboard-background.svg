@@ -1,0 +1,122 @@
+<svg width="1920" height="1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1d24;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#282c34;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1d24;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="keyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a5568;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d3748;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="handGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#cbd5e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a0aec0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1920" height="1080" fill="url(#bgGradient)"/>
+  
+  <!-- Keyboard Base -->
+  <rect x="200" y="700" width="1520" height="200" rx="20" fill="url(#keyGradient)" opacity="0.8"/>
+  <rect x="200" y="700" width="1520" height="200" rx="20" fill="none" stroke="#667eea" stroke-width="3" opacity="0.3"/>
+  
+  <!-- Keyboard Keys -->
+  <!-- Top Row -->
+  <rect x="250" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.6"/>
+  <rect x="330" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.5"/>
+  <rect x="410" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.6"/>
+  <rect x="490" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.5"/>
+  <rect x="570" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.6"/>
+  <rect x="650" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.5"/>
+  <rect x="730" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.6"/>
+  <rect x="810" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.5"/>
+  <rect x="890" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.6"/>
+  <rect x="970" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.5"/>
+  <rect x="1050" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.6"/>
+  <rect x="1130" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.5"/>
+  <rect x="1210" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.6"/>
+  <rect x="1290" y="730" width="60" height="50" rx="8" fill="#667eea" opacity="0.5"/>
+  
+  <!-- Middle Row -->
+  <rect x="280" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.5"/>
+  <rect x="360" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.6"/>
+  <rect x="440" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.5"/>
+  <rect x="520" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.6"/>
+  <rect x="600" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.5"/>
+  <rect x="680" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.6"/>
+  <rect x="760" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.5"/>
+  <rect x="840" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.6"/>
+  <rect x="920" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.5"/>
+  <rect x="1000" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.6"/>
+  <rect x="1080" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.5"/>
+  <rect x="1160" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.6"/>
+  <rect x="1240" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.5"/>
+  <rect x="1320" y="800" width="60" height="50" rx="8" fill="#764ba2" opacity="0.6"/>
+  
+  <!-- Bottom Row -->
+  <rect x="300" y="870" width="80" height="50" rx="8" fill="#4a5568" opacity="0.6"/>
+  <rect x="400" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.5"/>
+  <rect x="480" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.6"/>
+  <rect x="560" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.5"/>
+  <rect x="640" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.6"/>
+  <rect x="720" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.5"/>
+  <rect x="800" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.6"/>
+  <rect x="880" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.5"/>
+  <rect x="960" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.6"/>
+  <rect x="1040" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.5"/>
+  <rect x="1120" y="870" width="60" height="50" rx="8" fill="#4a5568" opacity="0.6"/>
+  <rect x="1200" y="870" width="80" height="50" rx="8" fill="#4a5568" opacity="0.5"/>
+  
+  <!-- Left Hand (Cartoonish) -->
+  <g transform="translate(600, 600)">
+    <!-- Wrist -->
+    <ellipse cx="0" cy="80" rx="25" ry="15" fill="url(#handGradient)"/>
+    <!-- Palm -->
+    <ellipse cx="0" cy="50" rx="35" ry="30" fill="url(#handGradient)"/>
+    <!-- Thumb -->
+    <ellipse cx="-25" cy="40" rx="15" ry="20" fill="url(#handGradient)" transform="rotate(-30 -25 40)"/>
+    <!-- Index Finger -->
+    <ellipse cx="20" cy="20" rx="12" ry="35" fill="url(#handGradient)" transform="rotate(-10 20 20)"/>
+    <!-- Middle Finger -->
+    <ellipse cx="35" cy="15" rx="12" ry="40" fill="url(#handGradient)" transform="rotate(-5 35 15)"/>
+    <!-- Ring Finger -->
+    <ellipse cx="50" cy="20" rx="10" ry="35" fill="url(#handGradient)" transform="rotate(5 50 20)"/>
+    <!-- Pinky -->
+    <ellipse cx="62" cy="25" rx="8" ry="30" fill="url(#handGradient)" transform="rotate(15 62 25)"/>
+  </g>
+  
+  <!-- Right Hand (Cartoonish) -->
+  <g transform="translate(1100, 600)">
+    <!-- Wrist -->
+    <ellipse cx="0" cy="80" rx="25" ry="15" fill="url(#handGradient)"/>
+    <!-- Palm -->
+    <ellipse cx="0" cy="50" rx="35" ry="30" fill="url(#handGradient)"/>
+    <!-- Thumb -->
+    <ellipse cx="25" cy="40" rx="15" ry="20" fill="url(#handGradient)" transform="rotate(30 25 40)"/>
+    <!-- Index Finger -->
+    <ellipse cx="-20" cy="20" rx="12" ry="35" fill="url(#handGradient)" transform="rotate(10 -20 20)"/>
+    <!-- Middle Finger -->
+    <ellipse cx="-35" cy="15" rx="12" ry="40" fill="url(#handGradient)" transform="rotate(5 -35 15)"/>
+    <!-- Ring Finger -->
+    <ellipse cx="-50" cy="20" rx="10" ry="35" fill="url(#handGradient)" transform="rotate(-5 -50 20)"/>
+    <!-- Pinky -->
+    <ellipse cx="-62" cy="25" rx="8" ry="30" fill="url(#handGradient)" transform="rotate(-15 -62 25)"/>
+  </g>
+  
+  <!-- Typing Animation Effect (Glowing Keys) -->
+  <circle cx="680" cy="755" r="35" fill="#667eea" opacity="0.3" filter="blur(10px)"/>
+  <circle cx="840" cy="825" r="35" fill="#764ba2" opacity="0.3" filter="blur(10px)"/>
+  <circle cx="1080" cy="825" r="35" fill="#764ba2" opacity="0.3" filter="blur(10px)"/>
+  
+  <!-- Code Symbols Floating -->
+  <text x="300" y="400" font-family="monospace" font-size="40" fill="#667eea" opacity="0.2">{</text>
+  <text x="400" y="450" font-family="monospace" font-size="40" fill="#764ba2" opacity="0.2">}</text>
+  <text x="500" y="350" font-family="monospace" font-size="40" fill="#667eea" opacity="0.2">(</text>
+  <text x="600" y="400" font-family="monospace" font-size="40" fill="#764ba2" opacity="0.2">)</text>
+  <text x="1400" y="400" font-family="monospace" font-size="40" fill="#667eea" opacity="0.2">[</text>
+  <text x="1500" y="450" font-family="monospace" font-size="40" fill="#764ba2" opacity="0.2">]</text>
+  <text x="1600" y="350" font-family="monospace" font-size="40" fill="#667eea" opacity="0.2">&lt;</text>
+  <text x="1700" y="400" font-family="monospace" font-size="40" fill="#764ba2" opacity="0.2">/&gt;</text>
+</svg>
