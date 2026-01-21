@@ -17,6 +17,7 @@ const  App = (): JSX.Element => {
   const [playerStats, setPlayerStats] = useState<any>(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [targetTextLength, setTargetTextLength] = useState(0);
 
   const completedText = 'Congratulations, you have completed typing test! You can check your results in the results section above.';
   
@@ -41,7 +42,9 @@ const  App = (): JSX.Element => {
   useEffect(() => {
     const allTexts = [...practiceTexts.js, ...practiceTexts.python, ...practiceTexts.java];
     const randomText = Math.floor(Math.random() * allTexts.length); 
-    setPracticeTextState(allTexts[randomText]);
+    const selectedText = allTexts[randomText];
+    setPracticeTextState(selectedText);
+    setTargetTextLength(selectedText.length);
     setRandomTextIndex(randomText);
     
     const savedPlayer = localStorage.getItem('currentPlayer');
@@ -86,6 +89,9 @@ const  App = (): JSX.Element => {
     setUserTypeValue('');
     setShadowBoxToggle(false);
     setAccuracyCount(0);
+    if (practiceTextState) {
+      setTargetTextLength(practiceTextState.length);
+    }
   };
 
   const handleTextSelection = (language: 'js' | 'python' | 'java', index: number) => {
@@ -198,7 +204,17 @@ const  App = (): JSX.Element => {
 
     compareStrings(enteredText, practiceTextState);
 
-    const isCompleted = enteredText === practiceTextState;
+    const isExactMatch = enteredText === practiceTextState;
+    const isLengthMatch = enteredText.length === targetTextLength && targetTextLength > 0;
+    const isCompleted = isExactMatch || isLengthMatch;
+    
+    if (!isExactMatch && isLengthMatch) {
+      console.log('Length match completion:');
+      console.log('Entered length:', enteredText.length);
+      console.log('Target length:', targetTextLength);
+      console.log('Entered JSON:', JSON.stringify(enteredText));
+      console.log('Target JSON:', JSON.stringify(practiceTextState));
+    }
     
     if (!isCompleted && enteredText.length === practiceTextState.length) {
       console.log('Lengths match but strings differ:');
