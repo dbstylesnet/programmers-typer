@@ -411,8 +411,11 @@ textarea:disabled {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   animation: slideInDown 0.5s ease-out;
   margin: 15px auto;
-  max-width: 90%;
+  width: 90%;
+  max-width: 1200px;
   border: none;
+  display: flex;
+  flex-direction: column;
 }
 
 @keyframes slideInDown {
@@ -433,18 +436,54 @@ textarea:disabled {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.results-section p {
-  margin: 8px 0;
-  font-size: 13px;
-}
-
 .results-section h4 {
   margin-top: 15px;
+  margin-bottom: 10px;
   font-size: 15px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.results-section > div {
+.statistics-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.stat-item {
+  flex: 1 1 calc(20% - 15px);
+  min-width: 120px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.stat-label {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.recent-results-container {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 8px;
@@ -453,38 +492,58 @@ textarea:disabled {
   overflow-y: auto;
 }
 
-.results-section > div::-webkit-scrollbar {
+.recent-results-container::-webkit-scrollbar {
   width: 8px;
 }
 
-.results-section > div::-webkit-scrollbar-track {
+.recent-results-container::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
 
-.results-section > div::-webkit-scrollbar-thumb {
+.recent-results-container::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
 }
 
-.results-section > div::-webkit-scrollbar-thumb:hover {
+.recent-results-container::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
 
-.results-section > div > div {
+.result-item {
   background: rgba(255, 255, 255, 0.15);
   border-radius: 6px;
-  padding: 8px;
+  padding: 10px 15px;
   margin: 8px 0;
   border-left: 4px solid rgba(255, 255, 255, 0.5);
   transition: all 0.3s ease;
   font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
 }
 
-.results-section > div > div:hover {
+.result-item:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateX(5px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.result-pair {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.result-label {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.result-value {
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
@@ -513,6 +572,15 @@ textarea:disabled {
 
   .sub-header.main-header h2 {
     font-size: 20px;
+  }
+
+  .statistics-container {
+    gap: 10px;
+  }
+
+  .stat-item {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 100px;
   }
 }
 
