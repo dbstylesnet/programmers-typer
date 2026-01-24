@@ -1,4 +1,4 @@
- import React, { useEffect } from 'react';
+ import React, { useEffect, useRef } from 'react';
 import './App.css';
 import { useState } from 'react';
 import { saveResult, getPlayerResults, getAllPlayers, addPlayer, getPlayerStats, PlayerResult } from './database';
@@ -18,6 +18,7 @@ const  App = (): JSX.Element => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [targetTextLength, setTargetTextLength] = useState(0);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const completedText = 'Congratulations, you have completed typing test! You can check your results in the results section above.';
   
@@ -92,6 +93,11 @@ const  App = (): JSX.Element => {
     if (practiceTextState) {
       setTargetTextLength(practiceTextState.length);
     }
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
+    }, 0);
   };
 
   const handleTextSelection = (language: 'js' | 'python' | 'java', index: number) => {
@@ -365,6 +371,7 @@ const  App = (): JSX.Element => {
         </div>
         <div className="textAreas">
           <textarea 
+            ref={textareaRef}
             className='textInputs topP' 
             onChange={handleTextareaChange} 
             value={userTypeValue}
