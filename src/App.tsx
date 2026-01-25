@@ -84,20 +84,29 @@ const  App = (): JSX.Element => {
   }, [isTimerRunning, startTime]);
 
   const handleStartTimer = () => {
-    setIsTimerRunning(true);
-    setStartTime(Date.now());
-    setElapsedTime(0);
-    setUserTypeValue('');
-    setShadowBoxToggle(false);
-    setAccuracyCount(0);
-    if (practiceTextState) {
-      setTargetTextLength(practiceTextState.length);
-    }
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus();
+    if (isTimerRunning) {
+      setIsTimerRunning(false);
+      setStartTime(null);
+      setElapsedTime(0);
+      setUserTypeValue('');
+      setShadowBoxToggle(false);
+      setAccuracyCount(0);
+    } else {
+      setIsTimerRunning(true);
+      setStartTime(Date.now());
+      setElapsedTime(0);
+      setUserTypeValue('');
+      setShadowBoxToggle(false);
+      setAccuracyCount(0);
+      if (practiceTextState) {
+        setTargetTextLength(practiceTextState.length);
       }
-    }, 0);
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+        }
+      }, 0);
+    }
   };
 
   const handleTextSelection = (language: 'js' | 'python' | 'java', index: number) => {
@@ -178,6 +187,24 @@ const  App = (): JSX.Element => {
     setUserTypeValue(enteredText);
   }
 
+
+  const handleTextareaKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const textarea = event.currentTarget;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+      const spaces = '    ';
+      
+      const newText = text.substring(0, start) + spaces + text.substring(end);
+      setUserTypeValue(newText);
+      
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + spaces.length;
+      }, 0);
+    }
+  };
 
   const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const enteredText = event.target.value;
@@ -331,10 +358,10 @@ const  App = (): JSX.Element => {
       <div className="start-button-container">
         <button 
           onClick={handleStartTimer} 
-          disabled={isTimerRunning || !practiceTextState}
+          disabled={!practiceTextState}
           className="start-button"
         >
-          {isTimerRunning ? 'Timer Running...' : 'Start Typing Test'}
+          {isTimerRunning ? 'Stop Test' : 'Start Typing Test'}
         </button>
       </div>
 
@@ -373,7 +400,8 @@ const  App = (): JSX.Element => {
           <textarea 
             ref={textareaRef}
             className='textInputs topP' 
-            onChange={handleTextareaChange} 
+            onChange={handleTextareaChange}
+            onKeyDown={handleTextareaKeyDown}
             value={userTypeValue}
             disabled={!isTimerRunning}
           />
