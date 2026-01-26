@@ -28,7 +28,7 @@ const  App = (): JSX.Element => {
   
   const pythonText1 = 'def calculate_factorial(n):\n    if n == 0:\n        return 1\n    return n * calculate_factorial(n - 1)\n\nresult = calculate_factorial(5)\nprint(f"The factorial is {result}")';
   const pythonText2 = 'numbers = [1, 2, 3, 4, 5]\nsquared = [x**2 for x in numbers]\nfiltered = [x for x in squared if x > 10]\nprint(filtered)';
-  const pythonText3 = 'class Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n    \n    def greet(self):\n        return f"Hello, I am {self.name}"';
+  const pythonText3 = 'def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n - 1) + fibonacci(n - 2)\n\nfor i in range(10):\n    print(f"F({i}) = {fibonacci(i)}")';
   
   const javaText1 = 'public class Calculator {\n    public static int add(int a, int b) {\n        return a + b;\n    }\n    \n    public static void main(String[] args) {\n        System.out.println(add(5, 3));\n    }\n}';
   const javaText2 = 'List<String> names = new ArrayList<>();\nnames.add("Alice");\nnames.add("Bob");\nfor (String name : names) {\n    System.out.println(name);\n}';
@@ -359,7 +359,7 @@ const  App = (): JSX.Element => {
         <button 
           onClick={handleStartTimer} 
           disabled={!practiceTextState}
-          className="start-button"
+          className={`start-button ${isTimerRunning ? 'stop-button' : ''}`}
         >
           {isTimerRunning ? 'Stop Test' : 'Start Typing Test'}
         </button>
