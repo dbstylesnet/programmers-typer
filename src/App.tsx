@@ -406,7 +406,7 @@ const  App = (): JSX.Element => {
             disabled={!isTimerRunning}
           />
           <textarea className='textInputs bottomP' value={practiceTextState} readOnly/>
-          {shadowBoxToggle && userTypeValue === practiceTextState && practiceTextState.length > 0 && (
+          {shadowBoxToggle && practiceTextState.length > 0 && (
             <h4 className="congratz sub-header">
               Congratulations, you have completed typing test! <br />
               You can check your results in the results section below.
