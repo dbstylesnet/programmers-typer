@@ -3,6 +3,43 @@ import './App.css';
 import { useState } from 'react';
 import { saveResult, getPlayerResults, getAllPlayers, addPlayer, getPlayerStats, PlayerResult } from './database';
 
+const bubbleSort = (arr: number[]) => {
+  const a = [...arr];
+  for (let i = 0; i < a.length - 1; i++)
+    for (let j = 0; j < a.length - 1 - i; j++)
+      if (a[j] > a[j + 1]) [a[j], a[j + 1]] = [a[j + 1], a[j]];
+  return a;
+};
+const quickSort = (arr: number[]): number[] => {
+  if (arr.length <= 1) return arr;
+  const p = arr[0], left = arr.slice(1).filter(x => x <= p), right = arr.slice(1).filter(x => x > p);
+  return [...quickSort(left), p, ...quickSort(right)];
+};
+const merge = (l: number[], r: number[]) => {
+  const out: number[] = [];
+  const L = [...l], R = [...r];
+  while (L.length && R.length) out.push(L[0] <= R[0] ? L.shift()! : R.shift()!);
+  return [...out, ...L, ...R];
+};
+const mergeSort = (arr: number[]): number[] => {
+  if (arr.length <= 1) return arr;
+  const m = Math.floor(arr.length / 2);
+  return merge(mergeSort(arr.slice(0, m)), mergeSort(arr.slice(m)));
+};
+const binarySearch = (arr: number[], target: number) => {
+  let lo = 0, hi = arr.length - 1;
+  while (lo <= hi) {
+    const m = (lo + hi) >> 1;
+    if (arr[m] === target) return m;
+    arr[m] < target ? lo = m + 1 : hi = m - 1;
+  }
+  return -1;
+};
+const linearSearch = (arr: number[], target: number) => {
+  for (let i = 0; i < arr.length; i++) if (arr[i] === target) return i;
+  return -1;
+};
+
 const  App = (): JSX.Element => {
   const [userTypeValue, setUserTypeValue] = React.useState('');
   const [shadowBoxToggle, setShadowBoxToggle] = React.useState(false);
@@ -19,12 +56,23 @@ const  App = (): JSX.Element => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [targetTextLength, setTargetTextLength] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [algoResults, setAlgoResults] = useState<(number[] | number | null)[]>([null, null, null, null, null, null, null, null]);
+  const [showAlgoDemos, setShowAlgoDemos] = useState(false);
 
   const completedText = 'Congratulations, you have completed typing test! You can check your results in the results section above.';
   
   const jsText1 = 'else {\n;let fact = 1;\nfor (i = 1; i <= number; i++) {\nfact *= i;\n}\nconsole.log(`The factorial of ${number} is ${fact}.`);';
   const jsText2 = 'var x = 1;\nlet y = 1;\nif (true) {\nvar x = 2;\nlet y = 2;\n}';
   const jsText3 = 'function calculateSum(arr) {\nreturn arr.reduce((acc, val) => acc + val, 0);\n}\nconst numbers = [1, 2, 3, 4, 5];\nconsole.log(calculateSum(numbers));';
+
+  const jsAlgo1 = 'function bubbleSort(arr) {\n  const a = [...arr];\n  for (let i = 0; i < a.length - 1; i++)\n    for (let j = 0; j < a.length - 1 - i; j++)\n      if (a[j] > a[j + 1]) [a[j], a[j + 1]] = [a[j + 1], a[j]];\n  return a;\n}\nconst result = bubbleSort([5, 2, 8, 1, 9]);\nconsole.log(result);';
+  const jsAlgo2 = 'function quickSort(arr) {\n  if (arr.length <= 1) return arr;\n  const p = arr[0], left = arr.slice(1).filter(x => x <= p), right = arr.slice(1).filter(x => x > p);\n  return [...quickSort(left), p, ...quickSort(right)];\n}\nconst result = quickSort([5, 2, 8, 1, 9]);\nconsole.log(result);';
+  const jsAlgo3 = 'function merge(l, r) {\n  const out = [];\n  while (l.length && r.length) out.push(l[0] <= r[0] ? l.shift() : r.shift());\n  return [...out, ...l, ...r];\n}\nfunction mergeSort(arr) {\n  if (arr.length <= 1) return arr;\n  const m = Math.floor(arr.length / 2);\n  return merge(mergeSort(arr.slice(0, m)), mergeSort(arr.slice(m)));\n}\nconst result = mergeSort([5, 2, 8, 1, 9]);\nconsole.log(result);';
+  const jsAlgo4 = 'function binarySearch(arr, target) {\n  let lo = 0, hi = arr.length - 1;\n  while (lo <= hi) {\n    const m = (lo + hi) >> 1;\n    if (arr[m] === target) return m;\n    arr[m] < target ? lo = m + 1 : hi = m - 1;\n  }\n  return -1;\n}\nconst result = binarySearch([1, 3, 5, 7, 9], 5);\nconsole.log(result);';
+  const jsAlgo5 = 'function linearSearch(arr, target) {\n  for (let i = 0; i < arr.length; i++) if (arr[i] === target) return i;\n  return -1;\n}\nconst result = linearSearch([3, 7, 2, 9, 4], 9);\nconsole.log(result);';
+  const jsAlgo6 = 'const arr = [1, 2, 3, 4, 5];\nconst result = arr.map(x => x * 2);\nconsole.log(result);';
+  const jsAlgo7 = 'const arr = [1, 2, 3, 4, 5, 6];\nconst result = arr.filter(x => x % 2 === 0);\nconsole.log(result);';
+  const jsAlgo8 = 'const arr = [1, 2, 3, 4, 5];\nconst result = arr.reduce((acc, val) => acc + val, 0);\nconsole.log(result);';
   
   const pythonText1 = 'def calculate_factorial(n):\n    if n == 0:\n        return 1\n    return n * calculate_factorial(n - 1)\n\nresult = calculate_factorial(5)\nprint(f"The factorial is {result}")';
   const pythonText2 = 'numbers = [1, 2, 3, 4, 5]\nsquared = [x**2 for x in numbers]\nfiltered = [x for x in squared if x > 10]\nprint(filtered)';
@@ -37,11 +85,12 @@ const  App = (): JSX.Element => {
   const practiceTexts = {
     js: [jsText1, jsText2, jsText3],
     python: [pythonText1, pythonText2, pythonText3],
-    java: [javaText1, javaText2, javaText3]
+    java: [javaText1, javaText2, javaText3],
+    jsAlgorithms: [jsAlgo1, jsAlgo2, jsAlgo3, jsAlgo4, jsAlgo5, jsAlgo6, jsAlgo7, jsAlgo8]
   };
 
   useEffect(() => {
-    const allTexts = [...practiceTexts.js, ...practiceTexts.python, ...practiceTexts.java];
+    const allTexts = [...practiceTexts.js, ...practiceTexts.python, ...practiceTexts.java, ...practiceTexts.jsAlgorithms];
     const randomText = Math.floor(Math.random() * allTexts.length); 
     const selectedText = allTexts[randomText];
     setPracticeTextState(selectedText);
@@ -109,14 +158,16 @@ const  App = (): JSX.Element => {
     }
   };
 
-  const handleTextSelection = (language: 'js' | 'python' | 'java', index: number) => {
+  const handleTextSelection = (language: 'js' | 'python' | 'java' | 'jsAlgorithms', index: number) => {
     const selectedText = practiceTexts[language][index];
-    const allTexts = [...practiceTexts.js, ...practiceTexts.python, ...practiceTexts.java];
+    const base = practiceTexts.js.length + practiceTexts.python.length + practiceTexts.java.length;
     const selectedIndex = language === 'js' ? index : 
                          language === 'python' ? practiceTexts.js.length + index : 
-                         practiceTexts.js.length + practiceTexts.python.length + index;
+                         language === 'java' ? practiceTexts.js.length + practiceTexts.python.length + index : 
+                         base + index;
 
     setPracticeTextState(selectedText);
+    setTargetTextLength(selectedText.length);
     setRandomTextIndex(selectedIndex);
     setUserTypeValue('');
     setShadowBoxToggle(false);
@@ -390,6 +441,77 @@ const  App = (): JSX.Element => {
             <button onClick={() => handleTextSelection('java', 2)} disabled={isTimerRunning}>Java Text 3</button>
           </div>
         </div>
+        <div className="language-group">
+          <h4 className="language-label">JS Algorithms:</h4>
+          <div className="text-selection-buttons">
+            <button onClick={() => handleTextSelection('jsAlgorithms', 0)} disabled={isTimerRunning}>Bubble Sort</button>
+            <button onClick={() => handleTextSelection('jsAlgorithms', 1)} disabled={isTimerRunning}>Quick Sort</button>
+            <button onClick={() => handleTextSelection('jsAlgorithms', 2)} disabled={isTimerRunning}>Merge Sort</button>
+            <button onClick={() => handleTextSelection('jsAlgorithms', 3)} disabled={isTimerRunning}>Binary Search</button>
+            <button onClick={() => handleTextSelection('jsAlgorithms', 4)} disabled={isTimerRunning}>Linear Search</button>
+            <button onClick={() => handleTextSelection('jsAlgorithms', 5)} disabled={isTimerRunning}>Map</button>
+            <button onClick={() => handleTextSelection('jsAlgorithms', 6)} disabled={isTimerRunning}>Filter</button>
+            <button onClick={() => handleTextSelection('jsAlgorithms', 7)} disabled={isTimerRunning}>Reduce</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="js-algorithms-demos">
+        <button type="button" className="algo-demos-toggle" onClick={() => setShowAlgoDemos(!showAlgoDemos)}>
+          {showAlgoDemos ? 'Hide' : 'Show'} JS Algorithms – run in browser
+        </button>
+        {showAlgoDemos && (
+          <div className="algo-demos-grid">
+            <div className="algo-demo-box">
+              <div className="algo-demo-title">Bubble Sort</div>
+              <div className="algo-demo-array">[5, 2, 8, 1, 9]</div>
+              <button type="button" className="algo-demo-run" onClick={() => setAlgoResults(prev => { const r = [...prev]; r[0] = bubbleSort([5, 2, 8, 1, 9]); return r; })}>Run</button>
+              <div className="algo-demo-result">{algoResults[0] != null ? (Array.isArray(algoResults[0]) ? (algoResults[0] as number[]).join(', ') : algoResults[0]) : '—'}</div>
+            </div>
+            <div className="algo-demo-box">
+              <div className="algo-demo-title">Quick Sort</div>
+              <div className="algo-demo-array">[5, 2, 8, 1, 9]</div>
+              <button type="button" className="algo-demo-run" onClick={() => setAlgoResults(prev => { const r = [...prev]; r[1] = quickSort([5, 2, 8, 1, 9]); return r; })}>Run</button>
+              <div className="algo-demo-result">{algoResults[1] != null ? (Array.isArray(algoResults[1]) ? (algoResults[1] as number[]).join(', ') : algoResults[1]) : '—'}</div>
+            </div>
+            <div className="algo-demo-box">
+              <div className="algo-demo-title">Merge Sort</div>
+              <div className="algo-demo-array">[5, 2, 8, 1, 9]</div>
+              <button type="button" className="algo-demo-run" onClick={() => setAlgoResults(prev => { const r = [...prev]; r[2] = mergeSort([5, 2, 8, 1, 9]); return r; })}>Run</button>
+              <div className="algo-demo-result">{algoResults[2] != null ? (Array.isArray(algoResults[2]) ? (algoResults[2] as number[]).join(', ') : algoResults[2]) : '—'}</div>
+            </div>
+            <div className="algo-demo-box">
+              <div className="algo-demo-title">Binary Search (target 5)</div>
+              <div className="algo-demo-array">[1, 3, 5, 7, 9]</div>
+              <button type="button" className="algo-demo-run" onClick={() => setAlgoResults(prev => { const r = [...prev]; r[3] = binarySearch([1, 3, 5, 7, 9], 5); return r; })}>Run</button>
+              <div className="algo-demo-result">{algoResults[3] != null ? `Index: ${algoResults[3]}` : '—'}</div>
+            </div>
+            <div className="algo-demo-box">
+              <div className="algo-demo-title">Linear Search (target 9)</div>
+              <div className="algo-demo-array">[3, 7, 2, 9, 4]</div>
+              <button type="button" className="algo-demo-run" onClick={() => setAlgoResults(prev => { const r = [...prev]; r[4] = linearSearch([3, 7, 2, 9, 4], 9); return r; })}>Run</button>
+              <div className="algo-demo-result">{algoResults[4] != null ? `Index: ${algoResults[4]}` : '—'}</div>
+            </div>
+            <div className="algo-demo-box">
+              <div className="algo-demo-title">Map (×2)</div>
+              <div className="algo-demo-array">[1, 2, 3, 4, 5]</div>
+              <button type="button" className="algo-demo-run" onClick={() => setAlgoResults(prev => { const r = [...prev]; r[5] = [1, 2, 3, 4, 5].map(x => x * 2); return r; })}>Run</button>
+              <div className="algo-demo-result">{algoResults[5] != null ? (algoResults[5] as number[]).join(', ') : '—'}</div>
+            </div>
+            <div className="algo-demo-box">
+              <div className="algo-demo-title">Filter (evens)</div>
+              <div className="algo-demo-array">[1, 2, 3, 4, 5, 6]</div>
+              <button type="button" className="algo-demo-run" onClick={() => setAlgoResults(prev => { const r = [...prev]; r[6] = [1, 2, 3, 4, 5, 6].filter(x => x % 2 === 0); return r; })}>Run</button>
+              <div className="algo-demo-result">{algoResults[6] != null ? (algoResults[6] as number[]).join(', ') : '—'}</div>
+            </div>
+            <div className="algo-demo-box">
+              <div className="algo-demo-title">Reduce (sum)</div>
+              <div className="algo-demo-array">[1, 2, 3, 4, 5]</div>
+              <button type="button" className="algo-demo-run" onClick={() => setAlgoResults(prev => { const r = [...prev]; r[7] = [1, 2, 3, 4, 5].reduce((acc, val) => acc + val, 0); return r; })}>Run</button>
+              <div className="algo-demo-result">{algoResults[7] != null ? String(algoResults[7]) : '—'}</div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mainTextAreas">
