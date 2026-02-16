@@ -73,6 +73,15 @@ const  App = (): JSX.Element => {
   const jsAlgo6 = 'const arr = [1, 2, 3, 4, 5];\nconst result = arr.map(x => x * 2);\nconsole.log(result);';
   const jsAlgo7 = 'const arr = [1, 2, 3, 4, 5, 6];\nconst result = arr.filter(x => x % 2 === 0);\nconsole.log(result);';
   const jsAlgo8 = 'const arr = [1, 2, 3, 4, 5];\nconst result = arr.reduce((acc, val) => acc + val, 0);\nconsole.log(result);';
+
+  const reactHook1 = 'const [count, setCount] = useState(0);\nconst increment = () => setCount(count + 1);\nreturn (\n  <div>\n    <p>Count: {count}</p>\n    <button onClick={increment}>Increment</button>\n  </div>\n);';
+  const reactHook2 = 'useEffect(() => {\n  document.title = `Count: ${count}`;\n  return () => {\n    document.title = "React App";\n  };\n}, [count]);';
+  const reactHook3 = 'const ThemeContext = createContext("light");\nconst theme = useContext(ThemeContext);\nreturn <div className={theme}>Current theme: {theme}</div>;';
+  const reactHook4 = 'const reducer = (state, action) => {\n  switch (action.type) {\n    case "increment": return { count: state.count + 1 };\n    case "decrement": return { count: state.count - 1 };\n    default: return state;\n  }\n};\nconst [state, dispatch] = useReducer(reducer, { count: 0 });';
+  const reactHook5 = 'const expensiveValue = useMemo(() => {\n  return items.reduce((sum, item) => sum + item.value, 0);\n}, [items]);';
+  const reactHook6 = 'const memoizedCallback = useCallback(() => {\n  doSomething(a, b);\n}, [a, b]);';
+  const reactHook7 = 'const inputRef = useRef(null);\nconst focusInput = () => inputRef.current?.focus();\nreturn <input ref={inputRef} />;';
+  const reactHook8 = 'useLayoutEffect(() => {\n  const rect = elementRef.current.getBoundingClientRect();\n  setPosition({ x: rect.x, y: rect.y });\n}, [dependencies]);';
   
   const pythonText1 = 'def calculate_factorial(n):\n    if n == 0:\n        return 1\n    return n * calculate_factorial(n - 1)\n\nresult = calculate_factorial(5)\nprint(f"The factorial is {result}")';
   const pythonText2 = 'numbers = [1, 2, 3, 4, 5]\nsquared = [x**2 for x in numbers]\nfiltered = [x for x in squared if x > 10]\nprint(filtered)';
@@ -86,11 +95,12 @@ const  App = (): JSX.Element => {
     js: [jsText1, jsText2, jsText3],
     python: [pythonText1, pythonText2, pythonText3],
     java: [javaText1, javaText2, javaText3],
-    jsAlgorithms: [jsAlgo1, jsAlgo2, jsAlgo3, jsAlgo4, jsAlgo5, jsAlgo6, jsAlgo7, jsAlgo8]
+    jsAlgorithms: [jsAlgo1, jsAlgo2, jsAlgo3, jsAlgo4, jsAlgo5, jsAlgo6, jsAlgo7, jsAlgo8],
+    reactHooks: [reactHook1, reactHook2, reactHook3, reactHook4, reactHook5, reactHook6, reactHook7, reactHook8]
   };
 
   useEffect(() => {
-    const allTexts = [...practiceTexts.js, ...practiceTexts.python, ...practiceTexts.java, ...practiceTexts.jsAlgorithms];
+    const allTexts = [...practiceTexts.js, ...practiceTexts.python, ...practiceTexts.java, ...practiceTexts.jsAlgorithms, ...practiceTexts.reactHooks];
     const randomText = Math.floor(Math.random() * allTexts.length); 
     const selectedText = allTexts[randomText];
     setPracticeTextState(selectedText);
@@ -158,13 +168,15 @@ const  App = (): JSX.Element => {
     }
   };
 
-  const handleTextSelection = (language: 'js' | 'python' | 'java' | 'jsAlgorithms', index: number) => {
+  const handleTextSelection = (language: 'js' | 'python' | 'java' | 'jsAlgorithms' | 'reactHooks', index: number) => {
     const selectedText = practiceTexts[language][index];
     const base = practiceTexts.js.length + practiceTexts.python.length + practiceTexts.java.length;
+    const jsAlgoBase = base + practiceTexts.jsAlgorithms.length;
     const selectedIndex = language === 'js' ? index : 
                          language === 'python' ? practiceTexts.js.length + index : 
                          language === 'java' ? practiceTexts.js.length + practiceTexts.python.length + index : 
-                         base + index;
+                         language === 'jsAlgorithms' ? base + index :
+                         jsAlgoBase + index;
 
     setPracticeTextState(selectedText);
     setTargetTextLength(selectedText.length);
@@ -452,6 +464,19 @@ const  App = (): JSX.Element => {
             <button onClick={() => handleTextSelection('jsAlgorithms', 5)} disabled={isTimerRunning}>Map</button>
             <button onClick={() => handleTextSelection('jsAlgorithms', 6)} disabled={isTimerRunning}>Filter</button>
             <button onClick={() => handleTextSelection('jsAlgorithms', 7)} disabled={isTimerRunning}>Reduce</button>
+          </div>
+        </div>
+        <div className="language-group">
+          <h4 className="language-label">React Hooks:</h4>
+          <div className="text-selection-buttons">
+            <button onClick={() => handleTextSelection('reactHooks', 0)} disabled={isTimerRunning}>useState</button>
+            <button onClick={() => handleTextSelection('reactHooks', 1)} disabled={isTimerRunning}>useEffect</button>
+            <button onClick={() => handleTextSelection('reactHooks', 2)} disabled={isTimerRunning}>useContext</button>
+            <button onClick={() => handleTextSelection('reactHooks', 3)} disabled={isTimerRunning}>useReducer</button>
+            <button onClick={() => handleTextSelection('reactHooks', 4)} disabled={isTimerRunning}>useMemo</button>
+            <button onClick={() => handleTextSelection('reactHooks', 5)} disabled={isTimerRunning}>useCallback</button>
+            <button onClick={() => handleTextSelection('reactHooks', 6)} disabled={isTimerRunning}>useRef</button>
+            <button onClick={() => handleTextSelection('reactHooks', 7)} disabled={isTimerRunning}>useLayoutEffect</button>
           </div>
         </div>
       </div>
