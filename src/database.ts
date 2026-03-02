@@ -2,6 +2,7 @@ export interface PlayerResult {
   id: string;
   playerName: string;
   textIndex: number;
+  testName: string;
   accuracy: number;
   progress: number;
   correctChars: number;
