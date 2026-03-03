@@ -536,8 +536,9 @@ const  App = (): JSX.Element => {
             onKeyDown={handleTextareaKeyDown}
             value={userTypeValue}
             disabled={!isTimerRunning}
+            spellCheck={false}
           />
-          <textarea className='textInputs bottomP' value={practiceTextState} readOnly/>
+          <textarea className='textInputs bottomP' value={practiceTextState} readOnly spellCheck={false} />
           {shadowBoxToggle && practiceTextState.length > 0 && (
             <h4 className="congratz sub-header">
               Congratulations, you have completed typing test! <br />
