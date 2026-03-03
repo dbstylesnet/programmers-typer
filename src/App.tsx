@@ -19,7 +19,7 @@ const  App = (): JSX.Element => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [targetTextLength, setTargetTextLength] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [currentLanguage, setCurrentLanguage] = useState<'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | null>(null);
+  const [currentLanguage, setCurrentLanguage] = useState<'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi' | null>(null);
   const [currentTestIndex, setCurrentTestIndex] = useState<number>(0);
 
   const completedText = 'Congratulations, you have completed typing test! You can check your results in the results section above.';
@@ -58,18 +58,31 @@ const  App = (): JSX.Element => {
   const tsEnum1 = 'enum Color {\n  Red = "red",\n  Green = "green",\n  Blue = "blue"\n}\nconst favoriteColor: Color = Color.Red;';
   const tsEnum2 = 'enum Status {\n  Pending,\n  Completed,\n  Failed\n}\nlet currentStatus = Status.Pending;';
 
+  const apiPromises1 = 'const promise = new Promise((resolve, reject) => {\n  setTimeout(() => resolve("done"), 1000);\n});\npromise.then(val => console.log(val)).catch(err => console.error(err));';
+  const apiPromises2 = 'const fetchData = () => {\n  return fetch("https://api.example.com/users")\n    .then(res => res.json())\n    .then(data => console.log(data));\n};';
+  const apiFetch1 = 'fetch("https://api.example.com/users", {\n  method: "GET",\n  headers: { "Content-Type": "application/json" }\n}).then(res => res.json()).then(data => console.log(data));';
+  const apiFetch2 = 'fetch("https://api.example.com/users", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({ name: "John", email: "john@example.com" })\n}).then(res => res.json());';
+  const apiAxios1 = 'const axios = require("axios");\naxios.get("https://api.example.com/users")\n  .then(res => console.log(res.data))\n  .catch(err => console.error(err));';
+  const apiAxios2 = 'axios.post("https://api.example.com/users", {\n  name: "Jane",\n  email: "jane@example.com"\n}).then(res => res.data);';
+  const apiAsync1 = 'async function getUsers() {\n  const response = await fetch("https://api.example.com/users");\n  const data = await response.json();\n  return data;\n}';
+  const apiAsync2 = 'async function fetchData() {\n  try {\n    const res = await fetch(url);\n    const json = await res.json();\n    return json;\n  } catch (err) {\n    console.error(err);\n  }\n}';
+  const apiPromiseAll = 'const urls = ["/api/a", "/api/b", "/api/c"];\nconst results = await Promise.all(urls.map(url => fetch(url).then(r => r.json())));';
+  const apiRest = 'const options = {\n  method: "PUT",\n  headers: { "Authorization": `Bearer ${token}` },\n  body: JSON.stringify(updates)\n};\nfetch(`${baseUrl}/users/${id}`, options);';
+
   const practiceTexts = {
     jsAlgorithms: [jsAlgo1, jsAlgo2, jsAlgo3, jsAlgo4, jsAlgo5],
     reactHooks: [reactHook1, reactHook2, reactHook3, reactHook4, reactHook5, reactHook6, reactHook7, reactHook8, reactHook9],
     jsFundamentals: [jsFund1, jsFund2, jsFund3, jsFund4, jsFund5, jsFund6],
-    typescript: [tsType1, tsType2, tsType3, tsInterface1, tsInterface2, tsInterface3, tsGeneric1, tsGeneric2, tsEnum1, tsEnum2]
+    typescript: [tsType1, tsType2, tsType3, tsInterface1, tsInterface2, tsInterface3, tsGeneric1, tsGeneric2, tsEnum1, tsEnum2],
+    restApi: [apiPromises1, apiPromises2, apiFetch1, apiFetch2, apiAxios1, apiAxios2, apiAsync1, apiAsync2, apiPromiseAll, apiRest]
   };
 
   const testNames: Record<string, string[]> = {
     jsAlgorithms: ['Bubble Sort', 'Quick Sort', 'Merge Sort', 'Binary Search', 'Linear Search'],
     reactHooks: ['useState', 'useEffect', 'useContext', 'useReducer', 'useMemo', 'useCallback', 'useRef', 'useLayoutEffect', 'Bubble Sort Component'],
     jsFundamentals: ['Map', 'Filter', 'Reduce', 'Arrow Functions', 'Functions', 'Bind/Call/Apply'],
-    typescript: ['Basic Types', 'Union Types', 'Function Types', 'Interface 1', 'Interface 2', 'Optional Properties', 'Generics 1', 'Generics 2', 'String Enum', 'Numeric Enum']
+    typescript: ['Basic Types', 'Union Types', 'Function Types', 'Interface 1', 'Interface 2', 'Optional Properties', 'Generics 1', 'Generics 2', 'String Enum', 'Numeric Enum'],
+    restApi: ['Promises', 'Fetch + then', 'Fetch GET', 'Fetch POST', 'Axios GET', 'Axios POST', 'Async/await', 'Async try/catch', 'Promise.all', 'REST PUT']
   };
 
   const getTestName = (language: string | null, index: number): string => {
@@ -78,15 +91,16 @@ const  App = (): JSX.Element => {
   };
 
   useEffect(() => {
-    const allTexts = [...practiceTexts.jsAlgorithms, ...practiceTexts.reactHooks, ...practiceTexts.jsFundamentals, ...practiceTexts.typescript];
+    const allTexts = [...practiceTexts.jsAlgorithms, ...practiceTexts.reactHooks, ...practiceTexts.jsFundamentals, ...practiceTexts.typescript, ...practiceTexts.restApi];
     const randomText = Math.floor(Math.random() * allTexts.length);
     const selectedText = allTexts[randomText];
     
-    let lang: 'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | null = null;
+    let lang: 'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi' | null = null;
     let idx = 0;
     const jsAlgoLen = practiceTexts.jsAlgorithms.length;
     const reactLen = practiceTexts.reactHooks.length;
     const jsFundLen = practiceTexts.jsFundamentals.length;
+    const tsLen = practiceTexts.typescript.length;
     
     if (randomText < jsAlgoLen) {
       lang = 'jsAlgorithms';
@@ -97,9 +111,12 @@ const  App = (): JSX.Element => {
     } else if (randomText < jsAlgoLen + reactLen + jsFundLen) {
       lang = 'jsFundamentals';
       idx = randomText - jsAlgoLen - reactLen;
-    } else {
+    } else if (randomText < jsAlgoLen + reactLen + jsFundLen + tsLen) {
       lang = 'typescript';
       idx = randomText - jsAlgoLen - reactLen - jsFundLen;
+    } else {
+      lang = 'restApi';
+      idx = randomText - jsAlgoLen - reactLen - jsFundLen - tsLen;
     }
     
     setPracticeTextState(selectedText);
@@ -169,15 +186,17 @@ const  App = (): JSX.Element => {
     }
   };
 
-  const handleTextSelection = (language: 'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript', index: number) => {
+  const handleTextSelection = (language: 'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi', index: number) => {
     const selectedText = practiceTexts[language][index];
     const jsAlgoBase = practiceTexts.jsAlgorithms.length;
     const reactHooksBase = jsAlgoBase + practiceTexts.reactHooks.length;
     const jsFundBase = reactHooksBase + practiceTexts.jsFundamentals.length;
+    const tsBase = jsFundBase + practiceTexts.typescript.length;
     const selectedIndex = language === 'jsAlgorithms' ? index :
                          language === 'reactHooks' ? jsAlgoBase + index :
                          language === 'jsFundamentals' ? reactHooksBase + index :
-                         jsFundBase + index;
+                         language === 'typescript' ? jsFundBase + index :
+                         tsBase + index;
 
     setPracticeTextState(selectedText);
     setTargetTextLength(selectedText.length);
@@ -476,6 +495,21 @@ const  App = (): JSX.Element => {
             <button onClick={() => handleTextSelection('typescript', 7)} disabled={isTimerRunning} className={currentLanguage === 'typescript' && currentTestIndex === 7 ? 'selected-test' : ''}>Generics 2</button>
             <button onClick={() => handleTextSelection('typescript', 8)} disabled={isTimerRunning} className={currentLanguage === 'typescript' && currentTestIndex === 8 ? 'selected-test' : ''}>String Enum</button>
             <button onClick={() => handleTextSelection('typescript', 9)} disabled={isTimerRunning} className={currentLanguage === 'typescript' && currentTestIndex === 9 ? 'selected-test' : ''}>Numeric Enum</button>
+          </div>
+        </div>
+        <div className="language-group">
+          <h4 className="language-label">REST API:</h4>
+          <div className="text-selection-buttons">
+            <button onClick={() => handleTextSelection('restApi', 0)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 0 ? 'selected-test' : ''}>Promises</button>
+            <button onClick={() => handleTextSelection('restApi', 1)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 1 ? 'selected-test' : ''}>Fetch + then</button>
+            <button onClick={() => handleTextSelection('restApi', 2)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 2 ? 'selected-test' : ''}>Fetch GET</button>
+            <button onClick={() => handleTextSelection('restApi', 3)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 3 ? 'selected-test' : ''}>Fetch POST</button>
+            <button onClick={() => handleTextSelection('restApi', 4)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 4 ? 'selected-test' : ''}>Axios GET</button>
+            <button onClick={() => handleTextSelection('restApi', 5)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 5 ? 'selected-test' : ''}>Axios POST</button>
+            <button onClick={() => handleTextSelection('restApi', 6)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 6 ? 'selected-test' : ''}>Async/await</button>
+            <button onClick={() => handleTextSelection('restApi', 7)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 7 ? 'selected-test' : ''}>Async try/catch</button>
+            <button onClick={() => handleTextSelection('restApi', 8)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 8 ? 'selected-test' : ''}>Promise.all</button>
+            <button onClick={() => handleTextSelection('restApi', 9)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 9 ? 'selected-test' : ''}>REST PUT</button>
           </div>
         </div>
       </div>
