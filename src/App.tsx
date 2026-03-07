@@ -19,7 +19,7 @@ const  App = (): JSX.Element => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [targetTextLength, setTargetTextLength] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [currentLanguage, setCurrentLanguage] = useState<'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi' | null>(null);
+  const [currentLanguage, setCurrentLanguage] = useState<'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi' | 'asyncAwait' | 'nextJs' | null>(null);
   const [currentTestIndex, setCurrentTestIndex] = useState<number>(0);
 
   const completedText = 'Congratulations, you have completed typing test! You can check your results in the results section above.';
@@ -69,12 +69,112 @@ const  App = (): JSX.Element => {
   const apiPromiseAll = 'const urls = ["/api/a", "/api/b", "/api/c"];\nconst results = await Promise.all(urls.map(url => fetch(url).then(r => r.json())));';
   const apiRest = 'const options = {\n  method: "PUT",\n  headers: { "Authorization": `Bearer ${token}` },\n  body: JSON.stringify(updates)\n};\nfetch(`${baseUrl}/users/${id}`, options);';
 
+  const asyncReactComponent = `import React, { useEffect, useState } from 'react';
+
+function MyComponent() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('https://api.example.com/data');
+        if (!response.ok) {
+          throw new Error('Błąd sieci: ' + response.status);
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  if (error) {
+    return <div>Error: \{error\}</div>;
+  }
+
+  if (!data) {
+    return <div>Ładowanie...</div>;
+  }
+
+  return (
+    <div>
+      <h1>Dane:</h1>
+      <pre>\{JSON.stringify(data, null, 2)\}</pre>
+    </div>
+  );
+}`;
+
+  const nextJsV13SSR = `import React from 'react';
+
+export default async function Article({ params }) {
+  const res = await fetch(\`https://api.example.com/article/\${params.id}\`);
+  if (!res.ok) {
+    throw new Error('Błąd pobierania danych');
+  }
+  const article = await res.json();
+
+  return (
+    <div>
+      <h1>\{article.title\}</h1>
+      <p>\{article.content\}</p>
+    </div>
+  );
+}`;
+
+  const nextJsV13SSG = `import React from 'react';
+
+export default async function PostsPage() {
+  const res = await fetch('https://api.example.com/posts');
+  if (!res.ok) {
+    throw new Error('Błąd pobierania danych');
+  }
+  const posts = await res.json();
+
+  return (
+    <div>
+      <h1>Lista postów</h1>
+      \{posts.map((post) => (
+        <article key=\{post.id\}>
+          <h2>\{post.title\}</h2>
+          <p>\{post.excerpt\}</p>
+        </article>
+      ))\}
+    </div>
+  );
+}`;
+
+  const nextJsV13ISR = `import React from 'react';
+
+export default async function Article({ params }) {
+  const res = await fetch(
+    \`https://api.example.com/article/\${params.id}\`,
+    \{ next: \{ revalidate: 60 \} \}
+  );
+  if (!res.ok) {
+    throw new Error('Błąd pobierania danych');
+  }
+  const article = await res.json();
+
+  return (
+    <div>
+      <h1>\{article.title\}</h1>
+      <p>\{article.content\}</p>
+    </div>
+  );
+}`;
+
   const practiceTexts = {
     jsAlgorithms: [jsAlgo1, jsAlgo2, jsAlgo3, jsAlgo4, jsAlgo5],
     reactHooks: [reactHook1, reactHook2, reactHook3, reactHook4, reactHook5, reactHook6, reactHook7, reactHook8, reactHook9],
     jsFundamentals: [jsFund1, jsFund2, jsFund3, jsFund4, jsFund5, jsFund6],
     typescript: [tsType1, tsType2, tsType3, tsInterface1, tsInterface2, tsInterface3, tsGeneric1, tsGeneric2, tsEnum1, tsEnum2],
-    restApi: [apiPromises1, apiPromises2, apiFetch1, apiFetch2, apiAxios1, apiAxios2, apiAsync1, apiAsync2, apiPromiseAll, apiRest]
+    restApi: [apiPromises1, apiPromises2, apiFetch1, apiFetch2, apiAxios1, apiAxios2, apiAsync1, apiAsync2, apiPromiseAll, apiRest],
+    asyncAwait: [asyncReactComponent],
+    nextJs: [nextJsV13SSR, nextJsV13SSG, nextJsV13ISR]
   };
 
   const testNames: Record<string, string[]> = {
@@ -82,7 +182,9 @@ const  App = (): JSX.Element => {
     reactHooks: ['useState', 'useEffect', 'useContext', 'useReducer', 'useMemo', 'useCallback', 'useRef', 'useLayoutEffect', 'Bubble Sort Component'],
     jsFundamentals: ['Map', 'Filter', 'Reduce', 'Arrow Functions', 'Functions', 'Bind/Call/Apply'],
     typescript: ['Basic Types', 'Union Types', 'Function Types', 'Interface 1', 'Interface 2', 'Optional Properties', 'Generics 1', 'Generics 2', 'String Enum', 'Numeric Enum'],
-    restApi: ['Promises', 'Fetch + then', 'Fetch GET', 'Fetch POST', 'Axios GET', 'Axios POST', 'Async/await', 'Async try/catch', 'Promise.all', 'REST PUT']
+    restApi: ['Promises', 'Fetch + then', 'Fetch GET', 'Fetch POST', 'Axios GET', 'Axios POST', 'Async/await', 'Async try/catch', 'Promise.all', 'REST PUT'],
+    asyncAwait: ['async react component'],
+    nextJs: ['v13+ SSR', 'v13+ SSG', 'v13+ ISR']
   };
 
   const getTestName = (language: string | null, index: number): string => {
@@ -91,16 +193,19 @@ const  App = (): JSX.Element => {
   };
 
   useEffect(() => {
-    const allTexts = [...practiceTexts.jsAlgorithms, ...practiceTexts.reactHooks, ...practiceTexts.jsFundamentals, ...practiceTexts.typescript, ...practiceTexts.restApi];
+    const allTexts = [...practiceTexts.jsAlgorithms, ...practiceTexts.reactHooks, ...practiceTexts.jsFundamentals, ...practiceTexts.typescript, ...practiceTexts.restApi, ...practiceTexts.asyncAwait, ...practiceTexts.nextJs];
     const randomText = Math.floor(Math.random() * allTexts.length);
     const selectedText = allTexts[randomText];
     
-    let lang: 'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi' | null = null;
+    let lang: 'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi' | 'asyncAwait' | 'nextJs' | null = null;
     let idx = 0;
     const jsAlgoLen = practiceTexts.jsAlgorithms.length;
     const reactLen = practiceTexts.reactHooks.length;
     const jsFundLen = practiceTexts.jsFundamentals.length;
     const tsLen = practiceTexts.typescript.length;
+    const restLen = practiceTexts.restApi.length;
+    const asyncLen = practiceTexts.asyncAwait.length;
+    const nextLen = practiceTexts.nextJs.length;
     
     if (randomText < jsAlgoLen) {
       lang = 'jsAlgorithms';
@@ -114,9 +219,15 @@ const  App = (): JSX.Element => {
     } else if (randomText < jsAlgoLen + reactLen + jsFundLen + tsLen) {
       lang = 'typescript';
       idx = randomText - jsAlgoLen - reactLen - jsFundLen;
-    } else {
+    } else if (randomText < jsAlgoLen + reactLen + jsFundLen + tsLen + restLen) {
       lang = 'restApi';
       idx = randomText - jsAlgoLen - reactLen - jsFundLen - tsLen;
+    } else if (randomText < jsAlgoLen + reactLen + jsFundLen + tsLen + restLen + asyncLen) {
+      lang = 'asyncAwait';
+      idx = randomText - jsAlgoLen - reactLen - jsFundLen - tsLen - restLen;
+    } else {
+      lang = 'nextJs';
+      idx = randomText - jsAlgoLen - reactLen - jsFundLen - tsLen - restLen - asyncLen;
     }
     
     setPracticeTextState(selectedText);
@@ -186,17 +297,21 @@ const  App = (): JSX.Element => {
     }
   };
 
-  const handleTextSelection = (language: 'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi', index: number) => {
+  const handleTextSelection = (language: 'jsAlgorithms' | 'reactHooks' | 'jsFundamentals' | 'typescript' | 'restApi' | 'asyncAwait' | 'nextJs', index: number) => {
     const selectedText = practiceTexts[language][index];
     const jsAlgoBase = practiceTexts.jsAlgorithms.length;
     const reactHooksBase = jsAlgoBase + practiceTexts.reactHooks.length;
     const jsFundBase = reactHooksBase + practiceTexts.jsFundamentals.length;
     const tsBase = jsFundBase + practiceTexts.typescript.length;
+    const restBase = tsBase + practiceTexts.restApi.length;
+    const asyncBase = restBase + practiceTexts.asyncAwait.length;
     const selectedIndex = language === 'jsAlgorithms' ? index :
                          language === 'reactHooks' ? jsAlgoBase + index :
                          language === 'jsFundamentals' ? reactHooksBase + index :
                          language === 'typescript' ? jsFundBase + index :
-                         tsBase + index;
+                         language === 'restApi' ? tsBase + index :
+                         language === 'asyncAwait' ? restBase + index :
+                         asyncBase + index;
 
     setPracticeTextState(selectedText);
     setTargetTextLength(selectedText.length);
@@ -510,6 +625,20 @@ const  App = (): JSX.Element => {
             <button onClick={() => handleTextSelection('restApi', 7)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 7 ? 'selected-test' : ''}>Async try/catch</button>
             <button onClick={() => handleTextSelection('restApi', 8)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 8 ? 'selected-test' : ''}>Promise.all</button>
             <button onClick={() => handleTextSelection('restApi', 9)} disabled={isTimerRunning} className={currentLanguage === 'restApi' && currentTestIndex === 9 ? 'selected-test' : ''}>REST PUT</button>
+          </div>
+        </div>
+        <div className="language-group">
+          <h4 className="language-label">Async await:</h4>
+          <div className="text-selection-buttons">
+            <button onClick={() => handleTextSelection('asyncAwait', 0)} disabled={isTimerRunning} className={currentLanguage === 'asyncAwait' && currentTestIndex === 0 ? 'selected-test' : ''}>async react component</button>
+          </div>
+        </div>
+        <div className="language-group">
+          <h4 className="language-label">Next.js:</h4>
+          <div className="text-selection-buttons">
+            <button onClick={() => handleTextSelection('nextJs', 0)} disabled={isTimerRunning} className={currentLanguage === 'nextJs' && currentTestIndex === 0 ? 'selected-test' : ''}>v13+ SSR</button>
+            <button onClick={() => handleTextSelection('nextJs', 1)} disabled={isTimerRunning} className={currentLanguage === 'nextJs' && currentTestIndex === 1 ? 'selected-test' : ''}>v13+ SSG</button>
+            <button onClick={() => handleTextSelection('nextJs', 2)} disabled={isTimerRunning} className={currentLanguage === 'nextJs' && currentTestIndex === 2 ? 'selected-test' : ''}>v13+ ISR</button>
           </div>
         </div>
       </div>
