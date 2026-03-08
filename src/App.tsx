@@ -57,6 +57,7 @@ const  App = (): JSX.Element => {
   const tsGeneric2 = 'interface Box<T> {\n  value: T;\n}\nconst numberBox: Box<number> = { value: 42 };\nconst stringBox: Box<string> = { value: "hello" };';
   const tsEnum1 = 'enum Color {\n  Red = "red",\n  Green = "green",\n  Blue = "blue"\n}\nconst favoriteColor: Color = Color.Red;';
   const tsEnum2 = 'enum Status {\n  Pending,\n  Completed,\n  Failed\n}\nlet currentStatus = Status.Pending;';
+  const tsUtilTypes = 'interface User { id: number; name: string; email: string; }\ntype PartialUser = Partial<User>;\ntype UserWithoutEmail = Omit<User, "email">;\ntype UserNameOnly = Pick<User, "name">;\ntype UserRecord = Record<string, User>;';
 
   const apiPromises1 = 'const promise = new Promise((resolve, reject) => {\n  setTimeout(() => resolve("done"), 1000);\n});\npromise.then(val => console.log(val)).catch(err => console.error(err));';
   const apiPromises2 = 'const fetchData = () => {\n  return fetch("https://api.example.com/users")\n    .then(res => res.json())\n    .then(data => console.log(data));\n};';
@@ -171,7 +172,7 @@ export default async function Article({ params }) {
     jsAlgorithms: [jsAlgo1, jsAlgo2, jsAlgo3, jsAlgo4, jsAlgo5],
     reactHooks: [reactHook1, reactHook2, reactHook3, reactHook4, reactHook5, reactHook6, reactHook7, reactHook8, reactHook9],
     jsFundamentals: [jsFund1, jsFund2, jsFund3, jsFund4, jsFund5, jsFund6],
-    typescript: [tsType1, tsType2, tsType3, tsInterface1, tsInterface2, tsInterface3, tsGeneric1, tsGeneric2, tsEnum1, tsEnum2],
+    typescript: [tsType1, tsType2, tsType3, tsInterface1, tsInterface2, tsInterface3, tsGeneric1, tsGeneric2, tsEnum1, tsEnum2, tsUtilTypes],
     restApi: [apiPromises1, apiPromises2, apiFetch1, apiFetch2, apiAxios1, apiAxios2, apiAsync1, apiAsync2, apiPromiseAll, apiRest],
     asyncAwait: [asyncReactComponent],
     nextJs: [nextJsV13SSR, nextJsV13SSG, nextJsV13ISR]
@@ -181,7 +182,7 @@ export default async function Article({ params }) {
     jsAlgorithms: ['Bubble Sort', 'Quick Sort', 'Merge Sort', 'Binary Search', 'Linear Search'],
     reactHooks: ['useState', 'useEffect', 'useContext', 'useReducer', 'useMemo', 'useCallback', 'useRef', 'useLayoutEffect', 'Bubble Sort Component'],
     jsFundamentals: ['Map', 'Filter', 'Reduce', 'Arrow Functions', 'Functions', 'Bind/Call/Apply'],
-    typescript: ['Basic Types', 'Union Types', 'Function Types', 'Interface 1', 'Interface 2', 'Optional Properties', 'Generics 1', 'Generics 2', 'String Enum', 'Numeric Enum'],
+    typescript: ['Basic Types', 'Union Types', 'Function Types', 'Interface 1', 'Interface 2', 'Optional Properties', 'Generics 1', 'Generics 2', 'String Enum', 'Numeric Enum', 'PA/OM/PI/RE'],
     restApi: ['Promises', 'Fetch + then', 'Fetch GET', 'Fetch POST', 'Axios GET', 'Axios POST', 'Async/await', 'Async try/catch', 'Promise.all', 'REST PUT'],
     asyncAwait: ['async react component'],
     nextJs: ['v13+ SSR', 'v13+ SSG', 'v13+ ISR']
@@ -610,6 +611,7 @@ export default async function Article({ params }) {
             <button onClick={() => handleTextSelection('typescript', 7)} disabled={isTimerRunning} className={currentLanguage === 'typescript' && currentTestIndex === 7 ? 'selected-test' : ''}>Generics 2</button>
             <button onClick={() => handleTextSelection('typescript', 8)} disabled={isTimerRunning} className={currentLanguage === 'typescript' && currentTestIndex === 8 ? 'selected-test' : ''}>String Enum</button>
             <button onClick={() => handleTextSelection('typescript', 9)} disabled={isTimerRunning} className={currentLanguage === 'typescript' && currentTestIndex === 9 ? 'selected-test' : ''}>Numeric Enum</button>
+            <button onClick={() => handleTextSelection('typescript', 10)} disabled={isTimerRunning} className={currentLanguage === 'typescript' && currentTestIndex === 10 ? 'selected-test' : ''}>PA/OM/PI/RE</button>
           </div>
         </div>
         <div className="language-group">
