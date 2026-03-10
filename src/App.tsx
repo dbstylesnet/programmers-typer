@@ -81,7 +81,7 @@ function MyComponent() {
       try {
         const response = await fetch('https://api.example.com/data');
         if (!response.ok) {
-          throw new Error('Błąd sieci: ' + response.status);
+          throw new Error('Network error: ' + response.status);
         }
         const result = await response.json();
         setData(result);
@@ -98,30 +98,13 @@ function MyComponent() {
   }
 
   if (!data) {
-    return <div>Ładowanie...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
     <div>
-      <h1>Dane:</h1>
+      <h1>Data:</h1>
       <pre>\{JSON.stringify(data, null, 2)\}</pre>
-    </div>
-  );
-}`;
-
-  const nextJsV13SSR = `import React from 'react';
-
-export default async function Article({ params }) {
-  const res = await fetch(\`https://api.example.com/article/\${params.id}\`);
-  if (!res.ok) {
-    throw new Error('Błąd pobierania danych');
-  }
-  const article = await res.json();
-
-  return (
-    <div>
-      <h1>\{article.title\}</h1>
-      <p>\{article.content\}</p>
     </div>
   );
 }`;
@@ -131,13 +114,13 @@ export default async function Article({ params }) {
 export default async function PostsPage() {
   const res = await fetch('https://api.example.com/posts');
   if (!res.ok) {
-    throw new Error('Błąd pobierania danych');
+    throw new Error('Failed to fetch data');
   }
   const posts = await res.json();
 
   return (
     <div>
-      <h1>Lista postów</h1>
+      <h1>Posts list</h1>
       \{posts.map((post) => (
         <article key=\{post.id\}>
           <h2>\{post.title\}</h2>
@@ -156,7 +139,7 @@ export default async function Article({ params }) {
     \{ next: \{ revalidate: 60 \} \}
   );
   if (!res.ok) {
-    throw new Error('Błąd pobierania danych');
+    throw new Error('Failed to fetch data');
   }
   const article = await res.json();
 
@@ -175,7 +158,7 @@ export default async function Article({ params }) {
     typescript: [tsType1, tsType2, tsType3, tsInterface1, tsInterface2, tsInterface3, tsGeneric1, tsGeneric2, tsEnum1, tsEnum2, tsUtilTypes],
     restApi: [apiPromises1, apiPromises2, apiFetch1, apiFetch2, apiAxios1, apiAxios2, apiAsync1, apiAsync2, apiPromiseAll, apiRest],
     asyncAwait: [asyncReactComponent],
-    nextJs: [nextJsV13SSR, nextJsV13SSG, nextJsV13ISR]
+    nextJs: [nextJsV13SSG, nextJsV13ISR]
   };
 
   const testNames: Record<string, string[]> = {
@@ -185,7 +168,7 @@ export default async function Article({ params }) {
     typescript: ['Basic Types', 'Union Types', 'Function Types', 'Interface 1', 'Interface 2', 'Optional Properties', 'Generics 1', 'Generics 2', 'String Enum', 'Numeric Enum', 'PA/OM/PI/RE'],
     restApi: ['Promises', 'Fetch + then', 'Fetch GET', 'Fetch POST', 'Axios GET', 'Axios POST', 'Async/await', 'Async try/catch', 'Promise.all', 'REST PUT'],
     asyncAwait: ['async react component'],
-    nextJs: ['v13+ SSR', 'v13+ SSG', 'v13+ ISR']
+    nextJs: ['v13 SSR/SSG', 'v13+ ISR']
   };
 
   const getTestName = (language: string | null, index: number): string => {
@@ -638,9 +621,8 @@ export default async function Article({ params }) {
         <div className="language-group">
           <h4 className="language-label">Next.js:</h4>
           <div className="text-selection-buttons">
-            <button onClick={() => handleTextSelection('nextJs', 0)} disabled={isTimerRunning} className={currentLanguage === 'nextJs' && currentTestIndex === 0 ? 'selected-test' : ''}>v13+ SSR</button>
-            <button onClick={() => handleTextSelection('nextJs', 1)} disabled={isTimerRunning} className={currentLanguage === 'nextJs' && currentTestIndex === 1 ? 'selected-test' : ''}>v13+ SSG</button>
-            <button onClick={() => handleTextSelection('nextJs', 2)} disabled={isTimerRunning} className={currentLanguage === 'nextJs' && currentTestIndex === 2 ? 'selected-test' : ''}>v13+ ISR</button>
+            <button onClick={() => handleTextSelection('nextJs', 0)} disabled={isTimerRunning} className={currentLanguage === 'nextJs' && currentTestIndex === 0 ? 'selected-test' : ''}>v13 SSR/SSG</button>
+            <button onClick={() => handleTextSelection('nextJs', 1)} disabled={isTimerRunning} className={currentLanguage === 'nextJs' && currentTestIndex === 1 ? 'selected-test' : ''}>v13+ ISR</button>
           </div>
         </div>
       </div>
