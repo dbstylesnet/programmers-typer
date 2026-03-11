@@ -655,6 +655,7 @@ export default async function Article({ params }) {
           {shadowBoxToggle && practiceTextState.length > 0 && (
             <h4 className="congratz sub-header">
               Congratulations, you have completed typing test! <br />
+              Time: {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')} <br />
               You can check your results in the results section below.
             </h4>
           )}
