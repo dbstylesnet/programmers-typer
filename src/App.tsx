@@ -653,11 +653,14 @@ export default async function Article({ params }) {
           />
           <textarea className='textInputs bottomP' value={practiceTextState} readOnly spellCheck={false} />
           {shadowBoxToggle && practiceTextState.length > 0 && (
-            <h4 className="congratz sub-header">
-              Congratulations, you have completed typing test! <br />
-              Time: {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')} <br />
-              You can check your results in the results section below.
-            </h4>
+            <div className="modal-overlay" onClick={() => setShadowBoxToggle(false)}>
+              <div className="modal-content congratz" onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close" onClick={() => setShadowBoxToggle(false)} aria-label="Close">×</button>
+                <h4 className="sub-header">Congratulations, you have completed typing test!</h4>
+                <p>Time: {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')}</p>
+                <p>You can check your results in the results section above.</p>
+              </div>
+            </div>
           )}
         </div>
       </div>  
