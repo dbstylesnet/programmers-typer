@@ -633,7 +633,7 @@ export default async function Article({ params }) {
           disabled={!practiceTextState}
           className={`start-button ${isTimerRunning ? 'stop-button' : ''}`}
         >
-          Start test
+          {isTimerRunning ? 'Stop test' : 'Start test'}
         </button>
       </div>
 
