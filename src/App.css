@@ -80,11 +80,11 @@ html {
 
 .textAreas {
   position: relative;
-  margin: 0 10% 10%;
+  margin: 0 10% 40px;
   width: 80%;
   max-width: 100%;
-  min-height: 1100px;
-  padding-bottom: 80px;
+  min-height: auto;
+  padding-bottom: 0;
   box-sizing: border-box;
   overflow-x: hidden;
 }
