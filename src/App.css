@@ -213,7 +213,7 @@ textarea:disabled {
 .modal-content.congratz {
   position: relative;
   background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%) !important;
-  padding: 24px 32px;
+  padding: 3% 6%;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   animation: modalSlideIn 0.3s ease-out;
@@ -630,8 +630,8 @@ textarea:disabled {
 
   .modal-content.congratz {
     min-width: 250px;
-    max-width: 95%;
-    padding: 20px 24px;
+    max-width: 75%;
+    padding: 4% 9%;
   }
   .modal-content.congratz p {
     font-size: 12px;
@@ -671,8 +671,8 @@ textarea:disabled {
 
   .modal-content.congratz {
     min-width: 200px;
-    max-width: 98%;
-    padding: 16px 20px;
+    max-width: 58%;
+    padding: 6% 12%;
   }
   .modal-content.congratz p {
     font-size: 11px;
