@@ -615,6 +615,20 @@ textarea:disabled {
   opacity: 1;
 }
 
+.bmc-button-container {
+  margin-top: auto;
+  padding-right: 56px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.bmc-button-img {
+  height: 30px;
+  width: auto;
+}
+
 @media (max-width: 768px) {
   .textAreas {
     width: 95%;

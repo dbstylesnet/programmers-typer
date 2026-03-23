@@ -42,6 +42,20 @@ const App = (): JSX.Element => {
         onClick={t.onTextareaClick}
       />
 
+      <div className="bmc-button-container">
+        <a
+          href="https://www.buymeacoffee.com/darkiddle"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+            alt="Buy Me A Coffee"
+            className="bmc-button-img"
+          />
+        </a>
+      </div>
+
       <CompletionModal open={t.isCompleteModalOpen} elapsedDisplay={t.elapsedDisplay} onClose={t.closeCompleteModal} />
     </div>
   );
