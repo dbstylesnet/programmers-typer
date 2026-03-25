@@ -3,7 +3,6 @@ import { CompletionModal } from './components/CompletionModal';
 import { PlayerSection } from './components/PlayerSection';
 import { ResultsPanel } from './components/ResultsPanel';
 import { StartStopButton } from './components/StartStopButton';
-import { StatsHeader } from './components/StatsHeader';
 import { TestSelector } from './components/TestSelector';
 import { TypingArea } from './components/TypingArea';
 import { useTypingTest } from './hooks/useTypingTest';
@@ -26,8 +25,6 @@ const App = (): JSX.Element => {
 
       <ResultsPanel playerName={t.playerName} show={t.showResults} stats={t.playerStats} results={t.playerResults} />
 
-      <StatsHeader elapsedDisplay={t.elapsedDisplay} accuracyPercent={t.accuracyPercent} progressPercent={t.progressPercent} />
-
       <TestSelector categories={t.categories} selected={t.selected} disabled={t.isRunning} onSelect={t.selectTest} />
 
       <StartStopButton disabled={!t.practiceText} isRunning={t.isRunning} onClick={t.toggleStartStop} />
@@ -40,6 +37,9 @@ const App = (): JSX.Element => {
         onChange={t.onTextareaChange}
         onKeyDown={t.onTextareaKeyDown}
         onClick={t.onTextareaClick}
+        elapsedDisplay={t.elapsedDisplay}
+        accuracyPercent={t.accuracyPercent}
+        progressPercent={t.progressPercent}
       />
 
       <div className="bmc-button-container">

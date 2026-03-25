@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .main-container {
   text-align: center;
   background-color: #282c34;
@@ -14,7 +18,7 @@
   align-items: center;
   font-size: calc(8px + 1.2vmin);
   color: white;
-  padding: 0px 0 0 0;
+  padding: 0px 0 40px 0;
   width: 100%;
   overflow-x: hidden;
   position: relative;
@@ -55,6 +59,8 @@ body {
   background-color: #282c34;
   margin: 0;
   padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  line-height: 1.4;
 }
 
 html {
@@ -63,11 +69,23 @@ html {
 
 .sub-header.main-header {
   margin: 30px 0 0 0;
+  padding: 0;
+  border-radius: 0;
+  width: 100%;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .sub-header.main-header h2 {
-  font-size: 24px;
+  font-size: 26px;
   margin: 0;
+  font-weight: 900;
+  background: linear-gradient(90deg, #7dd3fc 0%, #a78bfa 45%, #68d391 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .mainTextAreas {
@@ -76,6 +94,11 @@ html {
   width: 100%;
   flex-direction: column;
   min-height: auto;
+}
+
+.typing-area-wrapper {
+  position: relative;
+  width: 100%;
 }
 
 .textAreas {
@@ -93,6 +116,8 @@ html {
   font-weight: bold;
   font-variant: all-small-caps;
   font-size: 14px;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 .statsHeader h4 {
@@ -105,25 +130,65 @@ html {
   margin: 10px 0;
 }
 
+.practice-text-label {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  width: 80%;
+  margin: 0 10% 12px;
+  padding-left: 10px; /* textarea margin(5) + padding(5) */
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.practice-text-label h3 {
+  margin: 0;
+}
+
+.practice-metrics {
+  pointer-events: none;
+  text-align: right;
+  font-weight: 700;
+  font-size: 12px;
+  opacity: 0.95;
+  white-space: nowrap;
+}
+
 textarea {
   position: absolute;
   top: 0px;
   left: 0px;
-  opacity: .5;
+  opacity: 0.65;
   background: transparent;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.22);
   padding: 5px;
   margin: 5px;
   font-size: 18px;
-  border-radius: 4px;
+  border-radius: 10px;
   resize: none;
   overflow-y: auto;
   overflow-x: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18), 0 18px 45px rgba(0, 0, 0, 0.35);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  caret-color: #7dd3fc;
 }
 
 textarea:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+textarea:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18), 0 0 0 3px rgba(102, 126, 234, 0.35), 0 22px 55px rgba(0, 0, 0, 0.45);
+}
+
+textarea::selection {
+  background: rgba(125, 211, 252, 0.25);
 }
 
 .inputsArea {
@@ -190,10 +255,17 @@ textarea:disabled {
   color: skyblue;
   opacity: 1;
   z-index: 1;
+  border-color: rgba(102, 126, 234, 0.65);
+}
+
+.textInputs.topP:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18), 0 0 0 3px rgba(102, 126, 234, 0.28), 0 18px 45px rgba(0, 0, 0, 0.35);
 }
 
 .bottomP {
   color: darksalmon;
+  opacity: 0.9;
 }
 
 .modal-overlay {
@@ -299,7 +371,7 @@ textarea:disabled {
 .start-button {
   background: linear-gradient(135deg, #68d391 0%, #2f855a 100%);
   color: white;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.10);
   padding: 12px 32px;
   font-size: 14px;
   font-weight: 600;
@@ -344,6 +416,12 @@ textarea:disabled {
   margin: 20px 0;
   width: 100%;
   max-width: 1200px;
+  padding: 18px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
 }
 
 .language-group {
@@ -377,7 +455,7 @@ textarea:disabled {
 .text-selection-buttons button {
   background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
   color: white;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.10);
   padding: 8px 16px;
   font-size: 12px;
   font-weight: 600;
@@ -415,7 +493,7 @@ textarea:disabled {
 .player-section button {
   background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
   color: white;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.10);
   padding: 6px 12px;
   font-size: 11px;
   font-weight: 600;
@@ -425,6 +503,15 @@ textarea:disabled {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.start-button:focus-visible,
+.text-selection-buttons button:focus-visible,
+.player-section button:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(125, 211, 252, 0.35),
+    0 8px 25px rgba(0, 0, 0, 0.35);
 }
 
 .player-section button:hover {
@@ -444,6 +531,12 @@ textarea:disabled {
   justify-content: center;
   margin: 15px 0;
   gap: 8px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.20);
+  backdrop-filter: blur(10px);
 }
 
 .player-section label {
@@ -455,7 +548,7 @@ textarea:disabled {
   padding: 6px 10px;
   border: 2px solid rgba(102, 126, 234, 0.3);
   border-radius: 5px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
   font-size: 12px;
   transition: all 0.3s ease;
@@ -482,7 +575,8 @@ textarea:disabled {
   margin: 15px auto;
   width: 90%;
   max-width: 1200px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
 }
@@ -523,7 +617,7 @@ textarea:disabled {
 .stat-item {
   flex: 1 1 calc(20% - 15px);
   min-width: 120px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 6px;
   padding: 12px;
   display: flex;
@@ -531,6 +625,7 @@ textarea:disabled {
   align-items: center;
   text-align: center;
   transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .stat-item:hover {
@@ -624,15 +719,46 @@ textarea:disabled {
   width: 100%;
 }
 
+.bmc-button-container a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.bmc-button-container a:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.055);
+}
+
 .bmc-button-img {
-  height: 30px;
+  height: 32px;
   width: auto;
+  border-radius: 8px;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.bmc-button-img:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.45));
 }
 
 @media (max-width: 768px) {
   .textAreas {
     width: 95%;
     margin: 0 2.5% 5%;
+  }
+
+  .practice-text-label {
+    margin: 0 2.5% 12px;
+    padding-left: 8px; /* textarea margin(4) + padding(4) at <=768 */
   }
 
   .textInputs {
@@ -673,6 +799,11 @@ textarea:disabled {
   .textAreas {
     width: 98%;
     margin: 0 1% 5%;
+  }
+
+  .practice-text-label {
+    margin: 0 1% 12px;
+    padding-left: 6px; /* textarea margin(3) + padding(3) at <=480 */
   }
 
   .textInputs {
