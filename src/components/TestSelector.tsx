@@ -7,13 +7,21 @@ type Props = {
   selected: Selected;
   disabled: boolean;
   onSelect: (category: TestCategoryKey, index: number) => void;
+  showResults: boolean;
+  onToggleResults: () => void;
 };
 
-export function TestSelector({ categories, selected, disabled, onSelect }: Props) {
+export function TestSelector({ categories, selected, disabled, onSelect, showResults, onToggleResults }: Props) {
   return (
     <div className="test-selector-wrapper">
       <div className="sub-header test-selector-title">
         <h3>Select test:</h3>
+        <button
+          onClick={onToggleResults}
+          className={`results-toggle-button ${showResults ? 'results-toggle-hide' : 'results-toggle-show'}`}
+        >
+          {showResults ? 'Hide Results History' : 'Show Results History'}
+        </button>
       </div>
 
       <div className="text-selection-section">

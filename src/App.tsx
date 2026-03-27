@@ -18,14 +18,19 @@ const App = (): JSX.Element => {
 
       <PlayerSection
         playerName={t.playerName}
-        showResults={t.showResults}
         onPlayerNameChange={t.handlePlayerNameChange}
-        onToggleResults={() => t.setShowResults(!t.showResults)}
       />
 
       <ResultsPanel playerName={t.playerName} show={t.showResults} stats={t.playerStats} results={t.playerResults} />
 
-      <TestSelector categories={t.categories} selected={t.selected} disabled={t.isRunning} onSelect={t.selectTest} />
+      <TestSelector
+        categories={t.categories}
+        selected={t.selected}
+        disabled={t.isRunning}
+        onSelect={t.selectTest}
+        showResults={t.showResults}
+        onToggleResults={() => t.setShowResults(!t.showResults)}
+      />
 
       <StartStopButton disabled={!t.practiceText} isRunning={t.isRunning} onClick={t.toggleStartStop} />
 
@@ -56,7 +61,13 @@ const App = (): JSX.Element => {
         </a>
       </div>
 
-      <CompletionModal open={t.isCompleteModalOpen} elapsedDisplay={t.elapsedDisplay} onClose={t.closeCompleteModal} />
+      <CompletionModal
+        open={t.isCompleteModalOpen}
+        elapsedDisplay={t.elapsedDisplay}
+        onClose={t.closeCompleteModal}
+        onStartAgain={t.startAgainAfterCompletion}
+        onShowResultsHistory={t.showResultsHistoryAfterCompletion}
+      />
     </div>
   );
 };

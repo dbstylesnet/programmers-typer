@@ -1,11 +1,9 @@
 type Props = {
   playerName: string;
-  showResults: boolean;
   onPlayerNameChange: (value: string) => void;
-  onToggleResults: () => void;
 };
 
-export function PlayerSection({ playerName, showResults, onPlayerNameChange, onToggleResults }: Props) {
+export function PlayerSection({ playerName, onPlayerNameChange }: Props) {
   return (
     <div className="player-section">
       <div className="player-left">
@@ -18,12 +16,6 @@ export function PlayerSection({ playerName, showResults, onPlayerNameChange, onT
           placeholder="Enter your name"
         />
       </div>
-      <button
-        onClick={onToggleResults}
-        className={showResults ? 'results-toggle-hide' : 'results-toggle-show'}
-      >
-        {showResults ? 'Hide Results History' : 'Show Results History'}
-      </button>
     </div>
   );
 }

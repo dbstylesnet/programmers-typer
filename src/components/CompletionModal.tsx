@@ -2,9 +2,17 @@ type Props = {
   open: boolean;
   elapsedDisplay: string;
   onClose: () => void;
+  onStartAgain: () => void;
+  onShowResultsHistory: () => void;
 };
 
-export function CompletionModal({ open, elapsedDisplay, onClose }: Props) {
+export function CompletionModal({
+  open,
+  elapsedDisplay,
+  onClose,
+  onStartAgain,
+  onShowResultsHistory,
+}: Props) {
   if (!open) return null;
 
   return (
@@ -13,11 +21,16 @@ export function CompletionModal({ open, elapsedDisplay, onClose }: Props) {
         <button className="modal-close" onClick={onClose} aria-label="Close">
           ×
         </button>
-        <h4 className="sub-header">Congratulations, you have completed typing test!</h4>
-        <p>Time: {elapsedDisplay}</p>
-        <p>You can check your results in the results section above.</p>
+        <p className="modal-congratz-message">Congratulations, test time: {elapsedDisplay}.</p>
+        <div className="modal-actions">
+          <button type="button" className="modal-btn modal-btn-start" onClick={onStartAgain}>
+            Start again
+          </button>
+          <button type="button" className="modal-btn modal-btn-history" onClick={onShowResultsHistory}>
+            Show Results History
+          </button>
+        </div>
       </div>
     </div>
   );
 }
-

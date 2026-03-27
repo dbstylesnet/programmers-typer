@@ -213,6 +213,16 @@ export function useTypingTest() {
     if (!isRunning && practiceText) start();
   };
 
+  const startAgainAfterCompletion = () => {
+    if (!practiceText) return;
+    start();
+  };
+
+  const showResultsHistoryAfterCompletion = () => {
+    setIsCompleteModalOpen(false);
+    setShowResults(true);
+  };
+
   const accuracyPercent = useMemo(() => {
     const denom = typed.length || 1;
     return (accuracyCount / denom) * 100;
@@ -252,6 +262,8 @@ export function useTypingTest() {
 
     isCompleteModalOpen,
     closeCompleteModal: () => setIsCompleteModalOpen(false),
+    startAgainAfterCompletion,
+    showResultsHistoryAfterCompletion,
   };
 }
 
