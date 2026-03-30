@@ -43,6 +43,17 @@ export const getPlayerResults = (playerName: string): PlayerResult[] => {
   return allResults.filter(result => result.playerName === playerName);
 };
 
+export const clearPlayerResults = (playerName: string): void => {
+  if (!playerName) return;
+  try {
+    const results = getAllResults();
+    const next = results.filter((r) => r.playerName !== playerName);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  } catch (error) {
+    console.error('Error clearing player results:', error);
+  }
+};
+
 export const getAllPlayers = (): string[] => {
   try {
     const stored = localStorage.getItem(PLAYERS_KEY);

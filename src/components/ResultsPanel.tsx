@@ -12,7 +12,7 @@ export function ResultsPanel({ playerName, show, stats, results }: Props) {
 
   return (
     <div className="results-section">
-      <h3>Your stats</h3>
+      <h3>Stats:</h3>
       <div className="statistics-container">
         <div className="stat-item">
           <div className="stat-label">Total Tests</div>
@@ -26,13 +26,9 @@ export function ResultsPanel({ playerName, show, stats, results }: Props) {
           <div className="stat-label">Average Progress</div>
           <div className="stat-value">{stats.averageProgress.toFixed(2)}%</div>
         </div>
-        <div className="stat-item">
-          <div className="stat-label">Best Accuracy</div>
-          <div className="stat-value">{stats.bestAccuracy.toFixed(2)}%</div>
-        </div>
       </div>
 
-      <h4>Recent Results:</h4>
+      <h4>Recent results:</h4>
       <div className="recent-results-container">
         {results
           .slice(-10)

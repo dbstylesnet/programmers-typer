@@ -1,6 +1,6 @@
 import type { KeyboardEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { addPlayer, getPlayerResults, getPlayerStats, PlayerResult, saveResult } from '../database';
+import { addPlayer, clearPlayerResults, getPlayerResults, getPlayerStats, PlayerResult, saveResult } from '../database';
 import { TEST_CATEGORIES, TestCategoryKey } from '../data/tests';
 
 type SelectedTest = {
@@ -223,6 +223,12 @@ export function useTypingTest() {
     setShowResults(true);
   };
 
+  const clearPlayerHistory = () => {
+    if (!playerName) return;
+    clearPlayerResults(playerName);
+    refreshPlayerStats(playerName);
+  };
+
   const accuracyPercent = useMemo(() => {
     const denom = typed.length || 1;
     return (accuracyCount / denom) * 100;
@@ -264,6 +270,7 @@ export function useTypingTest() {
     closeCompleteModal: () => setIsCompleteModalOpen(false),
     startAgainAfterCompletion,
     showResultsHistoryAfterCompletion,
+    clearPlayerHistory,
   };
 }
 

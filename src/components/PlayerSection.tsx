@@ -12,6 +12,7 @@ export function PlayerSection({ playerName, onPlayerNameChange }: Props) {
           id="playerName"
           type="text"
           value={playerName}
+          className={playerName ? '' : 'player-name-input--pulsate'}
           onChange={(e) => onPlayerNameChange(e.target.value)}
           placeholder="Enter your name"
         />

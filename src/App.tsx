@@ -1,5 +1,6 @@
 import './App.css';
 import { CompletionModal } from './components/CompletionModal';
+import { GoalTab } from './components/GoalTab';
 import { PlayerSection } from './components/PlayerSection';
 import { ResultsPanel } from './components/ResultsPanel';
 import { StartStopButton } from './components/StartStopButton';
@@ -13,7 +14,7 @@ const App = (): JSX.Element => {
   return (
     <div className="main-container">
       <div className="sub-header main-header">
-        <h2>Programmers typing training</h2>
+        <img src="/logo.png" alt="Programmers Typer Logo" className="main-header-logo" />
       </div>
 
       <PlayerSection
@@ -30,6 +31,8 @@ const App = (): JSX.Element => {
         onSelect={t.selectTest}
         showResults={t.showResults}
         onToggleResults={() => t.setShowResults(!t.showResults)}
+        onClearHistory={t.clearPlayerHistory}
+        canClearHistory={Boolean(t.playerName)}
       />
 
       <StartStopButton disabled={!t.practiceText} isRunning={t.isRunning} onClick={t.toggleStartStop} />
@@ -60,6 +63,8 @@ const App = (): JSX.Element => {
           />
         </a>
       </div>
+
+      <GoalTab />
 
       <CompletionModal
         open={t.isCompleteModalOpen}

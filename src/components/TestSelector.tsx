@@ -9,19 +9,43 @@ type Props = {
   onSelect: (category: TestCategoryKey, index: number) => void;
   showResults: boolean;
   onToggleResults: () => void;
+  onClearHistory: () => void;
+  canClearHistory: boolean;
 };
 
-export function TestSelector({ categories, selected, disabled, onSelect, showResults, onToggleResults }: Props) {
+export function TestSelector({
+  categories,
+  selected,
+  disabled,
+  onSelect,
+  showResults,
+  onToggleResults,
+  onClearHistory,
+  canClearHistory,
+}: Props) {
   return (
     <div className="test-selector-wrapper">
       <div className="sub-header test-selector-title">
         <h3>Select test:</h3>
-        <button
-          onClick={onToggleResults}
-          className={`results-toggle-button ${showResults ? 'results-toggle-hide' : 'results-toggle-show'}`}
-        >
-          {showResults ? 'Hide Results History' : 'Show Results History'}
-        </button>
+        <div className="test-selector-actions">
+          {showResults ? (
+            <button
+              type="button"
+              className="results-clear-history-button"
+              onClick={onClearHistory}
+              disabled={!canClearHistory}
+            >
+              Clear history
+            </button>
+          ) : null}
+          <button
+            type="button"
+            onClick={onToggleResults}
+            className={`results-toggle-button ${showResults ? 'results-toggle-hide' : 'results-toggle-show'}`}
+          >
+            {showResults ? 'Hide Results History' : 'Show Results History'}
+          </button>
+        </div>
       </div>
 
       <div className="text-selection-section">

@@ -21,7 +21,7 @@ export function CompletionModal({
         <button className="modal-close" onClick={onClose} aria-label="Close">
           ×
         </button>
-        <p className="modal-congratz-message">Congratulations, test time: {elapsedDisplay}.</p>
+        <p className="modal-congratz-message">Congratulations, elapsed time: {elapsedDisplay}.</p>
         <div className="modal-actions">
           <button type="button" className="modal-btn modal-btn-start" onClick={onStartAgain}>
             Start again

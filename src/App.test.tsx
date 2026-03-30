@@ -4,5 +4,5 @@ import App from './App';
 
 test('renders main heading', () => {
   render(<App />);
-  expect(screen.getByText(/programmers typing training/i)).toBeInTheDocument();
+  expect(screen.getByAltText(/programmers typer logo/i)).toBeInTheDocument();
 });
