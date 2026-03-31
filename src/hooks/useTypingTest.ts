@@ -17,6 +17,8 @@ function formatTime(seconds: number): string {
 export function useTypingTest() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const DEFAULT_PLAYER_NAME = 'Guest';
+
   const [playerName, setPlayerName] = useState('');
   const [showResults, setShowResults] = useState(false);
   const [playerResults, setPlayerResults] = useState<PlayerResult[]>([]);
@@ -61,12 +63,22 @@ export function useTypingTest() {
   }, []);
 
   useEffect(() => {
-    if (!playerName) return;
+    if (!playerName) {
+      setPlayerResults([]);
+      setPlayerStats(null);
+      return;
+    }
     const results = getPlayerResults(playerName);
     const stats = getPlayerStats(playerName);
     setPlayerResults(results);
     setPlayerStats(stats);
   }, [playerName]);
+
+  useEffect(() => {
+    if (!showResults) return;
+    if (playerResults.length > 0) return;
+    setShowResults(false);
+  }, [playerResults.length, showResults]);
 
   useEffect(() => {
     if (isRunning && startTime) {
@@ -145,7 +157,12 @@ export function useTypingTest() {
   };
 
   const saveTestResult = (completed: boolean) => {
-    if (!playerName) return;
+    const name = playerName || DEFAULT_PLAYER_NAME;
+    if (!playerName) {
+      setPlayerName(name);
+      localStorage.setItem('currentPlayer', name);
+      addPlayer(name);
+    }
     const endTime = Date.now();
     const duration = startTime ? endTime - startTime : 0;
     const accuracy = typed.length > 0 ? (accuracyCount / typed.length) * 100 : 0;
@@ -153,7 +170,7 @@ export function useTypingTest() {
 
     const result: PlayerResult = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      playerName,
+      playerName: name,
       textIndex: selectedGlobalIndex,
       testName: selectedTestName,
       accuracy,
@@ -169,7 +186,7 @@ export function useTypingTest() {
     };
 
     saveResult(result);
-    refreshPlayerStats(playerName);
+    refreshPlayerStats(name);
   };
 
   const onTextareaKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {

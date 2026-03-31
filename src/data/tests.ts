@@ -328,12 +328,12 @@ export default async function Article({ params }) {
 ];
 
 export const TEST_CATEGORIES: TestCategory[] = [
-  { key: 'jsAlgorithms', label: 'JS Algorithms:', tests: jsAlgorithms },
   { key: 'reactHooks', label: 'React Hooks:', tests: reactHooks },
   { key: 'jsFundamentals', label: 'JS Fundamentals:', tests: jsFundamentals },
   { key: 'typescript', label: 'TypeScript:', tests: typescript },
   { key: 'restApi', label: 'REST API:', tests: restApi },
   { key: 'asyncAwait', label: 'Async await:', tests: asyncAwait },
+  { key: 'jsAlgorithms', label: 'JS Algorithms:', tests: jsAlgorithms },
   { key: 'nextJs', label: 'Next.js:', tests: nextJs },
 ];
 

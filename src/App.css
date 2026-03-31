@@ -591,15 +591,57 @@ textarea::selection {
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
+  margin-bottom: 0px;
+  padding-bottom: 31px;
+  position: relative;
+}
+
+.language-group:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.10) 18%,
+    rgba(125, 211, 252, 0.22) 45%,
+    rgba(167, 139, 250, 0.22) 55%,
+    rgba(255, 255, 255, 0.10) 82%,
+    transparent 100%
+  );
+}
+
+.language-group:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -7px;
+  height: 14px;
+  background: radial-gradient(closest-side, rgba(125, 211, 252, 0.10), transparent 70%);
+  filter: blur(3px);
+  pointer-events: none;
 }
 
 .language-label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   margin: 0;
   color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
   letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-badge {
+  height: 23px;
+  width: auto;
+  display: block;
 }
 
 .text-selection-buttons {
