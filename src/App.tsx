@@ -42,6 +42,7 @@ const App = (): JSX.Element => {
         textareaRef={t.textareaRef}
         typed={t.typed}
         practiceText={t.practiceText}
+        selectedTestName={t.selectedTestName}
         disabled={!t.isRunning}
         onChange={t.onTextareaChange}
         onKeyDown={t.onTextareaKeyDown}

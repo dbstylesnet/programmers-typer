@@ -7,6 +7,12 @@ type Props = {
   results: PlayerResult[];
 };
 
+function formatDateTime24h(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleString(undefined, { hour12: false });
+}
+
 export function ResultsPanel({ playerName, show, stats, results }: Props) {
   if (!show || !playerName || !stats) return null;
 
@@ -41,7 +47,7 @@ export function ResultsPanel({ playerName, show, stats, results }: Props) {
               </div>
               <div className="result-pair">
                 <div className="result-label">Date:</div>
-                <div className="result-value">{new Date(result.date).toLocaleString()}</div>
+                <div className="result-value">{formatDateTime24h(result.date)}</div>
               </div>
               <div className="result-pair">
                 <div className="result-label">Accuracy:</div>

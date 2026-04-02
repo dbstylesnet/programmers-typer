@@ -5,6 +5,7 @@ type Props = {
   textareaRef: RefObject<HTMLTextAreaElement>;
   typed: string;
   practiceText: string;
+  selectedTestName: string;
   disabled: boolean;
   onChange: (value: string) => void;
   onKeyDown: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
@@ -18,6 +19,7 @@ export function TypingArea({
   textareaRef,
   typed,
   practiceText,
+  selectedTestName,
   disabled,
   onChange,
   onKeyDown,
@@ -53,9 +55,13 @@ export function TypingArea({
   return (
     <div className="typing-area-wrapper">
       <div className="sub-header practice-text-label">
-        <h3>Practice text:</h3>
+        <h3>
+          Practice text: <span className="practice-test-name">{selectedTestName}</span>
+        </h3>
         <div className="practice-metrics">
-          Timer: {elapsedDisplay} | Accuracy: {accuracyPercent.toFixed(2)}% | Progress: {progressPercent.toFixed(2)}%
+          <div className="practice-metric">Time: {elapsedDisplay}</div>
+          <div className="practice-metric">Accuracy: {accuracyPercent.toFixed(2)}%</div>
+          <div className="practice-metric">Progress: {progressPercent.toFixed(2)}%</div>
         </div>
       </div>
 

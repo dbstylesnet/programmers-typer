@@ -44,6 +44,11 @@ const jsAlgorithms: PracticeTest[] = [
     text:
       'function linearSearch(arr, target) {\n  for (let i = 0; i < arr.length; i++) if (arr[i] === target) return i;\n  return -1;\n}\nconst result = linearSearch([3, 7, 2, 9, 4], 9);\nconsole.log(result);',
   },
+  {
+    name: 'Bubble Sort Component',
+    text:
+      'function SortComponent() {\n  const [arr] = useState([5, 2, 8, 1, 9]);\n  const [result, setResult] = useState([]);\n  const [isSorted, setIsSorted] = useState(false);\n  const bubbleSort = (a) => {\n    const copy = [...a];\n    for (let i = 0; i < copy.length - 1; i++)\n      for (let j = 0; j < copy.length - 1 - i; j++)\n        if (copy[j] > copy[j + 1]) [copy[j], copy[j + 1]] = [copy[j + 1], copy[j]];\n    return copy;\n  };\n  const toggleSort = () => {\n    if (!isSorted) setResult(bubbleSort(arr));\n    else setResult([]);\n    setIsSorted(!isSorted);\n  };\n  return (\n    <div>\n      <button onClick={toggleSort}>{isSorted ? \"Reset\" : \"Sort\"}</button>\n      <div>Original: {arr.join(\", \")}</div>\n      <div>Sorted: {result.join(\", \")}</div>\n    </div>\n  );\n}',
+  },
 ];
 
 const reactHooks: PracticeTest[] = [
@@ -86,11 +91,6 @@ const reactHooks: PracticeTest[] = [
     name: 'useLayoutEffect',
     text:
       'useLayoutEffect(() => {\n  const rect = elementRef.current.getBoundingClientRect();\n  setPosition({ x: rect.x, y: rect.y });\n}, [dependencies]);',
-  },
-  {
-    name: 'Bubble Sort Component',
-    text:
-      'function SortComponent() {\n  const [arr] = useState([5, 2, 8, 1, 9]);\n  const [result, setResult] = useState([]);\n  const [isSorted, setIsSorted] = useState(false);\n  const bubbleSort = (a) => {\n    const copy = [...a];\n    for (let i = 0; i < copy.length - 1; i++)\n      for (let j = 0; j < copy.length - 1 - i; j++)\n        if (copy[j] > copy[j + 1]) [copy[j], copy[j + 1]] = [copy[j + 1], copy[j]];\n    return copy;\n  };\n  const toggleSort = () => {\n    if (!isSorted) setResult(bubbleSort(arr));\n    else setResult([]);\n    setIsSorted(!isSorted);\n  };\n  return (\n    <div>\n      <button onClick={toggleSort}>{isSorted ? "Reset" : "Sort"}</button>\n      <div>Original: {arr.join(", ")}</div>\n      <div>Sorted: {result.join(", ")}</div>\n    </div>\n  );\n}',
   },
 ];
 

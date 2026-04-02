@@ -9,9 +9,7 @@ type SelectedTest = {
 };
 
 function formatTime(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return `${m}:${s.toString().padStart(2, '0')}`;
+  return `${seconds}s`;
 }
 
 export function useTypingTest() {
@@ -268,6 +266,7 @@ export function useTypingTest() {
 
     categories: TEST_CATEGORIES,
     selected,
+    selectedTestName,
     selectTest,
 
     practiceText,

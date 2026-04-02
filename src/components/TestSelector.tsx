@@ -11,7 +11,8 @@ const CATEGORY_BADGE_SRC: Record<TestCategoryKey, string> = {
     'https://img.shields.io/badge/JS-Fundamentals-111827?style=flat&labelColor=111827&logo=javascript&logoColor=F7DF1E',
   typescript:
     'https://img.shields.io/badge/TypeScript-Types-111827?style=flat&labelColor=111827&logo=typescript&logoColor=3178C6',
-  restApi: 'https://img.shields.io/badge/REST-API-111827?style=flat&labelColor=111827&logoColor=009688',
+  restApi:
+    'https://img.shields.io/badge/REST-API-111827?style=flat&labelColor=111827&logo=postman&logoColor=FF6C37',
   asyncAwait:
     'https://img.shields.io/badge/Async-Await-111827?style=flat&labelColor=111827&logo=nodedotjs&logoColor=339933',
   nextJs: 'https://img.shields.io/badge/Next.js-App-111827?style=flat&labelColor=111827&logo=nextdotjs&logoColor=ffffff',
