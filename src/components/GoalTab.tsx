@@ -5,6 +5,11 @@ export function GoalTab(): JSX.Element {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Unfold on initial page load.
+    setOpen(true);
+  }, []);
+
+  useEffect(() => {
     if (!open) return;
     const onDocMouseDown = (e: MouseEvent) => {
       if (rootRef.current?.contains(e.target as Node)) return;
@@ -31,20 +36,16 @@ export function GoalTab(): JSX.Element {
             <h3 className="goal-tab-title">Why ProgTyper?</h3>
             <ul className="goal-tab-list">
               <li>
-                <strong>Syntax</strong> — You repeat real code patterns so keywords, brackets, and structure stick in muscle
-                memory.
+                <strong>Muscle memory</strong> — Learn code patterns, keywords, brackets, and structure.
               </li>
               <li>
-                <strong>Programming keys</strong> — You train the keys you use most when coding: braces, parens,
-                operators, punctuation, and indentation (including Tab where it matters).
+                <strong>Programming keys</strong> — Improve typing speed and accuracy using programming keys.
               </li>
               <li>
-                <strong>Real apps</strong> — You learn crucial components of real applications: the same imports,
-                hooks, handlers, and layout patterns you see in production code.
+                <strong>App components</strong> — Get to know the typical components of real apps.
               </li>
               <li>
-                <strong>Better coding flow</strong> — Faster, more accurate typing means less time fighting the keyboard
-                and more focus on logic and problem solving.
+                <strong>Problem solving</strong> — Don't waste time on thinking what to type, focus on logic and coding flow.
               </li>
             </ul>
           </div>
