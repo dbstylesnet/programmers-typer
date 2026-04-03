@@ -4,6 +4,7 @@ import { GoalTab } from './components/GoalTab';
 import { PlayerSection } from './components/PlayerSection';
 import { ResultsPanel } from './components/ResultsPanel';
 import { StartStopButton } from './components/StartStopButton';
+import { TestExplanationSection } from './components/TestExplanationSection';
 import { TestSelector } from './components/TestSelector';
 import { TypingArea } from './components/TypingArea';
 import { useTypingTest } from './hooks/useTypingTest';
@@ -35,6 +36,8 @@ const App = (): JSX.Element => {
         onClearHistory={t.clearPlayerHistory}
         canClearHistory={Boolean(t.playerName)}
       />
+
+      <TestExplanationSection explanation={t.selectedTestExplanation} />
 
       <StartStopButton disabled={!t.practiceText} isRunning={t.isRunning} onClick={t.toggleStartStop} />
 

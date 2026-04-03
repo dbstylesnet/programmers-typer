@@ -1,7 +1,7 @@
 import type { KeyboardEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { addPlayer, clearPlayerResults, getPlayerResults, getPlayerStats, PlayerResult, saveResult } from '../database';
-import { TEST_CATEGORIES, TestCategoryKey } from '../data/tests';
+import { TEST_CATEGORIES, type TestCategoryKey, type TestExplanationParts } from '../data/tests';
 
 type SelectedTest = {
   category: TestCategoryKey;
@@ -35,9 +35,23 @@ export function useTypingTest() {
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
 
   const allTests = useMemo(() => {
-    const flattened: Array<{ category: TestCategoryKey; index: number; name: string; text: string }> = [];
+    const flattened: Array<{
+      category: TestCategoryKey;
+      index: number;
+      name: string;
+      text: string;
+      explanation: TestExplanationParts;
+    }> = [];
     for (const cat of TEST_CATEGORIES) {
-      cat.tests.forEach((t, idx) => flattened.push({ category: cat.key, index: idx, name: t.name, text: t.text }));
+      cat.tests.forEach((t, idx) =>
+        flattened.push({
+          category: cat.key,
+          index: idx,
+          name: t.name,
+          text: t.text,
+          explanation: t.explanation,
+        }),
+      );
     }
     return flattened;
   }, []);
@@ -47,6 +61,12 @@ export function useTypingTest() {
     const cat = TEST_CATEGORIES.find((c) => c.key === selected.category);
     const name = cat?.tests[selected.index]?.name;
     return name ?? 'Unknown Test';
+  }, [selected]);
+
+  const selectedTestExplanation = useMemo((): TestExplanationParts | null => {
+    if (!selected) return null;
+    const cat = TEST_CATEGORIES.find((c) => c.key === selected.category);
+    return cat?.tests[selected.index]?.explanation ?? null;
   }, [selected]);
 
   const selectedGlobalIndex = useMemo(() => {
@@ -267,6 +287,7 @@ export function useTypingTest() {
     categories: TEST_CATEGORIES,
     selected,
     selectedTestName,
+    selectedTestExplanation,
     selectTest,
 
     practiceText,

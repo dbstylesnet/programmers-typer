@@ -524,6 +524,52 @@ textarea::selection {
   margin: 0;
 }
 
+/* Match .textAreas: same width and horizontal margins as typing area */
+.test-explanation-section {
+  position: relative;
+  width: 80%;
+  max-width: 100%;
+  margin: 4px 10% 51px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  text-align: left;
+}
+
+.test-explanation-title {
+  margin: 0;
+  padding-left: 10px; /* align with .practice-text-label / textarea inset */
+}
+
+.test-explanation-title .test-explanation-heading {
+  margin-top: 23px;
+  margin-bottom: 16px;
+}
+
+.test-explanation-content {
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.test-explanation-part {
+  margin: 0 0 12px 0;
+  font-size: 17px;
+  font-weight: 500;
+  font-variant: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: none;
+}
+
+.test-explanation-part:last-child {
+  margin-bottom: 0;
+}
+
+.test-explanation-label {
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+}
+
 .test-selector-actions {
   display: flex;
   align-items: center;
@@ -1088,6 +1134,16 @@ textarea::selection {
     padding-right: 0;
   }
 
+  .test-explanation-section {
+    width: 95%;
+    margin: 4px 2.5% 51px;
+  }
+
+  .test-explanation-title,
+  .test-explanation-content {
+    padding-left: 8px; /* match .practice-text-label at <=768 */
+  }
+
   .text-selection-section {
     width: 95%;
   }
@@ -1156,6 +1212,16 @@ textarea::selection {
 
   .test-selector-title {
     width: 98%;
+  }
+
+  .test-explanation-section {
+    width: 98%;
+    margin: 4px 1% 51px;
+  }
+
+  .test-explanation-title,
+  .test-explanation-content {
+    padding-left: 6px; /* match .practice-text-label at <=480 */
   }
 
   .text-selection-section {

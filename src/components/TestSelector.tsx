@@ -6,11 +6,11 @@ const CATEGORY_BADGE_SRC: Record<TestCategoryKey, string> = {
   jsAlgorithms:
     'https://img.shields.io/badge/JS-Algorithms-111827?style=flat&labelColor=111827&logo=javascript&logoColor=F7DF1E',
   reactHooks:
-    'https://img.shields.io/badge/React-Hooks-111827?style=flat&labelColor=111827&logo=react&logoColor=61DAFB',
+    'https://img.shields.io/badge/React-%20-111827?style=flat&labelColor=111827&logo=react&logoColor=61DAFB',
   jsFundamentals:
     'https://img.shields.io/badge/JS-Fundamentals-111827?style=flat&labelColor=111827&logo=javascript&logoColor=F7DF1E',
   typescript:
-    'https://img.shields.io/badge/TypeScript-Types-111827?style=flat&labelColor=111827&logo=typescript&logoColor=3178C6',
+    'https://img.shields.io/badge/TypeScript-%20-111827?style=flat&labelColor=111827&logo=typescript&logoColor=3178C6',
   restApi:
     'https://img.shields.io/badge/REST-API-111827?style=flat&labelColor=111827&logo=postman&logoColor=FF6C37',
   asyncAwait:
