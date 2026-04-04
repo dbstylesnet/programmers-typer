@@ -24,41 +24,49 @@ export function ResultsPanel({ playerName, show, stats, results }: Props) {
     <div className="results-section">
       <h3>Stats:</h3>
       <div className="statistics-container">
-        <div className="stat-item">
-          <div className="stat-label">Total Tests</div>
+        <div className="stat-item stat-item--tests">
+          <div className="stat-label">Total tests</div>
           <div className="stat-value">{stats.totalTests}</div>
         </div>
-        <div className="stat-item">
-          <div className="stat-label">Average Accuracy</div>
+        <div className="stat-item stat-item--accuracy">
+          <div className="stat-label">Average accuracy</div>
           <div className="stat-value">{stats.averageAccuracy.toFixed(2)}%</div>
         </div>
       </div>
 
-      <h4>Recent results:</h4>
+      <h4 className="results-recent-heading">Recent results</h4>
       <div className="recent-results-container">
-        {results
-          .slice(-10)
-          .reverse()
-          .map((result) => (
-            <div key={result.id} className="result-item">
-              <div className="result-pair">
-                <div className="result-label">Test:</div>
-                <div className="result-value">{result.testName || 'Unknown Test'}</div>
+        {results.length === 0 ? (
+          <p className="recent-results-empty">No completed tests yet. Finish a run to see it listed here.</p>
+        ) : (
+          results
+            .slice(-10)
+            .reverse()
+            .map((result) => (
+              <div key={result.id} className="result-item">
+                <div className="result-item-body">
+                  <div className="result-pair">
+                    <div className="result-label">Test name</div>
+                    <div className="result-value result-value--name">{result.testName || 'Unknown test'}</div>
+                  </div>
+                  <div className="result-pair">
+                    <div className="result-label">Time</div>
+                    <div className="result-value result-value--time">{formatTimeSeconds(result.duration)}</div>
+                  </div>
+                  <div className="result-pair">
+                    <div className="result-label">Accuracy</div>
+                    <div className="result-value result-value--accuracy">
+                      {result.accuracy.toFixed(2)}%
+                    </div>
+                  </div>
+                  <div className="result-pair">
+                    <div className="result-label">Date</div>
+                    <div className="result-value result-value--date">{formatDateTime24h(result.date)}</div>
+                  </div>
+                </div>
               </div>
-              <div className="result-pair">
-                <div className="result-label">Time:</div>
-                <div className="result-value">{formatTimeSeconds(result.duration)}</div>
-              </div>
-              <div className="result-pair">
-                <div className="result-label">Accuracy:</div>
-                <div className="result-value">{result.accuracy.toFixed(2)}%</div>
-              </div>
-              <div className="result-pair">
-                <div className="result-label">Date:</div>
-                <div className="result-value">{formatDateTime24h(result.date)}</div>
-              </div>
-            </div>
-          ))}
+            ))
+        )}
       </div>
     </div>
   );
