@@ -1,5 +1,6 @@
 import type { KeyboardEvent, RefObject } from 'react';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { getTextareaCaretCoordinates } from '../utils/getTextareaCaretCoordinates';
 
 type Props = {
   textareaRef: RefObject<HTMLTextAreaElement>;
@@ -31,6 +32,19 @@ export function TypingArea({
   const targetRef = useRef<HTMLTextAreaElement>(null);
   const measureRef = useRef<HTMLTextAreaElement>(null);
   const [areaHeight, setAreaHeight] = useState<number>(700);
+  const [caretPixel, setCaretPixel] = useState({ top: 0, left: 0, height: 18 });
+
+  const updateCaretPixel = useCallback(() => {
+    const el = textareaRef.current;
+    if (!el || disabled) return;
+    const pos = Math.min(el.selectionStart ?? 0, el.value.length);
+    const { top, left, height } = getTextareaCaretCoordinates(el, pos);
+    setCaretPixel({
+      top: top - el.scrollTop,
+      left: left - el.scrollLeft,
+      height: Math.max(12, height),
+    });
+  }, [disabled, textareaRef]);
 
   const measure = () => {
     const el = measureRef.current;
@@ -52,6 +66,32 @@ export function TypingArea({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useLayoutEffect(() => {
+    if (disabled) return;
+    const id = requestAnimationFrame(() => updateCaretPixel());
+    return () => cancelAnimationFrame(id);
+  }, [typed, disabled, areaHeight, practiceText, updateCaretPixel]);
+
+  useEffect(() => {
+    if (disabled) return;
+    const el = textareaRef.current;
+    if (!el) return;
+    const sync = () => requestAnimationFrame(updateCaretPixel);
+    el.addEventListener('scroll', sync);
+    el.addEventListener('click', sync);
+    el.addEventListener('keyup', sync);
+    const onSelectionChange = () => {
+      if (document.activeElement === el) sync();
+    };
+    document.addEventListener('selectionchange', onSelectionChange);
+    return () => {
+      el.removeEventListener('scroll', sync);
+      el.removeEventListener('click', sync);
+      el.removeEventListener('keyup', sync);
+      document.removeEventListener('selectionchange', onSelectionChange);
+    };
+  }, [disabled, updateCaretPixel, textareaRef]);
+
   return (
     <div className="typing-area-wrapper">
       <div className="sub-header practice-text-label">
@@ -67,17 +107,31 @@ export function TypingArea({
 
       <div className="mainTextAreas">
         <div className="textAreas" style={{ minHeight: areaHeight + 24 }}>
-          <textarea
-            ref={textareaRef}
-            className="textInputs topP"
-            onChange={(e) => onChange(e.target.value)}
-            onKeyDown={onKeyDown}
-            onClick={onClick}
-            value={typed}
-            disabled={disabled}
-            spellCheck={false}
-            style={{ height: areaHeight, minHeight: areaHeight }}
-          />
+          <div className="typing-input-shell" style={{ height: areaHeight, minHeight: areaHeight }}>
+            <textarea
+              ref={textareaRef}
+              className={`textInputs topP${disabled ? '' : ' typing-smooth-caret-active'}`}
+              onChange={(e) => onChange(e.target.value)}
+              onKeyDown={onKeyDown}
+              onClick={onClick}
+              value={typed}
+              disabled={disabled}
+              spellCheck={false}
+              style={{ height: areaHeight, minHeight: areaHeight }}
+            />
+            {!disabled ? (
+              <div className="typing-caret-overlay" aria-hidden>
+                <div
+                  className="typing-caret-pipe"
+                  style={{
+                    top: caretPixel.top,
+                    left: caretPixel.left,
+                    height: caretPixel.height,
+                  }}
+                />
+              </div>
+            ) : null}
+          </div>
           <textarea
             ref={targetRef}
             className="textInputs bottomP"

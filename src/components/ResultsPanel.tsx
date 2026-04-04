@@ -13,6 +13,10 @@ function formatDateTime24h(iso: string): string {
   return d.toLocaleString(undefined, { hour12: false });
 }
 
+function formatTimeSeconds(durationMs: number): string {
+  return `${Math.max(0, Math.floor(durationMs / 1000))}s`;
+}
+
 export function ResultsPanel({ playerName, show, stats, results }: Props) {
   if (!show || !playerName || !stats) return null;
 
@@ -28,10 +32,6 @@ export function ResultsPanel({ playerName, show, stats, results }: Props) {
           <div className="stat-label">Average Accuracy</div>
           <div className="stat-value">{stats.averageAccuracy.toFixed(2)}%</div>
         </div>
-        <div className="stat-item">
-          <div className="stat-label">Average Progress</div>
-          <div className="stat-value">{stats.averageProgress.toFixed(2)}%</div>
-        </div>
       </div>
 
       <h4>Recent results:</h4>
@@ -46,20 +46,16 @@ export function ResultsPanel({ playerName, show, stats, results }: Props) {
                 <div className="result-value">{result.testName || 'Unknown Test'}</div>
               </div>
               <div className="result-pair">
-                <div className="result-label">Date:</div>
-                <div className="result-value">{formatDateTime24h(result.date)}</div>
+                <div className="result-label">Time:</div>
+                <div className="result-value">{formatTimeSeconds(result.duration)}</div>
               </div>
               <div className="result-pair">
                 <div className="result-label">Accuracy:</div>
                 <div className="result-value">{result.accuracy.toFixed(2)}%</div>
               </div>
               <div className="result-pair">
-                <div className="result-label">Progress:</div>
-                <div className="result-value">{result.progress.toFixed(2)}%</div>
-              </div>
-              <div className="result-pair">
-                <div className="result-label">Duration:</div>
-                <div className="result-value">{(result.duration / 1000).toFixed(2)}s</div>
+                <div className="result-label">Date:</div>
+                <div className="result-value">{formatDateTime24h(result.date)}</div>
               </div>
             </div>
           ))}

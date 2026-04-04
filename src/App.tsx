@@ -74,6 +74,13 @@ const App = (): JSX.Element => {
       <CompletionModal
         open={t.isCompleteModalOpen}
         elapsedDisplay={t.elapsedDisplay}
+        accuracyPercent={t.accuracyPercent}
+        previousTestName={t.completionPreviousTestName}
+        nextTestName={t.completionNextTestName}
+        canStartPreviousTest={t.canStartPreviousTestFromCompletion}
+        canStartNextTest={t.canStartNextTestFromCompletion}
+        onStartPreviousTest={t.startPreviousTestFromCompletion}
+        onStartNextTest={t.startNextTestFromCompletion}
         onClose={t.closeCompleteModal}
         onStartAgain={t.startAgainAfterCompletion}
         onShowResultsHistory={t.showResultsHistoryAfterCompletion}

@@ -83,7 +83,6 @@ export const getPlayerStats = (playerName: string) => {
     return {
       totalTests: 0,
       averageAccuracy: 0,
-      averageProgress: 0,
       completedTests: 0,
       bestAccuracy: 0,
     };
@@ -91,12 +90,10 @@ export const getPlayerStats = (playerName: string) => {
 
   const completed = results.filter(r => r.completed);
   const accuracies = results.map(r => r.accuracy);
-  const progresses = results.map(r => r.progress);
 
   return {
     totalTests: results.length,
     averageAccuracy: accuracies.reduce((a, b) => a + b, 0) / accuracies.length,
-    averageProgress: progresses.reduce((a, b) => a + b, 0) / progresses.length,
     completedTests: completed.length,
     bestAccuracy: Math.max(...accuracies),
   };

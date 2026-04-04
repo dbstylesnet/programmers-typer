@@ -261,7 +261,7 @@ textarea::selection {
 }
 
 .typeInputs.userTextInput {
-  color: skyblue;
+  color: #38e0ff;
   opacity: 1;
   z-index: 1;
   width: 100%;
@@ -288,7 +288,11 @@ textarea::selection {
 }
 
 .topP {
-  color: skyblue;
+  color: #38e0ff;
+  text-shadow:
+    0 0 12px rgba(56, 224, 255, 0.5),
+    0 0 24px rgba(56, 212, 255, 0.2),
+    0 1px 0 rgba(0, 0, 0, 0.45);
   opacity: 1;
   z-index: 1;
   border-color: rgba(102, 126, 234, 0.65);
@@ -297,6 +301,56 @@ textarea::selection {
 .textInputs.topP:focus {
   outline: none;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18), 0 0 0 3px rgba(102, 126, 234, 0.28), 0 18px 45px rgba(0, 0, 0, 0.35);
+}
+
+.textInputs.topP.typing-smooth-caret-active {
+  caret-color: transparent;
+}
+
+.typing-input-shell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  margin: 5px;
+  width: calc(100% - 20px);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.typing-input-shell .textInputs.topP {
+  position: relative;
+  top: auto;
+  left: auto;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.typing-caret-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.typing-caret-pipe {
+  position: absolute;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, rgba(186, 230, 253, 0.98) 0%, #7dd3fc 45%, #38bdf8 100%);
+  box-shadow:
+    0 0 6px rgba(125, 211, 252, 0.9),
+    0 0 14px rgba(56, 189, 248, 0.35);
+  transition:
+    left 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    top 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    height 0.08s ease-out;
+  will-change: left, top;
 }
 
 .bottomP {
@@ -364,6 +418,58 @@ textarea::selection {
   margin: 0;
   font-size: 15px;
   line-height: 1.45;
+}
+
+.modal-adjacent-tests {
+  margin-top: 20px;
+  padding: 14px 12px 16px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-adjacent-name {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  max-width: 100%;
+  line-height: 1.35;
+}
+
+.modal-adjacent-name--prev {
+  color: rgba(186, 230, 253, 0.95);
+}
+
+.modal-adjacent-name--next {
+  color: rgba(196, 181, 253, 0.95);
+}
+
+.modal-adjacent-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.modal-btn-adjacent {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-btn-adjacent:hover:not(:disabled) {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+}
+
+.modal-btn-adjacent:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .modal-actions {
@@ -1016,9 +1122,9 @@ textarea::selection {
   border-radius: 6px;
   padding: 10px 15px;
   margin: 8px 0;
-  border-left: 4px solid rgba(255, 255, 255, 0.5);
+  border-left: 4px solid #38e0ff;
   transition: all 0.3s ease;
-  font-size: 12px;
+  font-size: 13px;
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
@@ -1028,7 +1134,10 @@ textarea::selection {
 .result-item:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateX(5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-left-color: #5eebff;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.2),
+    -6px 0 18px rgba(56, 224, 255, 0.22);
 }
 
 .result-pair {
@@ -1159,6 +1268,11 @@ textarea::selection {
     width: calc(100% - 16px);
   }
 
+  .typing-input-shell {
+    margin: 4px;
+    width: calc(100% - 16px);
+  }
+
   .modal-content.congratz {
     min-width: 250px;
     max-width: 75%;
@@ -1238,6 +1352,11 @@ textarea::selection {
     margin: 3px;
     width: calc(100% - 12px);
     min-height: 150px;
+  }
+
+  .typing-input-shell {
+    margin: 3px;
+    width: calc(100% - 12px);
   }
 
   .modal-content.congratz {

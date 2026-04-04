@@ -307,7 +307,7 @@ const typescript: PracticeTest[] = [
     },
   },
   {
-    name: 'Interface 1',
+    name: 'Interface',
     text:
       'interface User {\n  name: string;\n  age: number;\n  email: string;\n}\nconst user: User = {\n  name: "John",\n  age: 30,\n  email: "john@example.com"\n};',
     explanation: {
@@ -318,7 +318,7 @@ const typescript: PracticeTest[] = [
     },
   },
   {
-    name: 'Interface 2',
+    name: 'Interface Class',
     text:
       'interface Animal {\n  name: string;\n  speak(): void;\n}\nclass Dog implements Animal {\n  name: string;\n  constructor(name: string) { this.name = name; }\n  speak() { console.log(`${this.name} barks`); }\n}',
     explanation: {
@@ -340,18 +340,7 @@ const typescript: PracticeTest[] = [
     },
   },
   {
-    name: 'Generics 1',
-    text:
-      'function identity<T>(arg: T): T {\n  return arg;\n}\nconst num = identity<number>(42);\nconst str = identity<string>("hello");',
-    explanation: {
-      whatItDoes:
-        'Generics let you write one function that works for many types without throwing away type information. The T is a placeholder: whoever calls the function picks what T is—number, User, anything—and TypeScript tracks that through the return value. You avoid copy-pasting the same logic for every type.',
-      typicalUse:
-        'Tiny helpers like “first element of array,” wrappers around fetch that parse JSON as a specific type, or shared list components. Once generics click, a lot of library code you read suddenly makes sense.',
-    },
-  },
-  {
-    name: 'Generics 2',
+    name: 'Generics',
     text:
       'interface Box<T> {\n  value: T;\n}\nconst numberBox: Box<number> = { value: 42 };\nconst stringBox: Box<string> = { value: "hello" };',
     explanation: {
@@ -359,6 +348,17 @@ const typescript: PracticeTest[] = [
         'Box<T> means “a box that holds a T.” You might have Box<number> or Box<string>; the structure is the same—there is a value field—but the type inside changes. TypeScript keeps the inner type linked so you cannot accidentally put a string where a number box was expected.',
       typicalUse:
         'Reusable UI components (a list of T), API response wrappers, cache slots, or any container type you use in more than one place with different payloads.',
+    },
+  },
+  {
+    name: 'Generics Function',
+    text:
+      'function identity<T>(arg: T): T {\n  return arg;\n}\nconst num = identity<number>(42);\nconst str = identity<string>("hello");',
+    explanation: {
+      whatItDoes:
+        'Generics let you write one function that works for many types without throwing away type information. The T is a placeholder: whoever calls the function picks what T is—number, User, anything—and TypeScript tracks that through the return value. You avoid copy-pasting the same logic for every type.',
+      typicalUse:
+        'Tiny helpers like “first element of array,” wrappers around fetch that parse JSON as a specific type, or shared list components. Once generics click, a lot of library code you read suddenly makes sense.',
     },
   },
   {

@@ -75,6 +75,17 @@ export function useTypingTest() {
     return idx >= 0 ? idx : 0;
   }, [allTests, selected]);
 
+  const completionAdjacent = useMemo(() => {
+    const prev = selectedGlobalIndex > 0 ? allTests[selectedGlobalIndex - 1] : null;
+    const next = selectedGlobalIndex < allTests.length - 1 ? allTests[selectedGlobalIndex + 1] : null;
+    return {
+      previousTestName: prev?.name ?? null,
+      nextTestName: next?.name ?? null,
+      canStartPrevious: Boolean(prev),
+      canStartNext: Boolean(next),
+    };
+  }, [allTests, selectedGlobalIndex]);
+
   useEffect(() => {
     const savedPlayer = localStorage.getItem('currentPlayer');
     if (savedPlayer) setPlayerName(savedPlayer);
@@ -253,6 +264,33 @@ export function useTypingTest() {
     start();
   };
 
+  const beginTestAtGlobalIndex = (globalIdx: number) => {
+    const t = allTests[globalIdx];
+    if (!t) return;
+    const cat = TEST_CATEGORIES.find((c) => c.key === t.category);
+    const nextText = cat?.tests[t.index]?.text ?? '';
+    setIsCompleteModalOpen(false);
+    setSelected({ category: t.category, index: t.index });
+    setPracticeText(nextText);
+    setTargetTextLength(nextText.length);
+    setTyped('');
+    setAccuracyCount(0);
+    setIsRunning(true);
+    setStartTime(Date.now());
+    setElapsedSeconds(0);
+    setTimeout(() => textareaRef.current?.focus(), 0);
+  };
+
+  const startPreviousTestFromCompletion = () => {
+    if (selectedGlobalIndex <= 0) return;
+    beginTestAtGlobalIndex(selectedGlobalIndex - 1);
+  };
+
+  const startNextTestFromCompletion = () => {
+    if (selectedGlobalIndex >= allTests.length - 1) return;
+    beginTestAtGlobalIndex(selectedGlobalIndex + 1);
+  };
+
   const showResultsHistoryAfterCompletion = () => {
     setIsCompleteModalOpen(false);
     setShowResults(true);
@@ -308,6 +346,13 @@ export function useTypingTest() {
     startAgainAfterCompletion,
     showResultsHistoryAfterCompletion,
     clearPlayerHistory,
+
+    completionPreviousTestName: completionAdjacent.previousTestName,
+    completionNextTestName: completionAdjacent.nextTestName,
+    canStartPreviousTestFromCompletion: completionAdjacent.canStartPrevious,
+    canStartNextTestFromCompletion: completionAdjacent.canStartNext,
+    startPreviousTestFromCompletion,
+    startNextTestFromCompletion,
   };
 }
 
