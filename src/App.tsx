@@ -30,6 +30,7 @@ const App = (): JSX.Element => {
         selected={t.selected}
         disabled={t.isRunning}
         onSelect={t.selectTest}
+        lastResultByTestName={t.lastResultByTestName}
         showResults={t.showResults}
         hasHistory={t.playerResults.length > 0}
         onToggleResults={() => t.setShowResults(!t.showResults)}

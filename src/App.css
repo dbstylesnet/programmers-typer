@@ -835,10 +835,18 @@ textarea::selection {
 }
 
 .text-selection-buttons button {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 10px 12px;
+  min-width: 0;
+  min-height: 2.25rem;
+  box-sizing: border-box;
   background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.10);
-  padding: 8px 16px;
+  padding: 4px 16px;
   font-size: 12px;
   font-weight: 600;
   border-radius: 6px;
@@ -847,6 +855,87 @@ textarea::selection {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.text-selection-buttons button .test-select-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: left;
+}
+
+.text-selection-buttons button .test-select-divider {
+  flex: 0 0 1px;
+  align-self: center;
+  width: 1px;
+  height: 1.25em;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.12);
+}
+
+.text-selection-buttons button .test-select-last {
+  display: flex;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: rgba(200, 244, 255, 0.92);
+  text-shadow: 0 0 8px rgba(56, 224, 255, 0.25);
+}
+
+.text-selection-buttons button.selected-test .test-select-last {
+  color: rgba(224, 242, 255, 0.95);
+  text-shadow: 0 0 10px rgba(147, 197, 253, 0.35);
+}
+
+.text-selection-buttons button.selected-test .test-select-divider {
+  background: rgba(147, 197, 253, 0.45);
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.35);
+}
+
+.text-selection-buttons button .test-select-stat {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.text-selection-buttons button .test-select-stat--time {
+  color: #7df4ff;
+  text-shadow:
+    0 0 5px rgba(94, 235, 255, 0.62),
+    0 0 12px rgba(56, 224, 255, 0.36),
+    0 0 22px rgba(14, 165, 233, 0.22),
+    0 1px 3px rgba(0, 0, 0, 0.24);
+}
+
+.text-selection-buttons button .test-select-stat--accuracy {
+  color: #b5edd8;
+  text-shadow:
+    0 0 6px rgba(110, 231, 183, 0.76),
+    0 0 14px rgba(52, 211, 153, 0.52),
+    0 0 24px rgba(16, 185, 129, 0.38),
+    0 1px 4px rgba(0, 0, 0, 0.32);
+}
+
+.text-selection-buttons button.selected-test .test-select-stat--time {
+  color: #8aebff;
+  text-shadow:
+    0 0 5px rgba(125, 211, 252, 0.68),
+    0 0 12px rgba(56, 189, 248, 0.4),
+    0 0 22px rgba(14, 165, 233, 0.26),
+    0 1px 3px rgba(0, 0, 0, 0.24);
+}
+
+.text-selection-buttons button.selected-test .test-select-stat--accuracy {
+  color: #c8f3da;
+  text-shadow:
+    0 0 6px rgba(110, 231, 183, 0.82),
+    0 0 16px rgba(52, 211, 153, 0.6),
+    0 0 26px rgba(16, 185, 129, 0.44),
+    0 1px 4px rgba(0, 0, 0, 0.32);
 }
 
 .text-selection-buttons button:hover {
@@ -1134,6 +1223,16 @@ textarea::selection {
   margin: 0;
 }
 
+.stat-item--tests .stat-label {
+  color: rgba(186, 245, 255, 0.88);
+  text-shadow: 0 0 14px rgba(56, 224, 255, 0.22);
+}
+
+.stat-item--accuracy .stat-label {
+  color: rgba(209, 250, 229, 0.88);
+  text-shadow: 0 0 14px rgba(52, 211, 153, 0.22);
+}
+
 .stat-value {
   margin: 0;
   font-size: 1.85rem;
@@ -1269,6 +1368,30 @@ textarea::selection {
   white-space: nowrap;
 }
 
+.result-pair:has(.result-value--name) .result-label {
+  color: #fff;
+  text-shadow: none;
+}
+
+.result-pair:has(.result-value--date) .result-label {
+  color: rgba(245, 200, 168, 0.88);
+  text-shadow:
+    0 0 8px rgba(251, 146, 60, 0.22),
+    0 0 14px rgba(234, 88, 12, 0.14);
+}
+
+.result-pair:has(.result-value--time) .result-label {
+  color: rgba(140, 248, 255, 0.92);
+  text-shadow:
+    0 0 8px rgba(94, 235, 255, 0.45),
+    0 0 16px rgba(56, 224, 255, 0.3);
+}
+
+.result-pair:has(.result-value--accuracy) .result-label {
+  color: rgba(187, 247, 208, 0.82);
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.2);
+}
+
 .result-value {
   font-size: 13px;
   font-weight: 600;
@@ -1280,7 +1403,13 @@ textarea::selection {
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.01em;
-  color: rgba(255, 255, 255, 0.97);
+  color: #fff;
+  text-shadow:
+    0 0 1px rgba(0, 0, 0, 0.95),
+    0 1px 2px rgba(0, 0, 0, 0.85),
+    0 0 16px rgba(255, 255, 255, 0.45),
+    0 0 28px rgba(0, 0, 0, 0.55),
+    0 3px 14px rgba(0, 0, 0, 0.65);
   min-width: 0;
   white-space: normal;
   word-break: break-word;
@@ -1294,21 +1423,34 @@ textarea::selection {
 .result-value--time {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  color: #e8fbff;
-  text-shadow: 0 0 12px rgba(56, 224, 255, 0.22);
+  color: #7df4ff;
+  text-shadow:
+    0 0 8px rgba(94, 235, 255, 0.95),
+    0 0 20px rgba(56, 224, 255, 0.65),
+    0 0 32px rgba(14, 165, 233, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .result-value--accuracy {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  color: #d1fae5;
-  text-shadow: 0 0 10px rgba(52, 211, 153, 0.28);
+  color: #a7f3d0;
+  text-shadow:
+    0 0 8px rgba(110, 231, 183, 0.95),
+    0 0 18px rgba(52, 211, 153, 0.75),
+    0 0 30px rgba(16, 185, 129, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .result-value--date {
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.82);
+  color: #f0b899;
+  text-shadow:
+    0 0 8px rgba(253, 186, 116, 0.95),
+    0 0 18px rgba(251, 146, 60, 0.75),
+    0 0 30px rgba(234, 88, 12, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.35);
   white-space: normal;
   word-break: break-word;
 }
@@ -1576,6 +1718,7 @@ textarea::selection {
   .text-selection-buttons button {
     padding: 6px 12px;
     font-size: 11px;
+    min-height: 2.05rem;
   }
 }
 

@@ -302,6 +302,25 @@ export function useTypingTest() {
     refreshPlayerStats(playerName);
   };
 
+  /** Most recent completed run per test name (for test list buttons). */
+  const lastResultByTestName = useMemo(() => {
+    const out: Record<string, { timeSeconds: number; accuracy: number }> = {};
+    const sorted = [...playerResults].sort((a, b) => {
+      const ta = new Date(a.date).getTime();
+      const tb = new Date(b.date).getTime();
+      return tb - ta;
+    });
+    for (const r of sorted) {
+      if (!r.completed || !r.testName) continue;
+      if (out[r.testName] !== undefined) continue;
+      out[r.testName] = {
+        timeSeconds: Math.max(0, Math.floor(r.duration / 1000)),
+        accuracy: r.accuracy,
+      };
+    }
+    return out;
+  }, [playerResults]);
+
   const accuracyPercent = useMemo(() => {
     const denom = typed.length || 1;
     return (accuracyCount / denom) * 100;
@@ -323,6 +342,7 @@ export function useTypingTest() {
     handlePlayerNameChange,
 
     categories: TEST_CATEGORIES,
+    lastResultByTestName,
     selected,
     selectedTestName,
     selectedTestExplanation,

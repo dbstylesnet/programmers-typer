@@ -46,7 +46,7 @@ export function ResultsPanel({ playerName, show, stats, results }: Props) {
               <div key={result.id} className="result-item">
                 <div className="result-item-body">
                   <div className="result-pair">
-                    <div className="result-label">Test name</div>
+                    <div className="result-label">Test</div>
                     <div className="result-value result-value--name">{result.testName || 'Unknown test'}</div>
                   </div>
                   <div className="result-pair">

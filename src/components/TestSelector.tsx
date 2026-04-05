@@ -18,11 +18,14 @@ const CATEGORY_BADGE_SRC: Record<TestCategoryKey, string> = {
   nextJs: 'https://img.shields.io/badge/Next.js-App-111827?style=flat&labelColor=111827&logo=nextdotjs&logoColor=ffffff',
 };
 
+export type LastRunStats = { timeSeconds: number; accuracy: number };
+
 type Props = {
   categories: TestCategory[];
   selected: Selected;
   disabled: boolean;
   onSelect: (category: TestCategoryKey, index: number) => void;
+  lastResultByTestName: Record<string, LastRunStats>;
   showResults: boolean;
   hasHistory: boolean;
   onToggleResults: () => void;
@@ -35,6 +38,7 @@ export function TestSelector({
   selected,
   disabled,
   onSelect,
+  lastResultByTestName,
   showResults,
   hasHistory,
   onToggleResults,
@@ -82,14 +86,30 @@ export function TestSelector({
             <div className="text-selection-buttons">
               {category.tests.map((t, idx) => {
                 const isSelected = selected?.category === category.key && selected.index === idx;
+                const last = lastResultByTestName[t.name];
                 return (
                   <button
                     key={t.name}
+                    type="button"
                     onClick={() => onSelect(category.key, idx)}
                     disabled={disabled}
                     className={isSelected ? 'selected-test' : ''}
                   >
-                    {t.name}
+                    <span className="test-select-name">{t.name}</span>
+                    {last ? (
+                      <>
+                        <span className="test-select-divider" aria-hidden="true" />
+                        <span
+                          className="test-select-last"
+                          aria-label={`Last run ${last.timeSeconds} seconds, ${last.accuracy.toFixed(2)} percent accuracy`}
+                        >
+                          <span className="test-select-stat test-select-stat--time">T: {last.timeSeconds}s</span>
+                          <span className="test-select-stat test-select-stat--accuracy">
+                            A: {last.accuracy.toFixed(2)}%
+                          </span>
+                        </span>
+                      </>
+                    ) : null}
                   </button>
                 );
               })}
