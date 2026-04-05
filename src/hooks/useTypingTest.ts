@@ -34,6 +34,27 @@ export function useTypingTest() {
 
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
 
+  /** Latest completion vs prior best time for that test (modal copy). */
+  const [completionVsBest, setCompletionVsBest] = useState<{
+    verdict: 'better' | 'worse' | 'tie' | 'first';
+    deltaSeconds: number;
+    deltaMs: number;
+  } | null>(null);
+
+  /** Frozen stats for the completion modal (unchanged when switching tests in the modal). */
+  const [completionModalSnapshot, setCompletionModalSnapshot] = useState<{
+    elapsedDisplay: string;
+    accuracyPercent: number;
+    completionVsBest: {
+      verdict: 'better' | 'worse' | 'tie' | 'first';
+      deltaSeconds: number;
+      deltaMs: number;
+    };
+  } | null>(null);
+
+  /** Per-test button tint: faster/slower than personal best before this run. */
+  const [testPerfVsBest, setTestPerfVsBest] = useState<Record<string, 'better' | 'worse'>>({});
+
   const allTests = useMemo(() => {
     const flattened: Array<{
       category: TestCategoryKey;
@@ -139,6 +160,9 @@ export function useTypingTest() {
   const handlePlayerNameChange = (nextNameRaw: string) => {
     const nextName = nextNameRaw.trim();
     setPlayerName(nextName);
+    setTestPerfVsBest({});
+    setCompletionVsBest(null);
+    setCompletionModalSnapshot(null);
     if (nextName) {
       localStorage.setItem('currentPlayer', nextName);
       addPlayer(nextName);
@@ -158,6 +182,7 @@ export function useTypingTest() {
     setStartTime(null);
     setElapsedSeconds(0);
     setIsCompleteModalOpen(false);
+    setCompletionModalSnapshot(null);
   };
 
   const start = () => {
@@ -168,6 +193,7 @@ export function useTypingTest() {
     setTyped('');
     setAccuracyCount(0);
     setIsCompleteModalOpen(false);
+    setCompletionModalSnapshot(null);
     setTimeout(() => textareaRef.current?.focus(), 0);
   };
 
@@ -178,6 +204,7 @@ export function useTypingTest() {
     setTyped('');
     setAccuracyCount(0);
     setIsCompleteModalOpen(false);
+    setCompletionModalSnapshot(null);
   };
 
   const toggleStartStop = () => {
@@ -213,6 +240,52 @@ export function useTypingTest() {
       duration,
       date: new Date().toISOString(),
     };
+
+    if (completed) {
+      const priorSameTest = getPlayerResults(name).filter(
+        (r) => r.completed && r.testName === selectedTestName,
+      );
+      const bestPreviousMs =
+        priorSameTest.length > 0 ? Math.min(...priorSameTest.map((r) => r.duration)) : null;
+
+      let nextVsBest: {
+        verdict: 'better' | 'worse' | 'tie' | 'first';
+        deltaSeconds: number;
+        deltaMs: number;
+      };
+
+      if (bestPreviousMs !== null) {
+        const deltaMs = Math.abs(bestPreviousMs - duration);
+        const deltaSeconds = Math.floor(deltaMs / 1000);
+        if (duration < bestPreviousMs) {
+          nextVsBest = { verdict: 'better', deltaSeconds, deltaMs };
+          setTestPerfVsBest((p) => ({ ...p, [selectedTestName]: 'better' }));
+        } else if (duration > bestPreviousMs) {
+          nextVsBest = { verdict: 'worse', deltaSeconds, deltaMs };
+          setTestPerfVsBest((p) => ({ ...p, [selectedTestName]: 'worse' }));
+        } else {
+          nextVsBest = { verdict: 'tie', deltaSeconds: 0, deltaMs: 0 };
+          setTestPerfVsBest((p) => {
+            const next = { ...p };
+            delete next[selectedTestName];
+            return next;
+          });
+        }
+      } else {
+        nextVsBest = { verdict: 'first', deltaSeconds: 0, deltaMs: 0 };
+        setTestPerfVsBest((p) => {
+          const next = { ...p };
+          delete next[selectedTestName];
+          return next;
+        });
+      }
+      setCompletionVsBest(nextVsBest);
+      setCompletionModalSnapshot({
+        elapsedDisplay: formatTime(Math.floor(duration / 1000)),
+        accuracyPercent: accuracy,
+        completionVsBest: nextVsBest,
+      });
+    }
 
     saveResult(result);
     refreshPlayerStats(name);
@@ -264,35 +337,30 @@ export function useTypingTest() {
     start();
   };
 
-  const beginTestAtGlobalIndex = (globalIdx: number) => {
-    const t = allTests[globalIdx];
-    if (!t) return;
+  /** Switch selected test in the completion modal without starting or closing the modal. */
+  const switchToAdjacentTestFromCompletion = (direction: -1 | 1) => {
+    const nextIdx = selectedGlobalIndex + direction;
+    if (nextIdx < 0 || nextIdx >= allTests.length) return;
+    const t = allTests[nextIdx];
     const cat = TEST_CATEGORIES.find((c) => c.key === t.category);
     const nextText = cat?.tests[t.index]?.text ?? '';
-    setIsCompleteModalOpen(false);
     setSelected({ category: t.category, index: t.index });
     setPracticeText(nextText);
     setTargetTextLength(nextText.length);
     setTyped('');
     setAccuracyCount(0);
-    setIsRunning(true);
-    setStartTime(Date.now());
+    setIsRunning(false);
+    setStartTime(null);
     setElapsedSeconds(0);
-    setTimeout(() => textareaRef.current?.focus(), 0);
   };
 
-  const startPreviousTestFromCompletion = () => {
-    if (selectedGlobalIndex <= 0) return;
-    beginTestAtGlobalIndex(selectedGlobalIndex - 1);
-  };
+  const switchToPreviousTestFromCompletion = () => switchToAdjacentTestFromCompletion(-1);
 
-  const startNextTestFromCompletion = () => {
-    if (selectedGlobalIndex >= allTests.length - 1) return;
-    beginTestAtGlobalIndex(selectedGlobalIndex + 1);
-  };
+  const switchToNextTestFromCompletion = () => switchToAdjacentTestFromCompletion(1);
 
   const showResultsHistoryAfterCompletion = () => {
     setIsCompleteModalOpen(false);
+    setCompletionModalSnapshot(null);
     setShowResults(true);
   };
 
@@ -300,6 +368,8 @@ export function useTypingTest() {
     if (!playerName) return;
     clearPlayerResults(playerName);
     refreshPlayerStats(playerName);
+    setTestPerfVsBest({});
+    setCompletionVsBest(null);
   };
 
   /** Most recent completed run per test name (for test list buttons). */
@@ -343,6 +413,8 @@ export function useTypingTest() {
 
     categories: TEST_CATEGORIES,
     lastResultByTestName,
+    testPerfVsBest,
+    completionVsBest,
     selected,
     selectedTestName,
     selectedTestExplanation,
@@ -362,17 +434,21 @@ export function useTypingTest() {
     onTextareaClick,
 
     isCompleteModalOpen,
-    closeCompleteModal: () => setIsCompleteModalOpen(false),
+    closeCompleteModal: () => {
+      setIsCompleteModalOpen(false);
+      setCompletionModalSnapshot(null);
+    },
     startAgainAfterCompletion,
     showResultsHistoryAfterCompletion,
     clearPlayerHistory,
 
+    completionModalSnapshot,
     completionPreviousTestName: completionAdjacent.previousTestName,
     completionNextTestName: completionAdjacent.nextTestName,
-    canStartPreviousTestFromCompletion: completionAdjacent.canStartPrevious,
-    canStartNextTestFromCompletion: completionAdjacent.canStartNext,
-    startPreviousTestFromCompletion,
-    startNextTestFromCompletion,
+    canSwitchToPreviousTestFromCompletion: completionAdjacent.canStartPrevious,
+    canSwitchToNextTestFromCompletion: completionAdjacent.canStartNext,
+    switchToPreviousTestFromCompletion,
+    switchToNextTestFromCompletion,
   };
 }
 

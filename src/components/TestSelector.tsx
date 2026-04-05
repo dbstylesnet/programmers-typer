@@ -26,6 +26,7 @@ type Props = {
   disabled: boolean;
   onSelect: (category: TestCategoryKey, index: number) => void;
   lastResultByTestName: Record<string, LastRunStats>;
+  testPerfVsBest: Record<string, 'better' | 'worse'>;
   showResults: boolean;
   hasHistory: boolean;
   onToggleResults: () => void;
@@ -39,6 +40,7 @@ export function TestSelector({
   disabled,
   onSelect,
   lastResultByTestName,
+  testPerfVsBest,
   showResults,
   hasHistory,
   onToggleResults,
@@ -87,13 +89,15 @@ export function TestSelector({
               {category.tests.map((t, idx) => {
                 const isSelected = selected?.category === category.key && selected.index === idx;
                 const last = lastResultByTestName[t.name];
+                const perf = testPerfVsBest[t.name];
+                const perfClass = perf === 'better' ? 'test-perf-better' : perf === 'worse' ? 'test-perf-worse' : '';
                 return (
                   <button
                     key={t.name}
                     type="button"
                     onClick={() => onSelect(category.key, idx)}
                     disabled={disabled}
-                    className={isSelected ? 'selected-test' : ''}
+                    className={[isSelected ? 'selected-test' : '', perfClass].filter(Boolean).join(' ')}
                   >
                     <span className="test-select-name">{t.name}</span>
                     {last ? (

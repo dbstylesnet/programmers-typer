@@ -31,6 +31,7 @@ const App = (): JSX.Element => {
         disabled={t.isRunning}
         onSelect={t.selectTest}
         lastResultByTestName={t.lastResultByTestName}
+        testPerfVsBest={t.testPerfVsBest}
         showResults={t.showResults}
         hasHistory={t.playerResults.length > 0}
         onToggleResults={() => t.setShowResults(!t.showResults)}
@@ -74,16 +75,18 @@ const App = (): JSX.Element => {
 
       <CompletionModal
         open={t.isCompleteModalOpen}
-        elapsedDisplay={t.elapsedDisplay}
-        accuracyPercent={t.accuracyPercent}
+        elapsedDisplay={t.completionModalSnapshot?.elapsedDisplay ?? t.elapsedDisplay}
+        accuracyPercent={t.completionModalSnapshot?.accuracyPercent ?? t.accuracyPercent}
+        completionVsBest={t.completionModalSnapshot?.completionVsBest ?? t.completionVsBest}
+        currentTestName={t.selectedTestName}
         previousTestName={t.completionPreviousTestName}
         nextTestName={t.completionNextTestName}
-        canStartPreviousTest={t.canStartPreviousTestFromCompletion}
-        canStartNextTest={t.canStartNextTestFromCompletion}
-        onStartPreviousTest={t.startPreviousTestFromCompletion}
-        onStartNextTest={t.startNextTestFromCompletion}
+        canSwitchPreviousTest={t.canSwitchToPreviousTestFromCompletion}
+        canSwitchNextTest={t.canSwitchToNextTestFromCompletion}
+        onSwitchPreviousTest={t.switchToPreviousTestFromCompletion}
+        onSwitchNextTest={t.switchToNextTestFromCompletion}
         onClose={t.closeCompleteModal}
-        onStartAgain={t.startAgainAfterCompletion}
+        onStartTest={t.startAgainAfterCompletion}
         onShowResultsHistory={t.showResultsHistoryAfterCompletion}
       />
     </div>
