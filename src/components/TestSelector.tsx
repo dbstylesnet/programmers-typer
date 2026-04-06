@@ -16,6 +16,8 @@ const CATEGORY_BADGE_SRC: Record<TestCategoryKey, string> = {
   asyncAwait:
     'https://img.shields.io/badge/Async-Await-111827?style=flat&labelColor=111827&logo=nodedotjs&logoColor=339933',
   nextJs: 'https://img.shields.io/badge/Next.js-App-111827?style=flat&labelColor=111827&logo=nextdotjs&logoColor=ffffff',
+  gitHub:
+    'https://img.shields.io/badge/Git-%20GitHub-181717?style=flat&labelColor=181717&logo=github&logoColor=ffffff',
 };
 
 export type LastRunStats = { timeSeconds: number; accuracy: number };

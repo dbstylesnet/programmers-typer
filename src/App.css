@@ -379,19 +379,11 @@ textarea::selection {
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   animation: modalSlideIn 0.3s ease-out;
-  min-width: 85%;
-  max-width: 95%;
-  width: 90%;
+  width: 95%;
+  max-width: 680px;
   box-sizing: border-box;
   color: white !important;
   border: none !important;
-}
-
-@media (max-width: 640px) {
-  .modal-content.congratz {
-    min-width: 95%;
-    width: 95%;
-  }
 }
 
 .modal-close {
@@ -1141,19 +1133,19 @@ textarea::selection {
 }
 
 .text-selection-buttons button.selected-test {
-  background: #0a5480;
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 50%, #172554 100%);
   color: white;
-  border-color: #38bdf8;
-  box-shadow: none;
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.6);
 }
 
 .text-selection-buttons button.selected-test:hover:not(:disabled) {
-  background: #0c6294;
-  box-shadow: none;
+  background: linear-gradient(135deg, #1e3a8a 0%, #172554 50%, #0f172a 100%);
+  box-shadow: 0 6px 16px rgba(30, 58, 138, 0.7);
 }
 
 .text-selection-buttons button.selected-test:active {
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.55);
 }
 
 /* Full-button tint vs personal best (unselected = softer, selected = more vibrant). */
@@ -1823,11 +1815,11 @@ textarea::selection {
   }
 
   .modal-content.congratz {
-    min-width: 95%;
     width: 95%;
-    max-width: 95%;
+    max-width: 680px;
     padding: 4% 9%;
   }
+
   .modal-content.congratz p {
     font-size: 12px;
   }
@@ -1933,11 +1925,11 @@ textarea::selection {
   }
 
   .modal-content.congratz {
-    min-width: 95%;
     width: 95%;
-    max-width: 95%;
+    max-width: 680px;
     padding: 6% 12%;
   }
+
   .modal-content.congratz p {
     font-size: 11px;
   }

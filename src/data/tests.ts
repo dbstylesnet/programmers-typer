@@ -5,7 +5,8 @@ export type TestCategoryKey =
   | 'typescript'
   | 'restApi'
   | 'asyncAwait'
-  | 'nextJs';
+  | 'nextJs'
+  | 'gitHub';
 
 /** Two-part copy for the EXPLANATION block: plain language for beginners */
 export type TestExplanationParts = {
@@ -559,6 +560,152 @@ function MyComponent() {
   },
 ];
 
+const gitHub: PracticeTest[] = [
+  {
+    name: 'Merge main into feature',
+    text:
+      'git checkout feature/oauth-login\ngit fetch origin\ngit merge origin/main\ngit push origin feature/oauth-login',
+    explanation: {
+      whatItDoes:
+        'You switch to your feature branch, download the latest commits from the remote (fetch), then merge the remote main branch into your branch. That brings everyone else’s work into your line of history so you resolve conflicts locally before opening or updating a pull request. The final push publishes your merged branch to GitHub.',
+      typicalUse:
+        'Daily workflow when main moved forward while you were coding: integrate upstream changes, fix conflicts, run tests, then push. Teams often require branches to be up to date with main before merge.',
+    },
+  },
+  {
+    name: 'Fix merge conflicts',
+    text:
+      'git status\ngit diff\ngit add src/api/client.ts\ngit add src/config.ts\ngit commit -m "Merge origin/main and resolve conflicts"',
+    explanation: {
+      whatItDoes:
+        'After a merge stops with conflicts, status shows which files need attention. diff shows the conflict markers. You edit files, stage the resolved versions with add, then commit to finish the merge. The commit message documents that this was a merge resolution.',
+      typicalUse:
+        'Any time two branches changed the same lines—two people edited the same config, or main renamed something your feature still referenced. Learning this flow saves hours compared to deleting the repo and re-cloning.',
+    },
+  },
+  {
+    name: 'Rebase feature on main',
+    text:
+      'git checkout feature/payments\ngit fetch origin\ngit rebase origin/main\ngit push --force-with-lease origin feature/payments',
+    explanation: {
+      whatItDoes:
+        'Rebase replays your feature commits on top of the latest main, producing a straight line of history without a merge commit. fetch updates your picture of origin/main. After a rebase, the branch history changed, so a normal push may be rejected; force-with-lease updates the remote only if nobody else pushed new commits to that branch (safer than bare --force).',
+      typicalUse:
+        'Keeping a PR “clean” and easy to review, or following team rules that prefer rebase over merge. Never force-push to shared branches like main without team agreement.',
+    },
+  },
+  {
+    name: 'Stash and switch branch',
+    text:
+      'git stash push -u -m "wip: cart totals"\ngit checkout hotfix/empty-cart\ngit stash list\ngit stash pop',
+    explanation: {
+      whatItDoes:
+        'stash push saves your working tree (and with -u, untracked files too) so you can switch branches with a clean slate. checkout moves you to the hotfix branch. After fixing the urgent issue, stash list reminds you what you saved; stash pop reapplies the saved work and removes it from the stash stack.',
+      typicalUse:
+        'You are mid-feature and production breaks: park uncommitted work, jump to a fix branch, come back and restore your WIP. One of the most practical “GitHub day” commands.',
+    },
+  },
+  {
+    name: 'Cherry-pick a commit',
+    text:
+      'git checkout release/2.4\ngit fetch origin\ngit log --oneline origin/main -5\ngit cherry-pick a1b2c3d\ngit push origin release/2.4',
+    explanation: {
+      whatItDoes:
+        'Cherry-pick copies one existing commit by hash onto your current branch as a new commit. You move to the branch that should receive the fix, inspect recent commits on main to find the right hash, then cherry-pick applies that patch. Push ships the release branch with only the chosen fix, not all of main.',
+      typicalUse:
+        'Backporting a bugfix from main to an older release branch, or pulling a single commit into a hotfix without merging entire branches.',
+    },
+  },
+  {
+    name: 'Push new branch to GitHub',
+    text:
+      'git checkout -b fix/login-redirect\ngit add .\ngit commit -m "fix: preserve return URL after login"\ngit push -u origin fix/login-redirect',
+    explanation: {
+      whatItDoes:
+        'checkout -b creates and switches to a new branch. add stages changes, commit records them locally. push -u publishes the branch to origin (GitHub) and sets upstream tracking so later you can type git push without repeating the remote name.',
+      typicalUse:
+        'Starting any GitHub Flow or trunk-based workflow: one branch per issue or PR. The -u flag is the habit that makes day-two pushes painless.',
+    },
+  },
+  {
+    name: 'Undo last commit (keep changes)',
+    text:
+      'git log --oneline -3\ngit reset --soft HEAD~\ngit status\ngit commit -m "feat: auth + rate limiting"',
+    explanation: {
+      whatItDoes:
+        'reset --soft HEAD~ moves the branch pointer back one commit but leaves your files and index as they were after that commit—so nothing is lost, you can recommit with a better message or split changes. log shows context; status confirms what is staged.',
+      typicalUse:
+        'You committed too early, typo in the message, or want to combine two small commits before pushing. Only safe if you have not pushed yet, or your team allows history rewrite on that branch.',
+    },
+  },
+  {
+    name: 'Revert pushed commit',
+    text:
+      'git log --oneline -5\ngit revert --no-edit f4e5d6c\ngit push origin main',
+    explanation: {
+      whatItDoes:
+        'revert creates a new commit that undoes the changes introduced by the specified commit, without erasing history. That is ideal after a bad deploy landed on main: you do not rewrite public history, you add an inverse commit. --no-edit accepts the default message. push shares the fix with everyone.',
+      typicalUse:
+        'Fixing mistakes already on GitHub main or long-lived branches where force-push is forbidden. Safer than reset for shared repos.',
+    },
+  },
+  {
+    name: 'Reset local to match main',
+    text:
+      'git fetch origin\ngit checkout main\ngit reset --hard origin/main\ngit clean -fd',
+    explanation: {
+      whatItDoes:
+        'fetch downloads the latest refs from GitHub. checkout main switches you to your local main branch. reset --hard origin/main moves main to the exact same commit as the remote and throws away every local commit on main that was not on origin/main, plus all uncommitted edits in tracked files. clean -fd deletes untracked files and directories so your working tree matches the remote tree as closely as Git allows.',
+      typicalUse:
+        'When your clone is a mess—experiments, half-merged junk, or you just want a fresh copy of main before starting over. This is destructive: anything not pushed elsewhere is gone. Stash or branch first if you might need those changes later.',
+    },
+  },
+  {
+    name: 'Checkout GitHub PR locally',
+    text:
+      'git fetch origin pull/128/head:pr-128\ngit checkout pr-128\ngit log --oneline -3',
+    explanation: {
+      whatItDoes:
+        'GitHub exposes each pull request as a ref under pull/N/head. fetch downloads PR 128 into a local branch named pr-128; checkout switches to it so you can build, test, or add commits. log confirms you are on the contributor’s commits.',
+      typicalUse:
+        'Reviewing a teammate’s PR with full IDE and test suite, or debugging CI failures only visible with their branch checked out.',
+    },
+  },
+  {
+    name: 'Interactive rebase (squash)',
+    text:
+      'git checkout feature/ui-polish\ngit rebase -i HEAD~4',
+    explanation: {
+      whatItDoes:
+        'rebase -i opens an editor listing the last four commits. You change pick to squash or fixup to combine commits, reorder them, or rewrite messages. When you save and close, Git replays history according to your instructions—useful for turning noisy WIP commits into one clear commit before merge.',
+      typicalUse:
+        'Polishing a PR so reviewers see a coherent story, or meeting “squash before merge” team rules while keeping detailed local history while you work.',
+    },
+  },
+  {
+    name: 'Clone and track remote',
+    text:
+      'git clone https://github.com/acme/platform.git\ncd platform\ngit remote -v\ngit checkout -b dev origin/dev',
+    explanation: {
+      whatItDoes:
+        'clone copies the repository and default remote (origin). remote -v shows fetch/push URLs. checkout -b dev origin/dev creates a local dev branch that tracks the server’s dev branch so git pull brings updates from the right place.',
+      typicalUse:
+        'Onboarding, new machine setup, or contributing to an open-source repo on GitHub. The tracking branch line is what beginners often forget until pull seems to do nothing.',
+    },
+  },
+  {
+    name: 'Tag a release',
+    text:
+      'git checkout main\ngit pull origin main\ngit tag -a v2.1.0 -m "Release 2.1.0"\ngit push origin v2.1.0',
+    explanation: {
+      whatItDoes:
+        'You update main, then create an annotated tag (-a) pointing at the current commit with a message. Pushing the tag publishes it to GitHub so releases, CI, and changelog tools can anchor on v2.1.0.',
+      typicalUse:
+        'Shipping versions users install, triggering release builds, or marking what went to production. GitHub Releases often start from a pushed tag.',
+    },
+  },
+];
+
 const nextJs: PracticeTest[] = [
   {
     name: 'v13 SSR/SSG',
@@ -624,6 +771,7 @@ export const TEST_CATEGORIES: TestCategory[] = [
   { key: 'reactHooks', label: 'React:', tests: reactHooks },
   { key: 'jsFundamentals', label: 'JS Fundamentals:', tests: jsFundamentals },
   { key: 'typescript', label: 'TypeScript:', tests: typescript },
+  { key: 'gitHub', label: 'Git & GitHub:', tests: gitHub },
   { key: 'restApi', label: 'REST API:', tests: restApi },
   { key: 'asyncAwait', label: 'Async await:', tests: asyncAwait },
   { key: 'jsAlgorithms', label: 'JS Algorithms:', tests: jsAlgorithms },
