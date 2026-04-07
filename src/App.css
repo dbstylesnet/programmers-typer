@@ -380,7 +380,7 @@ textarea::selection {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   animation: modalSlideIn 0.3s ease-out;
   width: 95%;
-  max-width: 680px;
+  max-width: 758px;
   box-sizing: border-box;
   color: white !important;
   border: none !important;
@@ -605,6 +605,14 @@ textarea::selection {
 .modal-btn-adjacent-nav {
   background: linear-gradient(135deg, #475569 0%, #334155 100%);
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-adjacent-nav-btn-text--full,
+.modal-adjacent-nav-btn-text--short {
+  white-space: nowrap;
 }
 
 .modal-btn-adjacent:hover:not(:disabled),
@@ -1816,7 +1824,7 @@ textarea::selection {
 
   .modal-content.congratz {
     width: 95%;
-    max-width: 680px;
+    max-width: 758px;
     padding: 4% 9%;
   }
 
@@ -1926,7 +1934,7 @@ textarea::selection {
 
   .modal-content.congratz {
     width: 95%;
-    max-width: 680px;
+    max-width: 758px;
     padding: 6% 12%;
   }
 
