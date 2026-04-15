@@ -105,18 +105,33 @@ export function TypingArea({
     // Best-effort: ensure the caret/textarea stays visible in webviews
     // that don't resize the layout viewport when the keyboard opens.
     const vv = window.visualViewport;
-    const update = () => {
-      if (!window.visualViewport) return;
-      const overlap = Math.max(0, window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop);
+    let rafId = 0;
+    let intervalId: number | null = null;
+
+    const ensureVisible = () => {
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      const offsetTop = window.visualViewport?.offsetTop ?? 0;
+
+      const overlap = Math.max(0, window.innerHeight - viewportHeight - offsetTop);
       setKeyboardOffset(overlap);
-      // Scroll the textarea into view after viewport changes.
-      el.scrollIntoView({ block: 'center', inline: 'nearest' });
+
+      // If the textarea bottom is below the visible viewport, scroll just enough.
+      const rect = el.getBoundingClientRect();
+      const visibleBottom = viewportHeight - 12; // a little breathing room
+      const overshoot = rect.bottom - visibleBottom;
+      if (overshoot > 0) {
+        window.scrollBy({ top: overshoot + 12, left: 0, behavior: 'smooth' });
+      }
+    };
+
+    const update = () => {
+      ensureVisible();
     };
 
     // Initial nudge.
     setTimeout(() => {
-      el.scrollIntoView({ block: 'center', inline: 'nearest' });
-      update();
+      // Don't use scrollIntoView alone: some webviews ignore it during keyboard open.
+      ensureVisible();
     }, 50);
 
     if (vv) {
@@ -130,6 +145,25 @@ export function TypingArea({
       // Fallback: at least remove any stale offset.
       setKeyboardOffset(0);
     }
+
+    // Extra fallback: poll briefly after focus to catch keyboards that
+    // don't emit reliable resize/visualViewport events in embedded webviews.
+    const startedAt = Date.now();
+    const tick = () => {
+      ensureVisible();
+      if (Date.now() - startedAt < 1800 && document.activeElement === el) {
+        rafId = window.requestAnimationFrame(tick);
+      }
+    };
+    rafId = window.requestAnimationFrame(tick);
+    intervalId = window.setInterval(ensureVisible, 120);
+
+    const prevCleanup = viewportCleanupRef.current;
+    viewportCleanupRef.current = () => {
+      prevCleanup?.();
+      if (rafId) window.cancelAnimationFrame(rafId);
+      if (intervalId !== null) window.clearInterval(intervalId);
+    };
   };
 
   const handleBlur = () => {
