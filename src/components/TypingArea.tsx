@@ -33,6 +33,7 @@ export function TypingArea({
   const measureRef = useRef<HTMLTextAreaElement>(null);
   const [areaHeight, setAreaHeight] = useState<number>(700);
   const [caretPixel, setCaretPixel] = useState({ top: 0, left: 0, height: 18 });
+  const viewportCleanupRef = useRef<(() => void) | null>(null);
 
   const updateCaretPixel = useCallback(() => {
     const el = textareaRef.current;
@@ -92,6 +93,51 @@ export function TypingArea({
     };
   }, [disabled, updateCaretPixel, textareaRef]);
 
+  const setKeyboardOffset = (px: number) => {
+    const safe = Math.max(0, Math.floor(px));
+    document.documentElement.style.setProperty('--keyboard-offset', `${safe}px`);
+  };
+
+  const handleFocus = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+
+    // Best-effort: ensure the caret/textarea stays visible in webviews
+    // that don't resize the layout viewport when the keyboard opens.
+    const vv = window.visualViewport;
+    const update = () => {
+      if (!window.visualViewport) return;
+      const overlap = Math.max(0, window.innerHeight - window.visualViewport.height - window.visualViewport.offsetTop);
+      setKeyboardOffset(overlap);
+      // Scroll the textarea into view after viewport changes.
+      el.scrollIntoView({ block: 'center', inline: 'nearest' });
+    };
+
+    // Initial nudge.
+    setTimeout(() => {
+      el.scrollIntoView({ block: 'center', inline: 'nearest' });
+      update();
+    }, 50);
+
+    if (vv) {
+      vv.addEventListener('resize', update);
+      vv.addEventListener('scroll', update);
+      viewportCleanupRef.current = () => {
+        vv.removeEventListener('resize', update);
+        vv.removeEventListener('scroll', update);
+      };
+    } else {
+      // Fallback: at least remove any stale offset.
+      setKeyboardOffset(0);
+    }
+  };
+
+  const handleBlur = () => {
+    viewportCleanupRef.current?.();
+    viewportCleanupRef.current = null;
+    setKeyboardOffset(0);
+  };
+
   return (
     <div className="typing-area-wrapper">
       <div className="sub-header practice-text-label">
@@ -114,6 +160,8 @@ export function TypingArea({
               onChange={(e) => onChange(e.target.value)}
               onKeyDown={onKeyDown}
               onClick={onClick}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               value={typed}
               disabled={disabled}
               spellCheck={false}

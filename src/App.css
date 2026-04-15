@@ -19,7 +19,7 @@
   align-items: center;
   font-size: calc(8px + 1.2vmin);
   color: white;
-  padding: 0px 0 10px 0;
+  padding: 0px 0 calc(10px + var(--keyboard-offset, 0px)) 0;
   width: 100%;
   overflow-x: hidden;
   position: relative;
@@ -380,7 +380,7 @@ textarea::selection {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   animation: modalSlideIn 0.3s ease-out;
   width: 95%;
-  max-width: 758px;
+  max-width: 730px;
   box-sizing: border-box;
   color: white !important;
   border: none !important;
@@ -1824,7 +1824,7 @@ textarea::selection {
 
   .modal-content.congratz {
     width: 95%;
-    max-width: 758px;
+    max-width: 730px;
     padding: 4% 9%;
   }
 
@@ -1934,7 +1934,7 @@ textarea::selection {
 
   .modal-content.congratz {
     width: 95%;
-    max-width: 758px;
+    max-width: 730px;
     padding: 6% 12%;
   }
 
