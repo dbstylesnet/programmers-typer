@@ -33,7 +33,6 @@ export function TypingArea({
   const measureRef = useRef<HTMLTextAreaElement>(null);
   const [areaHeight, setAreaHeight] = useState<number>(700);
   const [caretPixel, setCaretPixel] = useState({ top: 0, left: 0, height: 18 });
-  const viewportCleanupRef = useRef<(() => void) | null>(null);
 
   const updateCaretPixel = useCallback(() => {
     const el = textareaRef.current;
@@ -93,85 +92,6 @@ export function TypingArea({
     };
   }, [disabled, updateCaretPixel, textareaRef]);
 
-  const setKeyboardOffset = (px: number) => {
-    const safe = Math.max(0, Math.floor(px));
-    document.documentElement.style.setProperty('--keyboard-offset', `${safe}px`);
-  };
-
-  const handleFocus = () => {
-    const el = textareaRef.current;
-    if (!el) return;
-
-    // Best-effort: ensure the caret/textarea stays visible in webviews
-    // that don't resize the layout viewport when the keyboard opens.
-    const vv = window.visualViewport;
-    let rafId = 0;
-    let intervalId: number | null = null;
-
-    const ensureVisible = () => {
-      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
-      const offsetTop = window.visualViewport?.offsetTop ?? 0;
-
-      const overlap = Math.max(0, window.innerHeight - viewportHeight - offsetTop);
-      setKeyboardOffset(overlap);
-
-      // If the textarea bottom is below the visible viewport, scroll just enough.
-      const rect = el.getBoundingClientRect();
-      const visibleBottom = viewportHeight - 12; // a little breathing room
-      const overshoot = rect.bottom - visibleBottom;
-      if (overshoot > 0) {
-        window.scrollBy({ top: overshoot + 12, left: 0, behavior: 'smooth' });
-      }
-    };
-
-    const update = () => {
-      ensureVisible();
-    };
-
-    // Initial nudge.
-    setTimeout(() => {
-      // Don't use scrollIntoView alone: some webviews ignore it during keyboard open.
-      ensureVisible();
-    }, 50);
-
-    if (vv) {
-      vv.addEventListener('resize', update);
-      vv.addEventListener('scroll', update);
-      viewportCleanupRef.current = () => {
-        vv.removeEventListener('resize', update);
-        vv.removeEventListener('scroll', update);
-      };
-    } else {
-      // Fallback: at least remove any stale offset.
-      setKeyboardOffset(0);
-    }
-
-    // Extra fallback: poll briefly after focus to catch keyboards that
-    // don't emit reliable resize/visualViewport events in embedded webviews.
-    const startedAt = Date.now();
-    const tick = () => {
-      ensureVisible();
-      if (Date.now() - startedAt < 1800 && document.activeElement === el) {
-        rafId = window.requestAnimationFrame(tick);
-      }
-    };
-    rafId = window.requestAnimationFrame(tick);
-    intervalId = window.setInterval(ensureVisible, 120);
-
-    const prevCleanup = viewportCleanupRef.current;
-    viewportCleanupRef.current = () => {
-      prevCleanup?.();
-      if (rafId) window.cancelAnimationFrame(rafId);
-      if (intervalId !== null) window.clearInterval(intervalId);
-    };
-  };
-
-  const handleBlur = () => {
-    viewportCleanupRef.current?.();
-    viewportCleanupRef.current = null;
-    setKeyboardOffset(0);
-  };
-
   return (
     <div className="typing-area-wrapper">
       <div className="sub-header practice-text-label">
@@ -194,8 +114,6 @@ export function TypingArea({
               onChange={(e) => onChange(e.target.value)}
               onKeyDown={onKeyDown}
               onClick={onClick}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
               value={typed}
               disabled={disabled}
               spellCheck={false}

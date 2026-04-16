@@ -7,10 +7,47 @@ import { StartStopButton } from './components/StartStopButton';
 import { TestExplanationSection } from './components/TestExplanationSection';
 import { TestSelector } from './components/TestSelector';
 import { TypingArea } from './components/TypingArea';
+import { WebViewNoticeModal } from './components/WebViewNoticeModal';
 import { useTypingTest } from './hooks/useTypingTest';
+import { useEffect, useState } from 'react';
+
+function isWebViewUserAgent(): boolean {
+  const ua = navigator.userAgent || '';
+
+  // React Native / RNWebView
+  const hasRNWebView = typeof (window as any).ReactNativeWebView !== 'undefined';
+
+  // Android WebView / iOS embedded browsers usually add “wv” or “WebView” tokens.
+  const hasWebViewToken = /WebView/i.test(ua) || /\bwv\)/i.test(ua) || /\bwv\b/i.test(ua);
+
+  // Facebook apps embed browsers using a webview-like environment.
+  const isFacebookApp = /FBAN|FBAV/i.test(ua);
+
+  return hasRNWebView || hasWebViewToken || (isFacebookApp && hasWebViewToken);
+}
 
 const App = (): JSX.Element => {
   const t = useTypingTest();
+  const [showWebViewNotice, setShowWebViewNotice] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem('webviewNoticeDismissed') === '1') return;
+      if (isWebViewUserAgent()) setShowWebViewNotice(true);
+    } catch {
+      // If storage is blocked, still show the notice once.
+      setShowWebViewNotice(isWebViewUserAgent());
+    }
+  }, []);
+
+  const closeWebViewNotice = () => {
+    setShowWebViewNotice(false);
+    try {
+      localStorage.setItem('webviewNoticeDismissed', '1');
+    } catch {
+      // ignore
+    }
+  };
 
   return (
     <div className="main-container">
@@ -89,6 +126,8 @@ const App = (): JSX.Element => {
         onStartTest={t.startAgainAfterCompletion}
         onShowResultsHistory={t.showResultsHistoryAfterCompletion}
       />
+
+      <WebViewNoticeModal open={showWebViewNotice} onClose={closeWebViewNotice} />
     </div>
   );
 };
