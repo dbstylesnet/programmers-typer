@@ -33,29 +33,16 @@ const App = (): JSX.Element => {
     setIsWebView(isWebViewUserAgent());
   }, []);
 
-  // WebView keyboard workaround: while typing, increase bottom padding by half the viewport height.
-  // This prevents the keyboard from covering the typing area when embedded webviews don't resize.
+  // WebView workaround: embedded webviews often don't resize the visible viewport on keyboard open.
+  // Expand the effective page space by half the viewport height all the time.
   useEffect(() => {
     const root = document.documentElement;
-
-    if (!isWebView || !t.isRunning) {
+    if (!isWebView) {
       root.style.setProperty('--webview-bottom-pad', '0px');
       return;
     }
-
-    const update = () => {
-      const half = Math.floor(window.innerHeight / 2);
-      root.style.setProperty('--webview-bottom-pad', `${half}px`);
-    };
-
-    update();
-    window.addEventListener('resize', update);
-
-    return () => {
-      root.style.setProperty('--webview-bottom-pad', '0px');
-      window.removeEventListener('resize', update);
-    };
-  }, [isWebView, t.isRunning]);
+    root.style.setProperty('--webview-bottom-pad', '50vh');
+  }, [isWebView]);
 
   return (
     <div className="main-container">
