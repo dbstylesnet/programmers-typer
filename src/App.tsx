@@ -7,7 +7,6 @@ import { StartStopButton } from './components/StartStopButton';
 import { TestExplanationSection } from './components/TestExplanationSection';
 import { TestSelector } from './components/TestSelector';
 import { TypingArea } from './components/TypingArea';
-import { WebViewNoticeModal } from './components/WebViewNoticeModal';
 import { useTypingTest } from './hooks/useTypingTest';
 import { useEffect, useState } from 'react';
 
@@ -28,26 +27,35 @@ function isWebViewUserAgent(): boolean {
 
 const App = (): JSX.Element => {
   const t = useTypingTest();
-  const [showWebViewNotice, setShowWebViewNotice] = useState(false);
+  const [isWebView, setIsWebView] = useState(false);
 
   useEffect(() => {
-    try {
-      if (localStorage.getItem('webviewNoticeDismissed') === '1') return;
-      if (isWebViewUserAgent()) setShowWebViewNotice(true);
-    } catch {
-      // If storage is blocked, still show the notice once.
-      setShowWebViewNotice(isWebViewUserAgent());
-    }
+    setIsWebView(isWebViewUserAgent());
   }, []);
 
-  const closeWebViewNotice = () => {
-    setShowWebViewNotice(false);
-    try {
-      localStorage.setItem('webviewNoticeDismissed', '1');
-    } catch {
-      // ignore
+  // WebView keyboard workaround: while typing, increase bottom padding by half the viewport height.
+  // This prevents the keyboard from covering the typing area when embedded webviews don't resize.
+  useEffect(() => {
+    const root = document.documentElement;
+
+    if (!isWebView || !t.isRunning) {
+      root.style.setProperty('--webview-bottom-pad', '0px');
+      return;
     }
-  };
+
+    const update = () => {
+      const half = Math.floor(window.innerHeight / 2);
+      root.style.setProperty('--webview-bottom-pad', `${half}px`);
+    };
+
+    update();
+    window.addEventListener('resize', update);
+
+    return () => {
+      root.style.setProperty('--webview-bottom-pad', '0px');
+      window.removeEventListener('resize', update);
+    };
+  }, [isWebView, t.isRunning]);
 
   return (
     <div className="main-container">
@@ -126,8 +134,6 @@ const App = (): JSX.Element => {
         onStartTest={t.startAgainAfterCompletion}
         onShowResultsHistory={t.showResultsHistoryAfterCompletion}
       />
-
-      <WebViewNoticeModal open={showWebViewNotice} onClose={closeWebViewNotice} />
     </div>
   );
 };
