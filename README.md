@@ -1,4 +1,6 @@
-# Typing Practice for Programmers
+Link: [https://progtyper.netlify.app/](https://progtyper.netlify.app/)
+
+# Typing Mastering tool for Programmers
 This project is a typing practice application designed specifically for programmers. It focuses on commonly used programming keys and symbols to help improve typing speed and accuracy while coding.
 
 As the user types, the app provides real-time performance feedback, including live comparisons and accuracy tracking.
