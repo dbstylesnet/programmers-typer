@@ -45,7 +45,7 @@ export function GoalTab(): JSX.Element {
                 <strong>App components</strong> — Get to know the typical components of real apps.
               </li>
               <li>
-                <strong>Problem solving</strong> — Don't waste time on thinking what to type, focus on logic and coding flow.
+                <strong>AI prompting</strong> — type meaningful prompts faster and get better results.
               </li>
             </ul>
           </div>
