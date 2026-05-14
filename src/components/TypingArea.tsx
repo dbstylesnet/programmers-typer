@@ -2,6 +2,13 @@ import type { KeyboardEvent, RefObject } from 'react';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { getTextareaCaretCoordinates } from '../utils/getTextareaCaretCoordinates';
 
+const CROSSFADE_HALF_MS = 150;
+
+function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 type Props = {
   textareaRef: RefObject<HTMLTextAreaElement>;
   typed: string;
@@ -14,6 +21,13 @@ type Props = {
   elapsedDisplay: string;
   accuracyPercent: number;
   progressPercent: number;
+};
+
+type Panel = {
+  visKey: string;
+  visPractice: string;
+  visTyped: string;
+  phase: 'in' | 'out';
 };
 
 export function TypingArea({
@@ -34,6 +48,19 @@ export function TypingArea({
   const [areaHeight, setAreaHeight] = useState<number>(700);
   const [caretPixel, setCaretPixel] = useState({ top: 0, left: 0, height: 18 });
 
+  const [panel, setPanel] = useState<Panel>(() => ({
+    visKey: selectedTestName,
+    visPractice: practiceText,
+    visTyped: typed,
+    phase: 'in',
+  }));
+
+  const propsLatest = useRef({ selectedTestName, practiceText, typed });
+  propsLatest.current = { selectedTestName, practiceText, typed };
+
+  const panelRef = useRef(panel);
+  panelRef.current = panel;
+
   const updateCaretPixel = useCallback(() => {
     const el = textareaRef.current;
     if (!el || disabled) return;
@@ -53,11 +80,50 @@ export function TypingArea({
     setAreaHeight(next);
   };
 
+  useEffect(() => {
+    if (selectedTestName === panelRef.current.visKey) return;
+
+    if (prefersReducedMotion()) {
+      const cur = propsLatest.current;
+      setPanel({
+        visKey: cur.selectedTestName,
+        visPractice: cur.practiceText,
+        visTyped: cur.typed,
+        phase: 'in',
+      });
+      return;
+    }
+
+    setPanel((p) => ({ ...p, phase: 'out' }));
+    const tid = window.setTimeout(() => {
+      const cur = propsLatest.current;
+      setPanel({
+        visKey: cur.selectedTestName,
+        visPractice: cur.practiceText,
+        visTyped: cur.typed,
+        phase: 'out',
+      });
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setPanel((p) => ({ ...p, phase: 'in' }));
+        });
+      });
+    }, CROSSFADE_HALF_MS);
+    return () => window.clearTimeout(tid);
+  }, [selectedTestName]);
+
+  useEffect(() => {
+    setPanel((p) => {
+      if (selectedTestName !== p.visKey || p.phase !== 'in') return p;
+      if (p.visPractice === practiceText && p.visTyped === typed) return p;
+      return { ...p, visPractice: practiceText, visTyped: typed };
+    });
+  }, [selectedTestName, practiceText, typed]);
+
   useLayoutEffect(() => {
-    // Ensure value is rendered before measuring.
     requestAnimationFrame(measure);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [practiceText]);
+  }, [panel.visPractice]);
 
   useEffect(() => {
     const onResize = () => requestAnimationFrame(measure);
@@ -70,7 +136,7 @@ export function TypingArea({
     if (disabled) return;
     const id = requestAnimationFrame(() => updateCaretPixel());
     return () => cancelAnimationFrame(id);
-  }, [typed, disabled, areaHeight, practiceText, updateCaretPixel]);
+  }, [panel.visTyped, disabled, areaHeight, panel.visPractice, updateCaretPixel]);
 
   useEffect(() => {
     if (disabled) return;
@@ -92,77 +158,83 @@ export function TypingArea({
     };
   }, [disabled, updateCaretPixel, textareaRef]);
 
+  const surfaceClass =
+    panel.phase === 'in'
+      ? 'content-crossfade-surface content-crossfade-surface--in'
+      : 'content-crossfade-surface content-crossfade-surface--out';
+
   return (
     <div className="typing-area-wrapper">
-      <div className="sub-header practice-text-label">
-        <h3>
-          Practice text: <span className="practice-test-name">{selectedTestName}</span>
-        </h3>
-        <div className="practice-metrics">
-          <div className="practice-metric">Time: {elapsedDisplay}</div>
-          <div className="practice-metric">Accuracy: {accuracyPercent.toFixed(2)}%</div>
-          <div className="practice-metric">Progress: {progressPercent.toFixed(2)}%</div>
+      <div className={`typing-area-main ${surfaceClass}`}>
+        <div className="sub-header practice-text-label">
+          <h3>
+            Practice text: <span className="practice-test-name">{panel.visKey}</span>
+          </h3>
+          <div className="practice-metrics">
+            <div className="practice-metric">Time: {elapsedDisplay}</div>
+            <div className="practice-metric">Accuracy: {accuracyPercent.toFixed(2)}%</div>
+            <div className="practice-metric">Progress: {progressPercent.toFixed(2)}%</div>
+          </div>
         </div>
-      </div>
 
-      <div className="mainTextAreas">
-        <div className="textAreas" style={{ minHeight: areaHeight + 24 }}>
-          <div className="typing-input-shell" style={{ height: areaHeight, minHeight: areaHeight }}>
+        <div className="mainTextAreas">
+          <div className="textAreas" style={{ minHeight: areaHeight + 24 }}>
+            <div className="typing-input-shell" style={{ height: areaHeight, minHeight: areaHeight }}>
+              <textarea
+                ref={textareaRef}
+                className={`textInputs topP${disabled ? '' : ' typing-smooth-caret-active'}`}
+                onChange={(e) => onChange(e.target.value)}
+                onKeyDown={onKeyDown}
+                onClick={onClick}
+                value={panel.visTyped}
+                disabled={disabled}
+                spellCheck={false}
+                style={{ height: areaHeight, minHeight: areaHeight }}
+              />
+              {!disabled ? (
+                <div className="typing-caret-overlay" aria-hidden>
+                  <div
+                    className="typing-caret-pipe"
+                    style={{
+                      top: caretPixel.top,
+                      left: caretPixel.left,
+                      height: caretPixel.height,
+                    }}
+                  />
+                </div>
+              ) : null}
+            </div>
             <textarea
-              ref={textareaRef}
-              className={`textInputs topP${disabled ? '' : ' typing-smooth-caret-active'}`}
-              onChange={(e) => onChange(e.target.value)}
-              onKeyDown={onKeyDown}
-              onClick={onClick}
-              value={typed}
-              disabled={disabled}
+              ref={targetRef}
+              className="textInputs bottomP"
+              value={panel.visPractice}
+              readOnly
               spellCheck={false}
               style={{ height: areaHeight, minHeight: areaHeight }}
             />
-            {!disabled ? (
-              <div className="typing-caret-overlay" aria-hidden>
-                <div
-                  className="typing-caret-pipe"
-                  style={{
-                    top: caretPixel.top,
-                    left: caretPixel.left,
-                    height: caretPixel.height,
-                  }}
-                />
-              </div>
-            ) : null}
+            <textarea
+              ref={measureRef}
+              className="textInputs bottomP"
+              value={panel.visPractice}
+              readOnly
+              aria-hidden="true"
+              tabIndex={-1}
+              spellCheck={false}
+              style={{
+                position: 'absolute',
+                left: -99999,
+                top: 0,
+                height: 'auto',
+                minHeight: 0,
+                maxHeight: 'none',
+                overflow: 'hidden',
+                opacity: 0,
+                pointerEvents: 'none',
+              }}
+            />
           </div>
-          <textarea
-            ref={targetRef}
-            className="textInputs bottomP"
-            value={practiceText}
-            readOnly
-            spellCheck={false}
-            style={{ height: areaHeight, minHeight: areaHeight }}
-          />
-          <textarea
-            ref={measureRef}
-            className="textInputs bottomP"
-            value={practiceText}
-            readOnly
-            aria-hidden="true"
-            tabIndex={-1}
-            spellCheck={false}
-            style={{
-              position: 'absolute',
-              left: -99999,
-              top: 0,
-              height: 'auto',
-              minHeight: 0,
-              maxHeight: 'none',
-              overflow: 'hidden',
-              opacity: 0,
-              pointerEvents: 'none',
-            }}
-          />
         </div>
       </div>
     </div>
   );
 }
-

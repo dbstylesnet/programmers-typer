@@ -868,6 +868,34 @@ textarea::selection {
   margin-bottom: 16px;
 }
 
+/* 150ms fade out + 150ms fade in when switching tests (see components). */
+.content-crossfade-surface {
+  transition:
+    opacity 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.content-crossfade-surface--in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content-crossfade-surface--out {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content-crossfade-surface {
+    transition: none;
+  }
+
+  .content-crossfade-surface--out {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .test-explanation-content {
   padding-left: 10px;
   padding-right: 5px;

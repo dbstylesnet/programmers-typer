@@ -71,7 +71,7 @@ const App = (): JSX.Element => {
         canClearHistory={Boolean(t.playerName)}
       />
 
-      <TestExplanationSection explanation={t.selectedTestExplanation} />
+      <TestExplanationSection explanation={t.selectedTestExplanation} transitionKey={t.selectedTestName} />
 
       <StartStopButton disabled={!t.practiceText} isRunning={t.isRunning} onClick={t.toggleStartStop} />
 
