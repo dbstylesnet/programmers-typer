@@ -206,6 +206,151 @@ const reactHooks: PracticeTest[] = [
         'Route-level code splitting, heavy widgets loaded on demand, and modern data APIs that integrate with suspense boundaries. You will see it in Next.js and React 18+ examples whenever the app should stay responsive while something slower loads in the background.',
     },
   },
+  {
+    name: 'useTransition',
+    text:
+      'import { useState, useTransition } from "react";\n\nfunction SearchPage() {\n  const [query, setQuery] = useState("");\n  const [results, setResults] = useState([]);\n  const [isPending, startTransition] = useTransition();\n\n  const handleChange = (e) => {\n    const value = e.target.value;\n    setQuery(value);\n    startTransition(() => {\n      setResults(filterItems(value));\n    });\n  };\n\n  return (\n    <div>\n      <input value={query} onChange={handleChange} />\n      {isPending && <span>Updating…</span>}\n      <ul>\n        {results.map((item) => (\n          <li key={item.id}>{item.name}</li>\n        ))}\n      </ul>\n    </div>\n  );\n}',
+    explanation: {
+      whatItDoes:
+        'useTransition returns isPending and startTransition. You wrap state updates that might be slow—filtering a big list, switching tabs, loading heavy UI—in startTransition so React treats them as lower priority. The input and other urgent UI can update right away while the expensive work catches up; isPending tells you when that background update is still running so you can show a subtle “Updating…” hint.',
+      typicalUse:
+        'Search boxes that filter thousands of rows, tab switches that mount heavy panels, or any time typing or clicking should feel instant even when the screen behind it takes a moment to recompute. Pair it with Suspense in newer patterns; reach for it when profiling shows renders blocking the main thread after every keystroke.',
+    },
+  },
+  {
+    name: 'useDeferredValue',
+    text:
+      'import { useState, useDeferredValue, useMemo } from "react";\n\nfunction SearchPage({ items }) {\n  const [query, setQuery] = useState("");\n  const deferredQuery = useDeferredValue(query);\n\n  const filtered = useMemo(() => {\n    return items.filter((item) =>\n      item.name.toLowerCase().includes(deferredQuery.toLowerCase())\n    );\n  }, [items, deferredQuery]);\n\n  const isStale = query !== deferredQuery;\n\n  return (\n    <div>\n      <input value={query} onChange={(e) => setQuery(e.target.value)} />\n      <ul style={{ opacity: isStale ? 0.6 : 1 }}>\n        {filtered.map((item) => (\n          <li key={item.id}>{item.name}</li>\n        ))}\n      </ul>\n    </div>\n  );\n}',
+    explanation: {
+      whatItDoes:
+        'useDeferredValue takes a value (like query from an input) and returns a version that may lag behind when updates are urgent. React keeps showing the previous deferred value while it prepares the new one, so expensive derived work—filtering, sorting, big lists—can run against the deferred copy without freezing every keystroke. Comparing query !== deferredQuery tells you the list is still catching up so you can dim it slightly.',
+      typicalUse:
+        'Live search over large client-side lists, autocomplete, or dashboards where the typed string updates instantly but the filtered results trail by a frame or two. Similar goals to useTransition but you defer the value itself instead of wrapping a setter; pick deferred values when the slow part is computed from state rather than a single batched update.',
+    },
+  },
+  {
+    name: 'Form',
+    text: `import React, { useState } from "react";
+
+export default function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      const response = await fetch(
+        "https://api.example.com/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
+
+      const data = await response.json();
+
+      console.log("API response:", data);
+
+      setSuccess(true);
+
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Contact Form</h2>
+
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Name</label>
+
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Email</label>
+
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Message</label>
+
+          <textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Sending..." : "Submit"}
+        </button>
+      </form>
+
+      {success && <p>Form submitted successfully!</p>}
+
+      {error && <p>{error}</p>}
+    </div>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'This contact form keeps all field values in one useState object (formData) and updates them through a single handleChange that reads name and value from the event. On submit it prevents the default page reload, shows loading state, POSTs JSON to an API with fetch, then either clears the form and shows success or surfaces an error message. Controlled inputs mean the input value always comes from state—what you type and what React stores stay in sync.',
+      typicalUse:
+        'Sign-up flows, contact pages, checkout steps, and any screen where users type into several fields and you send the bundle to a backend. You will see this pattern in tutorials and production apps alike: local state for the form, async submit handler, loading/disabled button, and simple success or error feedback under the form.',
+    },
+  },
 ];
 
 const jsFundamentals: PracticeTest[] = [
