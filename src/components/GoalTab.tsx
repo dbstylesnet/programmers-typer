@@ -49,16 +49,20 @@ export function GoalTab(): JSX.Element {
                 <strong>AI prompting</strong> — type meaningful prompts faster and get better results.
               </li>
             </ul>
-            <a
-              href="#promo-video"
-              className="goal-tab-watch-link"
-              onClick={(e) => {
-                e.preventDefault();
-                playPromoVideo();
-              }}
-            >
-              Watch video
-            </a>
+            <div className="goal-tab-watch-row">
+              <span className="goal-tab-watch-arrow goal-tab-watch-arrow--left" aria-hidden />
+              <a
+                href="#promo-video"
+                className="goal-tab-watch-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  playPromoVideo();
+                }}
+              >
+                Watch promo video
+              </a>
+              <span className="goal-tab-watch-arrow goal-tab-watch-arrow--right" aria-hidden />
+            </div>
           </div>
         </div>
       </div>
