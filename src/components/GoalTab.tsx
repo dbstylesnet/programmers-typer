@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { playPromoVideo } from './PromoVideo';
 
 export function GoalTab(): JSX.Element {
   const [open, setOpen] = useState(false);
@@ -48,6 +49,16 @@ export function GoalTab(): JSX.Element {
                 <strong>AI prompting</strong> — type meaningful prompts faster and get better results.
               </li>
             </ul>
+            <a
+              href="#promo-video"
+              className="goal-tab-watch-link"
+              onClick={(e) => {
+                e.preventDefault();
+                playPromoVideo();
+              }}
+            >
+              Watch video
+            </a>
           </div>
         </div>
       </div>

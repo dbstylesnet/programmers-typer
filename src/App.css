@@ -70,7 +70,7 @@ html {
 
 .sub-header.main-header {
   margin: 30px 0 0 0;
-  padding: 0;
+  padding: 0 10% 0 10%;
   border-radius: 0;
   width: 100%;
   background: transparent;
@@ -79,7 +79,10 @@ html {
   backdrop-filter: none;
   text-align: left;
   align-self: flex-start;
-  padding-left: 10%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-sizing: border-box;
 }
 
 .sub-header.main-header h2 {
@@ -97,6 +100,100 @@ html {
   width: auto;
   display: block;
   margin: 20px 0;
+  flex-shrink: 0;
+}
+
+.main-header-promo {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  margin: 20px 0;
+}
+
+.main-header-promo-inner {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.main-header-promo-trigger {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.main-header-promo-trigger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
+
+.main-header-promo-trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(125, 211, 252, 0.55), 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.main-header-promo-thumb {
+  display: block;
+  height: 102px;
+  width: auto;
+  max-width: min(280px, 100%);
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.promo-video-player {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + var(--webview-bottom-pad, 0px));
+  z-index: 1200;
+  width: min(360px, calc(100vw - 32px));
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f1117;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.promo-video-player-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.promo-video-player-close:hover {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.promo-video-player-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+  background: #000;
 }
 
 .mainTextAreas {
@@ -1801,6 +1898,21 @@ textarea::selection {
 @media (max-width: 786px) {
   .sub-header.main-header {
     padding-left: 2%;
+    padding-right: 2%;
+  }
+}
+
+@media (max-width: 600px) {
+  .sub-header.main-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-header-promo {
+    flex: none;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0;
   }
 }
 
@@ -1896,6 +2008,17 @@ textarea::selection {
 
   .main-header-logo {
     height: 82px;
+  }
+
+  .main-header-promo-thumb {
+    height: 82px;
+    max-width: min(200px, 42vw);
+  }
+
+  .promo-video-player {
+    right: 10px;
+    bottom: calc(10px + var(--webview-bottom-pad, 0px));
+    width: min(300px, calc(100vw - 20px));
   }
 
   .statistics-container {
@@ -2261,6 +2384,21 @@ textarea::selection {
   font-weight: 900;
   display: inline-block;
   animation: goalStrongPulse 2.4s ease-in-out infinite;
+}
+
+.goal-tab-watch-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #7dd3fc;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+
+.goal-tab-watch-link:hover {
+  color: #bae6fd;
+  text-decoration: underline;
 }
 
 @keyframes goalStrongPulse {

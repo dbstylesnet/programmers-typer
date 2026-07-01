@@ -1,6 +1,7 @@
 import './App.css';
 import { CompletionModal } from './components/CompletionModal';
 import { GoalTab } from './components/GoalTab';
+import { PromoVideo } from './components/PromoVideo';
 import { PlayerSection } from './components/PlayerSection';
 import { ResultsPanel } from './components/ResultsPanel';
 import { StartStopButton } from './components/StartStopButton';
@@ -48,6 +49,7 @@ const App = (): JSX.Element => {
     <div className="main-container">
       <div className="sub-header main-header">
         <img src="/logo.png" alt="Programmers Typer Logo" className="main-header-logo" />
+        <PromoVideo />
       </div>
 
       <PlayerSection
