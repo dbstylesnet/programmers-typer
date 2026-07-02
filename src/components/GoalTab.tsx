@@ -59,7 +59,7 @@ export function GoalTab(): JSX.Element {
                   playPromoVideo();
                 }}
               >
-                Watch promo video
+                Watch progtyper video
               </a>
               <span className="goal-tab-watch-arrow goal-tab-watch-arrow--right" aria-hidden />
             </div>
