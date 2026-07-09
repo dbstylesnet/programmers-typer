@@ -151,8 +151,8 @@ html {
 
 .promo-video-player {
   position: fixed;
-  right: 16px;
-  bottom: calc(16px + var(--webview-bottom-pad, 0px));
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
   z-index: 1200;
   width: min(360px, calc(100vw - 32px));
   border-radius: 12px;
@@ -2029,8 +2029,8 @@ textarea::selection {
   }
 
   .promo-video-player {
-    right: 10px;
-    bottom: calc(10px + var(--webview-bottom-pad, 0px));
+    right: max(10px, env(safe-area-inset-right, 0px));
+    bottom: max(10px, env(safe-area-inset-bottom, 0px));
     width: min(300px, calc(100vw - 20px));
   }
 
