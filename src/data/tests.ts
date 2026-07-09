@@ -910,6 +910,343 @@ export default async function Article({ params }) {
         'News sites, e-commerce catalogs, docs that change a few times a day—content that should feel fresh but does not need a unique database hit on every single page view. It sits between static export and fully dynamic SSR.',
     },
   },
+  {
+    name: 'useRouter',
+    text: `'use client';
+
+import { useRouter } from 'next/navigation';
+
+export default function CheckoutButton() {
+  const router = useRouter();
+
+  const goToCheckout = () => {
+    router.push('/checkout');
+  };
+
+  const goBack = () => {
+    router.back();
+  };
+
+  return (
+    <div>
+      <button onClick={goToCheckout}>Checkout</button>
+      <button onClick={goBack}>Back</button>
+    </div>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useRouter from next/navigation gives client components a way to move around the app without a plain <a> tag. router.push goes to a new URL, router.back behaves like the browser back button, and you also get replace, refresh, and prefetch helpers. Because it runs in the browser, the file must start with "use client".',
+      typicalUse:
+        'Redirect after a form submit, send someone to login when they are not signed in, go back after closing a wizard step, or navigate from a button click inside a modal. In the App Router this replaces the old next/router hook from the Pages Router.',
+    },
+  },
+  {
+    name: 'usePathname',
+    text: `'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+const links = [
+  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/settings', label: 'Settings' },
+];
+
+export default function SidebarNav() {
+  const pathname = usePathname();
+
+  return (
+    <nav>
+      {links.map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          className={pathname === link.href ? 'active' : ''}
+        >
+          {link.label}
+        </Link>
+      ))}
+    </nav>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'usePathname returns the current URL path as a string—like /dashboard or /settings/profile—without the domain or query string. That makes it easy to compare "where am I?" against a link href and highlight the active item in a sidebar or tab bar.',
+      typicalUse:
+        'Active states in navigation, breadcrumbs that know which section you are in, or analytics that react to route changes. Pair it with Link for menus; reach for useRouter when you need to navigate programmatically instead of just reading the path.',
+    },
+  },
+  {
+    name: 'useSearchParams',
+    text: `'use client';
+
+import { useSearchParams } from 'next/navigation';
+
+export default function ProductFilters() {
+  const searchParams = useSearchParams();
+  const sort = searchParams.get('sort') ?? 'newest';
+  const category = searchParams.get('category') ?? 'all';
+
+  return (
+    <div>
+      <p>Sort: {sort}</p>
+      <p>Category: {category}</p>
+    </div>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useSearchParams reads the query string from the current URL—the part after ?. You call .get("sort") to pull one value, or iterate the params when you need them all. In the App Router it returns a read-only URLSearchParams-like object so client components can react to filters, tabs, or page numbers in the address bar.',
+      typicalUse:
+        'Search pages driven by ?q=..., product lists with ?sort=price, pagination with ?page=2, or shareable filter URLs. Wrap the component in <Suspense> if Next warns about static rendering, because search params can differ on every request.',
+    },
+  },
+  {
+    name: 'useParams',
+    text: `'use client';
+
+import { useParams } from 'next/navigation';
+
+export default function ProjectHeader() {
+  const params = useParams();
+  const projectId = params.id;
+
+  return (
+    <header>
+      <h1>Project {projectId}</h1>
+    </header>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useParams exposes the dynamic segments from the folder name in your route. If the file lives at app/projects/[id]/page.tsx, visiting /projects/acme gives params.id === "acme". Catch-all routes like [...slug] arrive as string arrays. It is the client-side counterpart to the params prop server components receive automatically.',
+      typicalUse:
+        'Client widgets on a detail page—comments, likes, inline editors—that need the id from the URL without prop-drilling from a server parent. Fetch extra data in the browser, build links to nested routes, or show headings tied to the current record.',
+    },
+  },
+  {
+    name: 'useActionState',
+    text: `'use client';
+
+import { useActionState } from 'react';
+import { createPost } from '@/app/actions';
+
+export default function PostForm() {
+  const [state, formAction, isPending] = useActionState(createPost, null);
+
+  return (
+    <form action={formAction}>
+      <input name="title" placeholder="Title" required />
+      {state?.error && <p>{state.error}</p>}
+      {state?.success && <p>Post saved!</p>}
+      <button type="submit" disabled={isPending}>
+        {isPending ? 'Saving…' : 'Save post'}
+      </button>
+    </form>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useActionState wires a Server Action to a form and keeps the action’s return value in React state. You get back the last result (errors, success flags, field messages), the bound formAction to pass to <form action={...}>, and isPending so the UI can disable buttons while the server runs. It replaced the older useFormState name in React 19.',
+      typicalUse:
+        'Login and signup forms, create/edit screens, comment boxes—any mutation where the server validates input and you want inline errors without writing fetch boilerplate. This is the main Next.js + React 19 pattern for forms that still work before JavaScript loads.',
+    },
+  },
+  {
+    name: 'useFormStatus',
+    text: `'use client';
+
+import { useFormStatus } from 'react-dom';
+import { saveProfile } from '@/app/actions';
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button type="submit" disabled={pending}>
+      {pending ? 'Saving…' : 'Save profile'}
+    </button>
+  );
+}
+
+export default function ProfileForm() {
+  return (
+    <form action={saveProfile}>
+      <input name="name" placeholder="Name" />
+      <input name="email" type="email" placeholder="Email" />
+      <SubmitButton />
+    </form>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useFormStatus reads the submission state of the nearest parent <form>. The child component—usually the submit button—gets pending without the parent passing props down. React sets pending to true while the form action or Server Action is running, then false when it finishes.',
+      typicalUse:
+        'Reusable submit buttons, spinners, or disabled inputs inside shared form layouts. Split the button into its own component because the hook only works from a descendant of the form, not from the same component that owns the form tag.',
+    },
+  },
+  {
+    name: 'useOptimistic',
+    text: `'use client';
+
+import { useOptimistic } from 'react';
+import { addComment } from '@/app/actions';
+
+export default function CommentThread({ comments }) {
+  const [optimisticComments, addOptimisticComment] = useOptimistic(
+    comments,
+    (state, newComment) => [...state, newComment]
+  );
+
+  async function formAction(formData) {
+    const text = formData.get('text');
+    addOptimisticComment({ id: 'temp', text });
+    await addComment(formData);
+  }
+
+  return (
+    <div>
+      <ul>
+        {optimisticComments.map((comment) => (
+          <li key={comment.id}>{comment.text}</li>
+        ))}
+      </ul>
+      <form action={formAction}>
+        <input name="text" placeholder="Add a comment" />
+        <button type="submit">Post</button>
+      </form>
+    </div>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useOptimistic shows a temporary UI update before the server confirms the change. You pass the real list plus an updater function; when someone submits a form you append a “temp” item immediately, then the Server Action runs and React reconciles with the real response. If the action fails, the optimistic item rolls back.',
+      typicalUse:
+        'Comment threads, like buttons, todo checkboxes, chat messages—any form or action where waiting half a second feels sluggish. Pair it with Server Actions so the list feels instant while the database write happens in the background.',
+    },
+  },
+  {
+    name: 'Server Action',
+    text: `'use server';
+
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+
+export async function createTodo(formData) {
+  const title = formData.get('title');
+
+  if (!title || String(title).trim().length === 0) {
+    return { error: 'Title is required.' };
+  }
+
+  await db.todo.create({ data: { title: String(title).trim() } });
+  revalidatePath('/todos');
+  redirect('/todos');
+}`,
+    explanation: {
+      whatItDoes:
+        'A Server Action is an async function marked with "use server" that runs only on the server. Forms can call it directly via action={createTodo}—no API route needed. You read FormData, validate, talk to the database, then revalidatePath or redirect so the UI reflects the change.',
+      typicalUse:
+        'Create, update, and delete forms across the App Router. It is the backbone behind useActionState and useFormStatus: the hooks handle client UX; the Server Action handles auth, validation, and persistence safely on the server.',
+    },
+  },
+  {
+    name: 'useSelectedLayoutSegment',
+    text: `'use client';
+
+import Link from 'next/link';
+import { useSelectedLayoutSegment } from 'next/navigation';
+
+const tabs = [
+  { slug: 'overview', label: 'Overview' },
+  { slug: 'settings', label: 'Settings' },
+  { slug: 'billing', label: 'Billing' },
+];
+
+export default function DashboardTabs() {
+  const segment = useSelectedLayoutSegment();
+
+  return (
+    <nav>
+      {tabs.map((tab) => (
+        <Link
+          key={tab.slug}
+          href={\`/dashboard/\${tab.slug}\`}
+          className={segment === tab.slug ? 'active' : ''}
+        >
+          {tab.label}
+        </Link>
+      ))}
+    </nav>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useSelectedLayoutSegment returns the active child segment one level below the current layout. On /dashboard/settings it might return "settings". It reads the filesystem route structure, so parallel routes and route groups affect what you get back—null means you are at the layout’s index route.',
+      typicalUse:
+        'Tab bars inside a layout, highlighting which subsection of a dashboard is active, or conditional chrome that depends on the nested route. Use useSelectedLayoutSegments when you need the full path of segments instead of just the leaf.',
+    },
+  },
+  {
+    name: 'useSelectedLayoutSegments',
+    text: `'use client';
+
+import { useSelectedLayoutSegments } from 'next/navigation';
+
+export default function Breadcrumbs() {
+  const segments = useSelectedLayoutSegments();
+
+  return (
+    <nav aria-label="Breadcrumb">
+      {segments.map((segment, index) => (
+        <span key={\`\${segment}-\${index}\`}>
+          {segment}
+          {index < segments.length - 1 ? ' / ' : ''}
+        </span>
+      ))}
+    </nav>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useSelectedLayoutSegments returns an array of active route segments below the layout where you call it—like ["settings", "profile"] for /dashboard/settings/profile. Route groups in parentheses are omitted from the array, which keeps breadcrumbs readable.',
+      typicalUse:
+        'Breadcrumbs, analytics that track nested sections, or admin shells that show “you are here” trails. Handy when a layout wraps several nested pages and you need more than the single segment useSelectedLayoutSegment provides.',
+    },
+  },
+  {
+    name: 'useLinkStatus',
+    text: `'use client';
+
+import Link from 'next/link';
+import { useLinkStatus } from 'next/navigation';
+
+function NavLink({ href, children }) {
+  const { pending } = useLinkStatus();
+
+  return (
+    <Link href={href} className={pending ? 'is-pending' : ''}>
+      {pending ? 'Loading…' : children}
+    </Link>
+  );
+}
+
+export default function Sidebar() {
+  return (
+    <nav>
+      <NavLink href="/dashboard">Dashboard</NavLink>
+      <NavLink href="/reports">Reports</NavLink>
+    </nav>
+  );
+}`,
+    explanation: {
+      whatItDoes:
+        'useLinkStatus tells you when a Next.js <Link> navigation is in flight. pending becomes true after a click until the new route is ready, so you can dim the link or swap in a spinner. The hook must be used in a component that renders inside Link—same pattern as useFormStatus and forms.',
+      typicalUse:
+        'Sidebar links, pagination, or anywhere prefetch is off and navigation can take a moment. Complements usePathname (which route you are on) with feedback while you are moving to the next one.',
+    },
+  },
 ];
 
 export const TEST_CATEGORIES: TestCategory[] = [
